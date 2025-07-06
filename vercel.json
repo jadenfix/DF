@@ -17,10 +17,13 @@
     "NEXTAUTH_SECRET": "@NEXTAUTH_SECRET",
     "ADMIN_EMAIL": "@ADMIN_EMAIL",
     "ADMIN_SECRET": "@ADMIN_SECRET",
-    "NEXT_PUBLIC_SENTRY_DSN": "@NEXT_PUBLIC_SENTRY_DSN"
+    "NEXT_PUBLIC_SENTRY_DSN": "@NEXT_PUBLIC_SENTRY_DSN",
+    "REWARD_WEIGHT_ACCURACY": "2",
+    "REWARD_WEIGHT_HELPFULNESS": "1",
+    "REWARD_WEIGHT_LATENCY": "-1"
   },
   "functions": {
-    "api/**": {
+    "app/api/**": {
       "memory": 1024,
       "maxDuration": 30
     }
