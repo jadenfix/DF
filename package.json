@@ -8,7 +8,8 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --runInBand",
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "dev:turbo": "CSS_TRANSFORMER_WASM=1 next dev --turbo"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.56.0",
