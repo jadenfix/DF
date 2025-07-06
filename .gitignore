@@ -1,0 +1,18 @@
+# Node
+node_modules/
+.next/
+out/
+
+# Mongo Memory Server Cache
+node_modules/
+.next/
+node_modules/.cache/
+.env.local
+# Testing
+coverage/
+
+# Git internals (if cleaning with BFG)
+.git-fat/
+# Env
+.env.local
+secrets.env.local 

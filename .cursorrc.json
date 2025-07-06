@@ -1,0 +1,45 @@
+{
+  "projectType": "nextjs",
+  "language": "typescript",
+  "style": "tailwind",
+  "dirs": {
+    "pages": "pages",
+    "api": "pages/api",
+    "components": "components",
+    "lib": "lib",
+    "models": "models"
+  },
+  "patterns": {
+    "validation": "zod",
+    "db": "mongodb-atlas-singleton",
+    "queue": "bullmq",
+    "stripe": "stripe-node-sdk",
+    "auth": "nextauth-js"
+  },
+  "apiRouteTemplate": {
+    "imports": [
+      "import { NextApiRequest, NextApiResponse } from 'next';",
+      "import db from '../../lib/mongodb';",
+      "import { z } from 'zod';"
+    ],
+    "body": [
+      "await db();",
+      "const data = Schema.parse(req.body);",
+      "// your logic here",
+      "res.status(200).json({});"
+    ]
+  },
+  "modelTemplate": {
+    "imports": ["import mongoose from 'mongoose';"],
+    "body": [
+      "const XSchema = new mongoose.Schema({});",
+      "export default mongoose.models.X || mongoose.model('X', XSchema);"
+    ]
+  },
+  "libTemplates": {
+    "moondreamClient": "export const client = new Moondream({ apiKey: process.env.MOONDREAM_KEY });",
+    "anthropicClient": "export const anthropic = new Anthropic({ apiKey: process.env.ANTHROPIC_API_KEY });",
+    "stripeClient": "export const stripe = new Stripe(process.env.STRIPE_SECRET_KEY, { apiVersion: '2020-08-27' });"
+  },
+  "commitStyle": "conventional"
+} 
