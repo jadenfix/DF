@@ -7,7 +7,8 @@
     "build": "next build",
     "start": "next start",
     "lint": "next lint",
-    "test": "jest --runInBand"
+    "test": "jest --runInBand",
+    "e2e": "playwright test"
   },
   "dependencies": {
     "@anthropic-ai/sdk": "^0.56.0",
@@ -21,9 +22,11 @@
     "react": "latest",
     "react-dom": "latest",
     "stripe": "latest",
-    "zod": "latest"
+    "zod": "latest",
+    "@sentry/nextjs": "^7.110.0"
   },
   "devDependencies": {
+    "@playwright/test": "^1.53.2",
     "@tailwindcss/postcss": "^4.1.11",
     "@types/jest": "^30.0.0",
     "@types/node": "^24.0.10",

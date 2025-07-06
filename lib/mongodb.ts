@@ -1,6 +1,7 @@
 import mongoose from 'mongoose';
 import Feedback from '../models/Feedback';
 import Analysis from '../models/Analysis';
+import RewardConfig from '../models/RewardConfig';
 
 let MONGODB_URI = process.env.MONGODB_URI as string | undefined;
 
@@ -90,16 +91,12 @@ export async function getFeedbackForRLHF(limit = 100): Promise<Array<{feedback: 
  * @param analysis - Analysis document
  * @returns {number} Reward value
  */
-export function calculateRLHFReward(feedback: any, analysis: any): number {
-  // Example: reward = w1*upvote + w2*helpfulness + w3*latency
-  const wAccuracy = Number(process.env.REWARD_WEIGHT_ACCURACY || 2);
-  const wHelpfulness = Number(process.env.REWARD_WEIGHT_HELPFULNESS || 1);
-  const wLatency = Number(process.env.REWARD_WEIGHT_LATENCY || -1);
-  // For now, use upvote as accuracy, helpfulness as 1 if comment exists, latency as 0 (placeholder)
+export async function calculateRLHFReward(feedback: any, analysis: any): Promise<number> {
+  const weights = await getRewardWeights();
   const accuracy = feedback.upvote ? 1 : 0;
   const helpfulness = feedback.comment ? 1 : 0;
-  const latency = 0; // TODO: add latency tracking
-  return wAccuracy * accuracy + wHelpfulness * helpfulness + wLatency * latency;
+  const latency = 0;
+  return weights.accuracy * accuracy + weights.helpfulness * helpfulness + weights.latency * latency;
 }
 
 /**
@@ -109,7 +106,7 @@ export function calculateRLHFReward(feedback: any, analysis: any): number {
 export async function updateFeedbackRewards(limit = 100) {
   const items = await getFeedbackForRLHF(limit);
   for (const { feedback, analysis } of items) {
-    const reward = calculateRLHFReward(feedback, analysis);
+    const reward = await calculateRLHFReward(feedback, analysis);
     const FeedbackModel = Feedback as mongoose.Model<any>;
     await FeedbackModel.updateOne({ _id: feedback._id }, { $set: { rewardScore: reward } });
   }
@@ -131,4 +128,18 @@ export async function incrementGuestUsage(userId: string) {
  */
 export async function getGuestUsageCount(userId: string): Promise<number> {
   return Analysis.countDocuments({ userId });
+}
+
+export async function getRewardWeights() {
+  await db();
+  const RewardModel = RewardConfig as mongoose.Model<any>;
+  const doc = await RewardModel.findOne({}).sort({ updatedAt: -1 });
+  if (doc) {
+    return { accuracy: doc.accuracy, helpfulness: doc.helpfulness, latency: doc.latency };
+  }
+  return {
+    accuracy: Number(process.env.REWARD_WEIGHT_ACCURACY || 2),
+    helpfulness: Number(process.env.REWARD_WEIGHT_HELPFULNESS || 1),
+    latency: Number(process.env.REWARD_WEIGHT_LATENCY || -1),
+  };
 } 
