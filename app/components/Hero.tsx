@@ -93,7 +93,8 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.8 }}
         >
-          Deploy any Vision-Language Model in Seconds
+          Powerful Visual AI.
+          <span className="block text-blue-600 dark:text-blue-400">Tiny Footprint.</span>
         </motion.h1>
         
         <motion.p
@@ -102,7 +103,7 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          The Vercel of VLMs. Fast, free, and intelligent image analysis powered by advanced vision-language models.
+          Deploy Moondream's vision-language model anywhere. Under 2B parameters, 1GB footprint, blazing fast performance.
         </motion.p>
 
         {/* Live Code Snippet */}
@@ -117,7 +118,7 @@ export default function Hero() {
             <CodeBracketIcon className="w-4 h-4 text-slate-400" />
           </div>
           <code className="text-green-400 text-sm md:text-base">
-            npm install @dreamforge/sdk && npx dreamforge deploy model-v1
+            pip install moondream && python -c "import moondream; moondream.vl()"
           </code>
         </motion.div>
 

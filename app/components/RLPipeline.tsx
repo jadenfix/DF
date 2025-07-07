@@ -24,42 +24,46 @@ interface PipelineStep {
 const pipelineSteps: PipelineStep[] = [
   {
     id: 'inference',
-    title: 'Model Inference',
-    description: 'Fast, efficient vision-language processing',
+    title: 'Moondream Inference',
+    description: 'Lightweight vision-language processing with quantized efficiency',
     icon: CpuChipIcon,
     metrics: [
-      { label: 'Latency', value: '20', unit: 'ms' },
-      { label: 'Model Size', value: '50', unit: 'M params' }
+      { label: 'Latency', value: '15', unit: 'ms' },
+      { label: 'Model Size', value: '1.6B', unit: ' params' },
+      { label: 'Memory', value: '1', unit: 'GB' }
     ]
   },
   {
     id: 'feedback',
-    title: 'Human Feedback',
-    description: 'Real-time user preference collection',
+    title: 'Human Preference Collection',
+    description: 'Constitutional AI-style preference learning with pairwise comparisons',
     icon: UserIcon,
     metrics: [
-      { label: 'Events/Day', value: '2k', unit: '' },
-      { label: 'Response Rate', value: '85', unit: '%' }
+      { label: 'Preference Pairs/Day', value: '2.4k', unit: '' },
+      { label: 'Agreement Rate', value: '89', unit: '%' },
+      { label: 'Coverage', value: '94', unit: '%' }
     ]
   },
   {
     id: 'reward',
-    title: 'Reward Shaping',
-    description: 'Dynamic reward function optimization',
+    title: 'Reward Model Training',
+    description: 'Bradley-Terry preference model with uncertainty quantification',
     icon: ChartBarIcon,
     metrics: [
-      { label: 'Accuracy Weight', value: '+1.0', unit: '' },
-      { label: 'Latency Penalty', value: '-0.01', unit: '/ms' }
+      { label: 'Accuracy Score', value: 'β₁ = 1.0', unit: '' },
+      { label: 'Helpfulness', value: 'β₂ = 0.8', unit: '' },
+      { label: 'Safety Weight', value: 'β₃ = 1.2', unit: '' }
     ]
   },
   {
     id: 'update',
-    title: 'Policy Update',
-    description: 'Continuous model improvement',
+    title: 'PPO Policy Update',
+    description: 'Proximal Policy Optimization with KL divergence constraints',
     icon: ArrowPathIcon,
     metrics: [
-      { label: 'Update Frequency', value: 'Daily', unit: '' },
-      { label: 'Improvement', value: '+3.2', unit: '%' }
+      { label: 'Learning Rate', value: '3e-5', unit: '' },
+      { label: 'KL Penalty', value: '0.02', unit: '' },
+      { label: 'Win Rate', value: '+4.1', unit: '%' }
     ]
   }
 ];
@@ -78,10 +82,10 @@ export default function RLPipeline() {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
-            Interactive RL Pipeline
+            Constitutional AI Pipeline
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            See how DreamForge continuously improves through reinforcement learning from human feedback
+            Mathematically rigorous reinforcement learning from human feedback (RLHF) with AI-powered insights for continuous model improvement
           </p>
         </motion.div>
 
@@ -163,17 +167,38 @@ export default function RLPipeline() {
           viewport={{ once: true }}
           transition={{ delay: 0.5, duration: 1 }}
         >
-          <div className="inline-flex items-center space-x-4 bg-white dark:bg-slate-800 rounded-full px-6 py-3 shadow-lg">
+          <div className="inline-flex items-center space-x-4 bg-white dark:bg-slate-800 rounded-full px-6 py-3 shadow-lg mb-8">
             <div className="flex items-center space-x-2">
               <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse" />
               <span className="text-sm font-medium text-slate-700 dark:text-slate-300">
-                Live Pipeline
+                Live RLHF Pipeline
               </span>
             </div>
             <div className="w-px h-4 bg-slate-300 dark:bg-slate-600" />
             <span className="text-sm text-slate-500 dark:text-slate-400">
-              Processing 1,247 requests today
+              Processing 1,247 preference pairs today
             </span>
+          </div>
+          
+          {/* Mathematical Foundation */}
+          <div className="bg-slate-100 dark:bg-slate-800 rounded-xl p-6 max-w-4xl mx-auto">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-4">
+              Mathematical Foundation
+            </h3>
+            <div className="grid md:grid-cols-2 gap-6 text-left">
+              <div>
+                <h4 className="font-medium text-slate-800 dark:text-slate-200 mb-2">Reward Model</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400 font-mono">
+                  r_θ(x,y) = β₁·accuracy(y,y*) + β₂·helpfulness(x,y) - β₃·safety_penalty(y)
+                </p>
+              </div>
+              <div>
+                <h4 className="font-medium text-slate-800 dark:text-slate-200 mb-2">PPO Objective</h4>
+                <p className="text-sm text-slate-600 dark:text-slate-400 font-mono">
+                  L_PPO = E[min(rt(θ)A_t, clip(rt(θ),1-ε,1+ε)A_t)] - βKL[π_θ||π_old]
+                </p>
+              </div>
+            </div>
           </div>
         </motion.div>
       </div>

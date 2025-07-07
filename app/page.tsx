@@ -43,7 +43,7 @@ export default function Home() {
             <div>
               <h3 className="text-xl font-bold mb-4">DreamForge</h3>
               <p className="text-slate-300">
-                The Vercel of VLMs. Deploy any vision-language model in seconds.
+                Advanced deployment platform for Moondream vision-language models. Scale from prototype to production.
               </p>
             </div>
             <div>
@@ -72,7 +72,7 @@ export default function Home() {
             </div>
           </div>
           <div className="border-t border-slate-800 mt-8 pt-8 text-center text-slate-400">
-            <p>&copy; 2024 DreamForge. Built with ❤️ for the AI community.</p>
+            <p>&copy; 2025 DreamForge. Built by Jaden for the AI community.</p>
           </div>
         </div>
       </footer>

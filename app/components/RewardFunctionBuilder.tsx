@@ -19,25 +19,32 @@ interface RewardMetric {
 
 const defaultMetrics: RewardMetric[] = [
   {
-    id: 'accuracy',
-    name: 'Caption Accuracy',
+    id: 'helpfulness',
+    name: 'Helpfulness Score',
     weight: 1.0,
     operator: 'maximize',
-    description: 'How well the model describes image content'
+    description: 'Human preference for response quality and usefulness'
   },
   {
-    id: 'latency',
-    name: 'Inference Time (ms)',
-    weight: -0.01,
-    operator: 'minimize',
-    description: 'Response time penalty'
+    id: 'accuracy',
+    name: 'Factual Accuracy',
+    weight: 0.8,
+    operator: 'maximize',
+    description: 'Alignment with ground truth annotations'
   },
   {
-    id: 'false_positive',
-    name: 'False-Positive Rate',
-    weight: -2.0,
-    operator: 'minimize',
-    description: 'Reduce incorrect object detections'
+    id: 'safety',
+    name: 'Safety Compliance',
+    weight: 1.2,
+    operator: 'maximize',
+    description: 'Constitutional AI safety constraints'
+  },
+  {
+    id: 'brevity',
+    name: 'Response Brevity',
+    weight: 0.3,
+    operator: 'maximize',
+    description: 'Preference for concise, informative responses'
   }
 ];
 
@@ -104,10 +111,10 @@ export default function RewardFunctionBuilder() {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
-            Reward Function Builder
+            Constitutional Reward Function Builder
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-300">
-            Configure your model's learning objectives with interactive controls
+            Design mathematically principled reward functions with AI-powered insights and constitutional constraints
           </p>
         </motion.div>
 

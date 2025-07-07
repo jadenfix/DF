@@ -22,42 +22,42 @@ interface Model {
 
 const models: Model[] = [
   {
-    id: 'moondream-10m',
-    name: 'Moondream-10M',
-    parameters: '10M',
+    id: 'moondream-2',
+    name: 'Moondream 2',
+    parameters: '1.6B',
     latency: '15ms',
-    memory: '512MB',
-    accuracy: '92%',
-    cost: '$0.001',
-    description: 'Ultra-fast vision-language model for real-time applications',
-    features: ['Image captioning', 'Visual Q&A', 'Object detection', 'OCR']
-  },
-  {
-    id: 'moondream-25m',
-    name: 'Moondream-25M',
-    parameters: '25M',
-    latency: '25ms',
     memory: '1GB',
-    accuracy: '94%',
-    cost: '$0.002',
-    description: 'Balanced performance and efficiency for production use',
-    features: ['Advanced reasoning', 'Multi-modal understanding', 'Context awareness']
+    accuracy: '95.2%',
+    cost: 'Free',
+    description: 'Production-ready vision-language model with comprehensive capabilities',
+    features: ['Image captioning', 'Visual Q&A', 'Object detection', 'OCR', 'Pointing', 'Gaze detection']
   },
   {
-    id: 'moondream-50m',
-    name: 'Moondream-50M',
-    parameters: '50M',
-    latency: '40ms',
-    memory: '2GB',
-    accuracy: '96%',
-    cost: '$0.004',
-    description: 'High-accuracy model for complex visual understanding tasks',
-    features: ['Complex scene analysis', 'Detailed descriptions', 'Spatial reasoning']
+    id: 'moondream-2-int4',
+    name: 'Moondream 2 (4-bit)',
+    parameters: '1.6B',
+    latency: '12ms',
+    memory: '512MB',
+    accuracy: '94.8%',
+    cost: 'Free',
+    description: 'Quantized model optimized for edge deployment with minimal quality loss',
+    features: ['Edge-optimized', 'Mobile-ready', 'Ultra-low memory', 'CPU-efficient']
+  },
+  {
+    id: 'moondream-2-int8',
+    name: 'Moondream 2 (8-bit)',
+    parameters: '1.6B',
+    latency: '14ms',
+    memory: '800MB',
+    accuracy: '95.0%',
+    cost: 'Free',
+    description: 'Balanced quantization maintaining high accuracy with reduced footprint',
+    features: ['Balanced performance', 'Production-ready', 'Moderate compression', 'Stable inference']
   }
 ];
 
 export default function ModelGallery() {
-  const [selectedModel, setSelectedModel] = useState<string>('moondream-25m');
+  const [selectedModel, setSelectedModel] = useState<string>('moondream-2');
 
   return (
     <section className="py-20 bg-slate-50 dark:bg-slate-900">
@@ -70,10 +70,10 @@ export default function ModelGallery() {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
-            Model Gallery
+            Moondream Model Variants
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Choose from our optimized small-parameter models. Achieve 95% of SOTA performance at 1/10th the cost.
+            Deploy Moondream's 1.6B parameter vision-language model with different quantization levels. AI-powered insights included.
           </p>
         </motion.div>
 

@@ -216,7 +216,7 @@ export default function Playground() {
             animate={{ opacity: 1, y: 0 }}
             className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4"
           >
-            DreamForge Advanced Playground
+            DreamForge Playground
           </motion.h1>
           <motion.p 
             initial={{ opacity: 0, y: -20 }}

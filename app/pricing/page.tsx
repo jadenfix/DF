@@ -6,34 +6,35 @@ import Navigation from '../components/layout/navigation';
 
 const plans = [
   {
-    name: 'Free',
+    name: 'Starter',
     price: '$0',
     period: 'forever',
-    description: 'Perfect for getting started with AI vision analysis',
+    description: 'Perfect for developers and small projects exploring Moondream',
     features: [
-      '100 image analyses per month',
-      'Basic AI models (Moondream)',
-      'Standard response time',
+      '5,000 API calls per month',
+      'Moondream 2 (1.6B) access',
+      'Basic image analysis',
       'Community support',
-      'Basic API access',
+      'Standard rate limits',
+      'Public model only',
     ],
-    cta: 'Get Started Free',
+    cta: 'Start Building Free',
     popular: false,
   },
   {
-    name: 'Pro',
-    price: '$29',
+    name: 'Professional',
+    price: '$49',
     period: 'per month',
-    description: 'For professionals who need more power and features',
+    description: 'For production applications with commercial use',
     features: [
-      '1,000 image analyses per month',
-      'Advanced AI models (Claude + Moondream)',
-      'Priority response time',
-      'Email support',
-      'Full API access',
-      'Custom model training',
-      'Advanced analytics',
-      'Team collaboration',
+      '100,000 API calls per month',
+      'All Moondream variants (4-bit, 8-bit)',
+      'AI-powered insights & analytics',
+      'Priority support',
+      'Higher rate limits',
+      'Custom fine-tuning',
+      'Advanced RLHF pipeline',
+      'Real-time monitoring',
     ],
     cta: 'Start Pro Trial',
     popular: true,
@@ -41,17 +42,19 @@ const plans = [
   {
     name: 'Enterprise',
     price: 'Custom',
-    period: 'contact us',
-    description: 'For organizations with custom requirements',
+    period: 'contact sales',
+    description: 'For large-scale deployments with enterprise requirements',
     features: [
-      'Unlimited image analyses',
-      'Custom AI model deployment',
-      'Dedicated infrastructure',
-      '24/7 priority support',
-      'Custom integrations',
+      'Unlimited API calls',
+      'Dedicated model instances',
       'On-premise deployment',
-      'SLA guarantees',
+      '24/7 dedicated support',
+      'Custom model fine-tuning',
+      'SOC 2 compliance',
+      '99.9% SLA guarantees',
       'Dedicated account manager',
+      'White-label deployment',
+      'Advanced security features',
     ],
     cta: 'Contact Sales',
     popular: false,
@@ -76,8 +79,7 @@ export default function Pricing() {
                 Simple, Transparent Pricing
               </h1>
               <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-                Choose the perfect plan for your AI vision analysis needs. 
-                Start free and scale as you grow.
+                Deploy Moondream's vision AI at scale. Start free, scale with confidence.
               </p>
             </motion.div>
           </div>
