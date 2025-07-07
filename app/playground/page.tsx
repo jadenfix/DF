@@ -29,18 +29,18 @@ const SAMPLE_IMAGES = [
   },
   {
     url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&auto=format',
-    name: 'Scientific Document', 
-    prompt: 'Extract and analyze all visible text, mathematical formulas, charts, graphs, or scientific notation in this research document. Identify the field of study and key findings.'
+    name: 'Smiling Dude', 
+    prompt: 'What is going on in this picture? Analyze the emotions.'
   },
   {
     url: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=300&fit=crop&auto=format',
-    name: 'Complex Urban Scene',
-    prompt: 'Count and describe all visible objects, people, vehicles, and architectural elements in this complex scene. Analyze the spatial relationships and urban environment.'
+    name: 'Complex Scene',
+    prompt: 'Count and describe all visible objects, people, vehicles, and architectural elements in this scene. Analyze the spatial relationships and environment.'
   },
   {
     url: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=400&h=300&fit=crop&auto=format',
-    name: 'Technical Circuit Diagram',
-    prompt: 'Identify and explain all electronic components, connections, labels, and technical specifications visible in this circuit diagram or technical schematic.'
+    name: 'Technical  Diagram',
+    prompt: 'Identify and explain all components, people, labels, and technical specifications visible in this scene.'
   }
 ];
 

@@ -18,11 +18,14 @@ export class MoondreamClient {
     }
 
     try {
-      // Ensure image has proper data URI format
-      let imageUrl = image;
-      if (!image.startsWith('data:') && !image.startsWith('http')) {
-        // Assume it's base64 encoded
-        imageUrl = `data:image/jpeg;base64,${image}`;
+      // Convert image to base64 if it's a URL
+      let imageData = image;
+      if (image.startsWith('http')) {
+        console.log('[Moondream] Converting URL to base64...');
+        imageData = await this.urlToBase64(image);
+      } else if (!image.startsWith('data:')) {
+        // Assume it's already base64 encoded
+        imageData = `data:image/jpeg;base64,${image}`;
       }
 
       // Determine if this is a question or caption request
@@ -43,14 +46,16 @@ export class MoondreamClient {
             'X-Moondream-Auth': this.apiKey,
           },
           body: JSON.stringify({
-            image_url: imageUrl,
+            image_url: imageData,
             question: prompt,
             stream: false
           }),
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          const errorText = await response.text();
+          console.error('[Moondream] Query API error response:', errorText);
+          throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
         }
 
         const result = await response.json();
@@ -68,14 +73,16 @@ export class MoondreamClient {
             'X-Moondream-Auth': this.apiKey,
           },
           body: JSON.stringify({
-            image_url: imageUrl,
+            image_url: imageData,
             length: 'normal',
             stream: false
           }),
         });
 
         if (!response.ok) {
-          throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+          const errorText = await response.text();
+          console.error('[Moondream] Caption API error response:', errorText);
+          throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
         }
 
         const result = await response.json();
@@ -91,11 +98,35 @@ export class MoondreamClient {
     }
   }
 
+  private async urlToBase64(url: string): Promise<string> {
+    try {
+      const response = await fetch(url);
+      if (!response.ok) {
+        throw new Error(`Failed to fetch image: ${response.statusText}`);
+      }
+      
+      const arrayBuffer = await response.arrayBuffer();
+      const buffer = Buffer.from(arrayBuffer);
+      const base64 = buffer.toString('base64');
+      
+      // Try to determine content type from response headers
+      const contentType = response.headers.get('content-type') || 'image/jpeg';
+      
+      return `data:${contentType};base64,${base64}`;
+    } catch (error) {
+      console.error('[Moondream] Error converting URL to base64:', error);
+      throw new Error(`Failed to convert image URL to base64: ${error instanceof Error ? error.message : 'Unknown error'}`);
+    }
+  }
+
   async caption(image: string, length: 'short' | 'normal' = 'normal'): Promise<string> {
     try {
-      let imageUrl = image;
-      if (!image.startsWith('data:') && !image.startsWith('http')) {
-        imageUrl = `data:image/jpeg;base64,${image}`;
+      // Convert image to base64 if it's a URL
+      let imageData = image;
+      if (image.startsWith('http')) {
+        imageData = await this.urlToBase64(image);
+      } else if (!image.startsWith('data:')) {
+        imageData = `data:image/jpeg;base64,${image}`;
       }
 
       const response = await fetch(`${this.baseUrl}/caption`, {
@@ -105,14 +136,16 @@ export class MoondreamClient {
           'X-Moondream-Auth': this.apiKey,
         },
         body: JSON.stringify({
-          image_url: imageUrl,
+          image_url: imageData,
           length,
           stream: false
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('[Moondream] Caption API error response:', errorText);
+        throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
       }
 
       const result = await response.json();
@@ -129,9 +162,12 @@ export class MoondreamClient {
 
   async query(image: string, question: string): Promise<string> {
     try {
-      let imageUrl = image;
-      if (!image.startsWith('data:') && !image.startsWith('http')) {
-        imageUrl = `data:image/jpeg;base64,${image}`;
+      // Convert image to base64 if it's a URL
+      let imageData = image;
+      if (image.startsWith('http')) {
+        imageData = await this.urlToBase64(image);
+      } else if (!image.startsWith('data:')) {
+        imageData = `data:image/jpeg;base64,${image}`;
       }
 
       const response = await fetch(`${this.baseUrl}/query`, {
@@ -141,14 +177,16 @@ export class MoondreamClient {
           'X-Moondream-Auth': this.apiKey,
         },
         body: JSON.stringify({
-          image_url: imageUrl,
+          image_url: imageData,
           question,
           stream: false
         }),
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP ${response.status}: ${response.statusText}`);
+        const errorText = await response.text();
+        console.error('[Moondream] Query API error response:', errorText);
+        throw new Error(`HTTP ${response.status}: ${response.statusText} - ${errorText}`);
       }
 
       const result = await response.json();
