@@ -23,12 +23,20 @@ import {
 
 const SAMPLE_IMAGES = [
   {
-    url: 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
-    name: 'Test Image 1'
+    url: 'https://images.unsplash.com/photo-1441986300917-64674bd600d8?w=400&h=300&fit=crop&auto=format',
+    name: 'Office Scene'
   },
   {
-    url: 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
-    name: 'Test Image 2'
+    url: 'https://images.unsplash.com/photo-1506905925346-21bda4d32df4?w=400&h=300&fit=crop&auto=format',
+    name: 'Mountain Landscape'
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1503023345310-bd7c1de61c7d?w=400&h=300&fit=crop&auto=format',
+    name: 'Abstract Art'
+  },
+  {
+    url: 'https://images.unsplash.com/photo-1567306301408-9b74779a11af?w=400&h=300&fit=crop&auto=format',
+    name: 'Text Document'
   }
 ];
 
@@ -110,6 +118,10 @@ export default function Playground() {
       return;
     }
 
+    if (!selectedImage) {
+      addLog('warning', 'No image selected. Generating text-only response.', 'Generation');
+    }
+
     setIsGenerating(true);
     addLog('info', `Starting generation with model: ${selectedModel}`, 'Generation');
     
@@ -126,11 +138,16 @@ export default function Playground() {
       });
 
       if (!response.ok) {
-        throw new Error(`HTTP error! status: ${response.status}`);
+        const errorText = await response.text();
+        throw new Error(`Server error (${response.status}): ${errorText}`);
       }
 
       const data = await response.json();
       
+      if (!data.success && data.error) {
+        throw new Error(data.error);
+      }
+
       const newResult: GenerationResult = {
         id: `result_${Date.now()}`,
         modelId: selectedModel,
@@ -142,11 +159,24 @@ export default function Playground() {
       };
 
       setResults(prev => [newResult, ...prev.slice(0, 9)]);
-      addLog('success', `Generated response: ${data.response?.substring(0, 50)}...`, 'Generation');
+      addLog('success', `Generated response in ${newResult.latency}ms (Score: ${((newResult.rewardScore || 0) * 100).toFixed(0)}%)`, 'Generation');
       
     } catch (error) {
       console.error('Generation error:', error);
-      addLog('error', `Generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`, 'Generation');
+      const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
+      addLog('error', `Generation failed: ${errorMessage}`, 'Generation');
+      
+      // Add a fallback result to show the error in the UI
+      const errorResult: GenerationResult = {
+        id: `error_${Date.now()}`,
+        modelId: selectedModel,
+        prompt,
+        response: `Error: ${errorMessage}`,
+        timestamp: Date.now(),
+        rewardScore: 0,
+        latency: 0
+      };
+      setResults(prev => [errorResult, ...prev.slice(0, 9)]);
     } finally {
       setIsGenerating(false);
     }
