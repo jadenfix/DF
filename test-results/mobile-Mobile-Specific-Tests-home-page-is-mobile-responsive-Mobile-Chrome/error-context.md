@@ -1,0 +1,284 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - link "DreamForge":
+    - /url: /
+  - button "Toggle theme"
+  - button
+- img: Image Feature Map Text
+- heading "Powerful Visual AI. Tiny Footprint." [level=1]
+- paragraph: Enterprise-grade deployment platform for Moondream's revolutionary 1.6B parameter vision-language model. From prototype to production in minutes, not months.
+- text: 1M+ Images Processed 15ms Avg Latency 99.9% Uptime Terminal
+- code: pip install moondream && python -c "import moondream; moondream.vl()"
+- link "Get Started":
+  - /url: /playground
+- link "View Documentation":
+  - /url: /docs
+- paragraph: Trusted by innovative companies worldwide
+- text: TechCorp VisionAI DataFlow CloudVision SmartSys
+- heading "Constitutional AI Training Pipeline" [level=2]
+- paragraph: Transform generic vision models into domain-specific experts through constitutional AI training. Each pipeline stage creates measurable business value.
+- heading "Why Constitutional AI Training Matters" [level=3]
+- strong: "Accuracy Gains:"
+- paragraph: 15-30% improvement in domain-specific tasks vs. base model
+- strong: "Safety Guarantees:"
+- paragraph: Constitutional constraints prevent harmful outputs in production
+- strong: "Cost Efficiency:"
+- paragraph: Reduced API calls through improved first-pass accuracy
+- heading "Moondream Inference" [level=3]
+- paragraph: Lightweight vision-language processing with quantized efficiency
+- text: Latency 15ms Model Size 1.6B params Memory 1GB
+- heading "Human Preference Collection" [level=3]
+- paragraph: Constitutional AI-style preference learning with pairwise comparisons
+- text: Preference Pairs/Day 2.4k Agreement Rate 89% Coverage 94%
+- heading "Reward Model Training" [level=3]
+- paragraph: Bradley-Terry preference model with uncertainty quantification
+- text: Accuracy Score β₁ = 1.0 Helpfulness β₂ = 0.8 Safety Weight β₃ = 1.2
+- heading "PPO Policy Update" [level=3]
+- paragraph: Proximal Policy Optimization with KL divergence constraints
+- text: Learning Rate 3e-5 KL Penalty 0.02 Win Rate +4.1% Live RLHF Pipeline Processing 1,247 preference pairs today
+- heading "Mathematical Foundation" [level=3]
+- heading "Reward Model" [level=4]
+- paragraph: r_θ(x,y) = β₁·accuracy(y,y*) + β₂·helpfulness(x,y) - β₃·safety_penalty(y)
+- heading "PPO Objective" [level=4]
+- paragraph: L_PPO = E[min(rt(θ)A_t, clip(rt(θ),1-ε,1+ε)A_t)] - βKL[π_θ||π_old]
+- heading "Constitutional Reward Function Builder" [level=2]
+- paragraph: Design mathematically principled reward functions with AI-powered insights and constitutional constraints
+- heading "Metrics Configuration" [level=3]
+- button "Add Metric"
+- textbox "Metric name": Helpfulness Score
+- textbox "Description": Human preference for response quality and usefulness
+- button
+- text: Weight
+- spinbutton: "1"
+- text: Operator
+- combobox:
+  - option "Maximize" [selected]
+  - option "Minimize"
+- textbox "Metric name": Factual Accuracy
+- textbox "Description": Alignment with ground truth annotations
+- button
+- text: Weight
+- spinbutton: "0.8"
+- text: Operator
+- combobox:
+  - option "Maximize" [selected]
+  - option "Minimize"
+- textbox "Metric name": Safety Compliance
+- textbox "Description": Constitutional AI safety constraints
+- button
+- text: Weight
+- spinbutton: "1.2"
+- text: Operator
+- combobox:
+  - option "Maximize" [selected]
+  - option "Minimize"
+- textbox "Metric name": Response Brevity
+- textbox "Description": Preference for concise, informative responses
+- button
+- text: Weight
+- spinbutton: "0.3"
+- text: Operator
+- combobox:
+  - option "Maximize" [selected]
+  - option "Minimize"
+- button "Save Configuration"
+- heading "Reward Function Preview" [level=3]
+- code: R(s, a) = [object Object][object Object][object Object][object Object]
+- heading "Current Weights:" [level=4]
+- text: Helpfulness Score +1 Factual Accuracy +0.8 Safety Compliance +1.2 Response Brevity +0.3
+- heading "Moondream Model Variants" [level=2]
+- paragraph: Deploy Moondream's 1.6B parameter vision-language model with different quantization levels. AI-powered insights included.
+- heading "Moondream 2" [level=3]
+- paragraph: Production-ready vision-language model with comprehensive capabilities
+- text: Latency 15ms Memory 1GB Accuracy 95.2% Cost Free
+- heading "Features:" [level=4]
+- text: Image captioning Visual Q&A Object detection OCR Pointing Gaze detection
+- heading "Moondream 2 (4-bit)" [level=3]
+- paragraph: Quantized model optimized for edge deployment with minimal quality loss
+- text: Latency 12ms Memory 512MB Accuracy 94.8% Cost Free
+- heading "Features:" [level=4]
+- text: Edge-optimized Mobile-ready Ultra-low memory CPU-efficient
+- heading "Moondream 2 (8-bit)" [level=3]
+- paragraph: Balanced quantization maintaining high accuracy with reduced footprint
+- text: Latency 14ms Memory 800MB Accuracy 95.0% Cost Free
+- heading "Features:" [level=4]
+- text: Balanced performance Production-ready Moderate compression Stable inference
+- heading "Performance Comparison" [level=3]
+- table:
+  - rowgroup:
+    - row "Model Parameters Latency Accuracy Cost/Request":
+      - cell "Model"
+      - cell "Parameters"
+      - cell "Latency"
+      - cell "Accuracy"
+      - cell "Cost/Request"
+  - rowgroup:
+    - row "Moondream 2 1.6B 15ms 95.2% Free":
+      - cell "Moondream 2"
+      - cell "1.6B"
+      - cell "15ms"
+      - cell "95.2%"
+      - cell "Free"
+    - row "Moondream 2 (4-bit) 1.6B 12ms 94.8% Free":
+      - cell "Moondream 2 (4-bit)"
+      - cell "1.6B"
+      - cell "12ms"
+      - cell "94.8%"
+      - cell "Free"
+    - row "Moondream 2 (8-bit) 1.6B 14ms 95.0% Free":
+      - cell "Moondream 2 (8-bit)"
+      - cell "1.6B"
+      - cell "14ms"
+      - cell "95.0%"
+      - cell "Free"
+- heading "Cost Calculator" [level=3]
+- paragraph: Estimate your monthly costs
+- text: Images per month
+- slider: "1000"
+- text: "100 10,000 100,000 $2.40 Estimated monthly cost Free tier: Up to 1,000 images/month"
+- heading "Developer SDK & CLI" [level=2]
+- paragraph: Integrate DreamForge into your applications with our comprehensive SDK and CLI tools
+- heading "Quick Start Examples" [level=3]
+- button "JavaScript"
+- button "Python"
+- button "cURL"
+- heading "JavaScript SDK" [level=4]
+- paragraph: Simple image analysis with the DreamForge SDK
+- button "Copy"
+- code: "import { DreamForge } from '@dreamforge/sdk'; const client = new DreamForge({ apiKey: 'your-api-key' }); const response = await client.analyze({ image: 'chart.png', prompt: 'What does this chart show?', rewardConfig: { accuracy: 1.0, speed: 0.1 } }); console.log(response.caption); console.log(response.confidence);"
+- heading "Live Code Sandbox" [level=3]
+- text: Interactive Playground API Key
+- textbox "Enter your API key"
+- text: Image URL
+- textbox "https://example.com/image.jpg"
+- text: Prompt
+- textbox "What do you see in this image?"
+- button "Run Analysis"
+- heading "Result" [level=4]
+- text: Click "Run Analysis" to see the AI response...
+- heading "Install CLI" [level=4]
+- code: npm install -g @dreamforge/cli
+- paragraph: Deploy models and manage configurations from your terminal
+- heading "Enterprise-Grade Infrastructure" [level=2]
+- paragraph: Built for scale, security, and reliability. Production-ready infrastructure that grows with your needs.
+- heading "Deployment Pipeline" [level=3]
+- paragraph: GitHub → Edge Functions → Auto-scaling
+- text: Uptime 99.9% Cold Start <2s
+- heading "Security & Compliance" [level=3]
+- paragraph: TLS everywhere, SOC-2 ready, GDPR compliant
+- text: Data Encryption AES-256 Compliance SOC-2Ready
+- heading "Monitoring & Alerts" [level=3]
+- paragraph: Real-time metrics, automated alerting
+- text: Response Time <100ms Error Rate <0.1%
+- heading "Automated Scaling" [level=3]
+- paragraph: Kubernetes + Argo Workflows for RL jobs
+- text: Auto-scaling 0-1000instances RL Training Dailyupdates
+- heading "System Architecture" [level=3]
+- text: FE
+- heading "Frontend" [level=4]
+- paragraph: Next.js + React Edge Functions Global CDN
+- text: API
+- heading "API Gateway" [level=4]
+- paragraph: Rate Limiting Authentication Request Routing
+- text: AI
+- heading "AI Processing" [level=4]
+- paragraph: Moondream VLM Anthropic Claude RL Pipeline
+- text: 99.9% Uptime SLA Guaranteed availability with automatic failover <100ms Response Time Global edge network for lightning-fast responses 24/7 Monitoring Real-time alerts and automated incident response
+- heading "Security First" [level=3]
+- paragraph: Enterprise-grade security with compliance certifications
+- text: End-to-end encryption (TLS 1.3) SOC-2 Type II compliance GDPR data retention policies Regular security audits VPC deployment options Role-based access control
+- heading "Product Roadmap" [level=2]
+- paragraph: Our development roadmap shows what's coming next. We're building the future of vision-language AI.
+- heading "AI-Powered Insights Dashboard" [level=3]
+- paragraph: Q4 2024
+- text: Completed
+- paragraph: Advanced analytics with machine learning-powered performance insights
+- heading "Key Features:" [level=4]
+- text: Real-time model performance analytics Automated anomaly detection Predictive scaling recommendations Cost optimization insights
+- heading "Constitutional AI Pipeline" [level=3]
+- paragraph: Q4 2024
+- text: Completed
+- paragraph: Advanced safety constraints and ethical AI frameworks
+- heading "Key Features:" [level=4]
+- text: Constitutional AI training Safety constraint verification Bias detection and mitigation Ethical guardrails
+- heading "Enterprise Security Suite" [level=3]
+- paragraph: Q1 2025
+- text: In Progress
+- paragraph: SOC 2 compliance and advanced security features
+- heading "Key Features:" [level=4]
+- text: SOC 2 Type II certification End-to-end encryption Role-based access control Audit logging and compliance
+- heading "Global Edge Network" [level=3]
+- paragraph: Q2 2025
+- text: Planned
+- paragraph: Worldwide deployment with sub-15ms latency
+- heading "Key Features:" [level=4]
+- text: Multi-region deployments Edge caching optimization Regional compliance Auto-failover capabilities
+- heading "Join Our Community" [level=3]
+- paragraph: Help shape the future of vision-language AI
+- text: 💬
+- heading "Discord Community" [level=4]
+- paragraph: Join 2,000+ developers discussing AI and sharing projects
+- text: 📝
+- heading "GitHub Discussions" [level=4]
+- paragraph: Open source contributions and feature requests
+- text: 📧
+- heading "Newsletter" [level=4]
+- paragraph: Weekly updates on new features and AI research
+- button "Get Involved"
+- contentinfo:
+  - heading "DreamForge" [level=3]
+  - paragraph: Enterprise-grade deployment platform for Moondream's vision-language AI. Transform your business with constitutional AI training.
+  - text: Built for the AI community
+  - heading "Product" [level=4]
+  - list:
+    - listitem:
+      - link "AI Playground":
+        - /url: /playground
+    - listitem:
+      - link "Advanced Features":
+        - /url: /playground-advanced
+    - listitem:
+      - link "Documentation":
+        - /url: /docs
+    - listitem:
+      - link "Pricing":
+        - /url: /pricing
+  - heading "Solutions" [level=4]
+  - list:
+    - listitem:
+      - link "Enterprise AI":
+        - /url: "#"
+    - listitem:
+      - link "Custom Training":
+        - /url: "#"
+    - listitem:
+      - link "API Integration":
+        - /url: "#"
+    - listitem:
+      - link "On-Premise":
+        - /url: "#"
+  - heading "Company" [level=4]
+  - list:
+    - listitem:
+      - link "About Us":
+        - /url: "#"
+    - listitem:
+      - link "Security":
+        - /url: "#"
+    - listitem:
+      - link "Privacy":
+        - /url: "#"
+    - listitem:
+      - link "Contact":
+        - /url: "#"
+  - paragraph: © 2025 DreamForge. All rights reserved.
+  - link "Terms":
+    - /url: "#"
+  - link "Privacy":
+    - /url: "#"
+  - link "Security":
+    - /url: "#"
+- alert
+```

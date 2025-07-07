@@ -1,0 +1,75 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - link "DreamForge":
+    - /url: /
+  - link "Product":
+    - /url: /
+  - link "Playground":
+    - /url: /playground
+  - link "Advanced":
+    - /url: /playground-advanced
+  - link "Pricing":
+    - /url: /pricing
+  - link "Documentation":
+    - /url: /docs
+  - link "Status":
+    - /url: /status
+  - button "Toggle theme"
+  - link "Try Free":
+    - /url: /playground
+  - button "Sign In"
+- heading "Advanced AI Playground" [level=1]
+- paragraph: Interactive model explorer with custom reward functions and real-time training
+- heading "Model Selection" [level=3]
+- text: Select Model
+- button "Moondream 2 1.86B • ~200ms • $0.001/request"
+- heading "Image Input" [level=3]
+- text: Upload Image
+- paragraph: Click to upload
+- text: Or use sample image
+- button "Office Scene"
+- button "Mountain Landscape"
+- button "Abstract Art"
+- button "Text Document"
+- heading "Prompt" [level=3]
+- textbox "Enter your prompt here...": Describe this image in detail
+- button "Generate Response" [disabled]
+- heading "Results" [level=3]
+- heading "No results yet" [level=3]
+- paragraph: Generate some responses to see them here
+- heading "Reward Function Builder" [level=3]
+- paragraph: Adjust weights to customize model behavior
+- text: 5.6 Total Weight Accuracy 1.00
+- paragraph: Factual correctness and object detection precision
+- slider: "1"
+- text: Low High Creativity 0.80
+- paragraph: Novel and interesting response generation
+- slider: "0.8"
+- text: Low High Detail Level 1.20
+- paragraph: Richness and depth of descriptions
+- slider: "1.2"
+- text: Low High Speed Priority 0.50
+- paragraph: Response latency optimization
+- slider: "0.5"
+- text: Low High Visual Quality 1.00
+- paragraph: Image composition and aesthetic assessment
+- slider: "1"
+- text: Low High Helpfulness 1.10
+- paragraph: Usefulness and relevance to user intent
+- slider: "1.1"
+- text: Low High
+- button "Save Reward Function"
+- button "Reset"
+- text: "Current Configuration:"
+- code: "{ \"accuracy\": 1, \"creativity\": 0.8, \"detail\": 1.2, \"speed\": 0.5, \"visual_quality\": 1, \"helpfulness\": 1.1 }"
+- heading "Training Console" [level=3]
+- button "Start Training"
+- button:
+  - img
+- paragraph: No logs yet
+- paragraph: Start training to see logs appear here
+- text: 0 log entries
+- alert
+```

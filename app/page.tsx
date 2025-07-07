@@ -2,6 +2,7 @@
 
 import { motion } from 'framer-motion';
 import Hero from './components/Hero';
+import ResearchHub from './components/ResearchHub';
 import RLPipeline from './components/RLPipeline';
 import RewardFunctionBuilder from './components/RewardFunctionBuilder';
 import ModelGallery from './components/ModelGallery';
@@ -15,55 +16,86 @@ export default function Home() {
     <div className="min-h-screen bg-white dark:bg-black">
       <Navigation />
       
-      {/* Hero Section */}
+      {/* Hero Section - Research-First */}
       <Hero />
       
-      {/* Social Proof */}
-      <section className="py-16 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
-        <div className="max-w-7xl mx-auto px-4 text-center">
-          <p className="text-slate-600 dark:text-slate-400 mb-8 text-lg">
-            Trusted by innovative companies worldwide
-          </p>
-          <div className="flex justify-center items-center gap-8 opacity-60 hover:opacity-80 transition-opacity">
-            <div className="text-2xl font-bold text-slate-400">TechCorp</div>
-            <div className="text-2xl font-bold text-slate-400">VisionAI</div>
-            <div className="text-2xl font-bold text-slate-400">DataFlow</div>
-            <div className="text-2xl font-bold text-slate-400">CloudVision</div>
-            <div className="text-2xl font-bold text-slate-400">SmartSys</div>
-          </div>
+      {/* Research Hub - New Priority Section */}
+      <ResearchHub />
+      
+      {/* Collapsible RL Pipeline */}
+      <section className="py-16 bg-slate-50 dark:bg-slate-900">
+        <div className="max-w-7xl mx-auto px-4">
+          <motion.div
+            initial={{ opacity: 0, y: 20 }}
+            whileInView={{ opacity: 1, y: 0 }}
+            viewport={{ once: true }}
+            className="text-center mb-12"
+          >
+            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
+              Constitutional AI Pipeline
+            </h2>
+            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
+              Our VL-RLHF pipeline—detailed in our research paper—boosts domain accuracy by 20-30% 
+              through human preference optimization.
+            </p>
+            <div className="flex justify-center gap-4 mt-6">
+              <a 
+                href="#" 
+                className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              >
+                📄 Read Paper
+              </a>
+              <a 
+                href="#" 
+                className="border border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-6 py-3 rounded-lg font-medium transition-colors"
+              >
+                🔬 Open in Colab
+              </a>
+            </div>
+          </motion.div>
         </div>
       </section>
       
-      {/* RL Pipeline Showcase */}
+      {/* Collapsed RL Pipeline Details */}
       <RLPipeline />
       
       {/* Reward Function Builder */}
       <RewardFunctionBuilder />
       
-      {/* Model Gallery */}
+      {/* Model Variants with Cost Calculator */}
       <ModelGallery />
       
       {/* Developer SDK & CLI */}
       <CodeSandbox />
       
-      {/* Enterprise Infrastructure */}
+      {/* Enterprise Infrastructure - Condensed */}
       <EnterpriseInfrastructure />
       
       {/* Roadmap & Community */}
       <Roadmap />
       
-      {/* Footer */}
+      {/* Footer - Updated with Research Links */}
       <footer className="bg-slate-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">DreamForge</h3>
+              <h3 className="text-xl font-bold mb-4">🌔 DreamForge</h3>
               <p className="text-slate-300 mb-4">
-                Enterprise-grade deployment platform for Moondream's vision-language AI. Transform your business with constitutional AI training.
+                Research platform for Moondream&apos;s tiny vision-language models. 
+                Pushing the frontier of efficient AI through open science.
               </p>
               <div className="text-sm text-slate-400">
-                Built for the AI community
+                Built for the AI research community
               </div>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Research</h4>
+              <ul className="space-y-2 text-slate-300">
+                <li><a href="#" className="hover:text-white transition-colors">📄 Papers & Preprints</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">🏆 Benchmarks & Leaderboards</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">🔬 Notebooks & Datasets</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">🎯 Community Challenges</a></li>
+              </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
@@ -75,32 +107,23 @@ export default function Home() {
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Solutions</h4>
+              <h4 className="font-semibold mb-4">Community</h4>
               <ul className="space-y-2 text-slate-300">
-                <li><a href="#" className="hover:text-white transition-colors">Enterprise AI</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Custom Training</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">API Integration</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">On-Premise</a></li>
-              </ul>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Company</h4>
-              <ul className="space-y-2 text-slate-300">
-                <li><a href="#" className="hover:text-white transition-colors">About Us</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Security</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Privacy</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">⭐ GitHub (8.2k stars)</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">💬 Discord Community</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">📧 Research Grants</a></li>
+                <li><a href="/status" className="hover:text-white transition-colors">🔍 System Status</a></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
             <p className="text-slate-400 text-sm">
-              &copy; 2025 DreamForge. All rights reserved.
+              &copy; 2025 DreamForge. Open source research platform.
             </p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Terms</a>
+              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Apache 2.0 License</a>
               <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Privacy</a>
-              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Security</a>
+              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Research Ethics</a>
             </div>
           </div>
         </div>

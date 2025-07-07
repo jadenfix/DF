@@ -15,7 +15,7 @@ import {
 const navigation = [
   { name: 'Product', href: '/', hasDropdown: true },
   { name: 'Playground', href: '/playground' },
-  { name: 'Advanced', href: '/playground-advanced' },
+  { name: 'Research', href: '/research', hasDropdown: true },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Documentation', href: '/docs' },
   { name: 'Status', href: '/status' },

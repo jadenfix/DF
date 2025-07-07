@@ -1,0 +1,88 @@
+# Page snapshot
+
+```yaml
+- navigation:
+  - link "DreamForge":
+    - /url: /
+  - link "Product":
+    - /url: /
+  - link "Playground":
+    - /url: /playground
+  - link "Advanced":
+    - /url: /playground-advanced
+  - link "Pricing":
+    - /url: /pricing
+  - link "Documentation":
+    - /url: /docs
+  - link "Status":
+    - /url: /status
+  - button "Toggle theme"
+  - link "Try Free":
+    - /url: /playground
+  - button "Sign In"
+- heading "DreamForge Playground" [level=1]
+- paragraph: The Future of Vision Language Models
+- text: "Currently viewing: main"
+- button "Playground"
+- button "A/B Testing"
+- button "Analytics"
+- button "Deployments"
+- heading "Model Selection" [level=3]
+- text: Select Model
+- button "Moondream 2 1.86B • ~200ms • $0.001/request"
+- heading "Image Input" [level=3]
+- text: Upload your image (JPG, PNG, WebP)
+- button "Choose File"
+- paragraph: "Maximum file size: 10MB"
+- text: Or try these samples
+- button "Office Scene Office Scene":
+  - img "Office Scene"
+  - text: Office Scene
+- button "Mountain Landscape Mountain Landscape":
+  - img "Mountain Landscape"
+  - text: Mountain Landscape
+- button "Abstract Art Abstract Art":
+  - img "Abstract Art"
+  - text: Abstract Art
+- button "Text Document Text Document":
+  - img "Text Document"
+  - text: Text Document
+- heading "Prompt" [level=3]
+- textbox "Describe what you want the model to analyze or generate...": Describe this image in detail
+- button "Generate"
+- heading "Reward Function Builder" [level=3]
+- paragraph: Adjust weights to customize model behavior
+- text: 5.6 Total Weight Accuracy 1.00
+- paragraph: Factual correctness and object detection precision
+- slider: "1"
+- text: Low High Creativity 0.80
+- paragraph: Novel and interesting response generation
+- slider: "0.8"
+- text: Low High Detail Level 1.20
+- paragraph: Richness and depth of descriptions
+- slider: "1.2"
+- text: Low High Speed Priority 0.50
+- paragraph: Response latency optimization
+- slider: "0.5"
+- text: Low High Visual Quality 1.00
+- paragraph: Image composition and aesthetic assessment
+- slider: "1"
+- text: Low High Helpfulness 1.10
+- paragraph: Usefulness and relevance to user intent
+- slider: "1.1"
+- text: Low High
+- button "Save Reward Function"
+- button "Retrain Model"
+- button "Reset"
+- text: "Current Configuration:"
+- code: "{ \"accuracy\": 1, \"creativity\": 0.8, \"detail\": 1.2, \"speed\": 0.5, \"visual_quality\": 1, \"helpfulness\": 1.1 }"
+- heading "No results yet" [level=3]
+- paragraph: Generate some responses to see them here
+- heading "Training Console" [level=3]
+- button:
+  - img
+- paragraph: No logs yet
+- paragraph: Start training to see logs appear here
+- text: 0 log entries
+- alert
+```
