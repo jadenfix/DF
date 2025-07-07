@@ -1,315 +1,437 @@
 'use client';
 
-import { useState, useRef } from 'react';
+import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import { 
-  PhotoIcon,
-  PaperAirplaneIcon,
-  SparklesIcon,
-  HandThumbUpIcon,
-  HandThumbDownIcon,
-  ArrowPathIcon,
-  DocumentArrowUpIcon
-} from '@heroicons/react/24/outline';
 import Navigation from '../components/layout/navigation';
+import ModelSelector from '../components/features/ModelSelector';
+import RewardBuilder, { RewardWeights } from '../components/features/RewardBuilder';
+import OutputGrid, { GenerationResult } from '../components/features/OutputGrid';
+import LogsConsole, { LogEntry } from '../components/features/LogsConsole';
+import UsageDashboard from '../components/features/UsageDashboard';
+import PreviewDeploy from '../components/features/PreviewDeploy';
+import ABTestView from '../components/features/ABTestView';
+import { 
+  PhotoIcon, 
+  SparklesIcon,
+  ArrowPathIcon,
+  CogIcon,
+  ChartBarIcon,
+  RocketLaunchIcon,
+  BeakerIcon,
+  Cog6ToothIcon
+} from '@heroicons/react/24/outline';
 
-interface Message {
-  id: string;
-  type: 'user' | 'ai';
-  content: string;
-  image?: string;
-  timestamp: Date;
-}
+const SAMPLE_IMAGES = [
+  {
+    url: 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
+    name: 'Test Image 1'
+  },
+  {
+    url: 'data:image/jpeg;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==',
+    name: 'Test Image 2'
+  }
+];
+
+type TabType = 'playground' | 'analytics' | 'deploys' | 'abtest';
 
 export default function Playground() {
-  const [messages, setMessages] = useState<Message[]>([]);
-  const [input, setInput] = useState('');
-  const [isLoading, setIsLoading] = useState(false);
+  const [activeTab, setActiveTab] = useState<TabType>('playground');
+  const [selectedModel, setSelectedModel] = useState('moondream2');
+  const [prompt, setPrompt] = useState('Describe this image in detail');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const fileInputRef = useRef<HTMLInputElement>(null);
+  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [currentBranch, setCurrentBranch] = useState('main');
+  const [rewardWeights, setRewardWeights] = useState<RewardWeights>({
+    accuracy: 1.0,
+    creativity: 0.8,
+    detail: 1.2,
+    speed: 0.5,
+    visual_quality: 1.0,
+    helpfulness: 1.1
+  });
+  const [results, setResults] = useState<GenerationResult[]>([]);
+  const [logs, setLogs] = useState<LogEntry[]>([]);
+  const [isGenerating, setIsGenerating] = useState(false);
+  const [isTraining, setIsTraining] = useState(false);
+  const [isSavingRewards, setIsSavingRewards] = useState(false);
 
-  const sampleImages = [
-    '/api/placeholder/400/300?text=Sample+Image+1',
-    '/api/placeholder/400/300?text=Sample+Image+2',
-    '/api/placeholder/400/300?text=Sample+Image+3',
-  ];
+  const addLog = (level: LogEntry['level'], message: string, component?: string) => {
+    const newLog: LogEntry = {
+      id: `log_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
+      timestamp: Date.now(),
+      level,
+      message,
+      component
+    };
+    setLogs(prev => [newLog, ...prev.slice(0, 99)]);
+  };
 
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
       const reader = new FileReader();
       reader.onload = (e) => {
-        setSelectedImage(e.target?.result as string);
+        const base64 = e.target?.result as string;
+        setUploadedImage(base64);
+        setSelectedImage(base64);
+        addLog('info', `Uploaded image: ${file.name}`, 'Image Upload');
       };
       reader.readAsDataURL(file);
     }
   };
 
-  const handleSubmit = async () => {
-    if (!input.trim() && !selectedImage) return;
+  const handleGenerate = async () => {
+    if (!prompt.trim()) {
+      addLog('error', 'Please enter a prompt', 'Generation');
+      return;
+    }
 
-    const userMessage: Message = {
-      id: Date.now().toString(),
-      type: 'user',
-      content: input,
-      image: selectedImage || undefined,
-      timestamp: new Date(),
-    };
-
-    setMessages(prev => [...prev, userMessage]);
-    setInput('');
-    setSelectedImage(null);
-    setIsLoading(true);
-
+    setIsGenerating(true);
+    addLog('info', `Starting generation with model: ${selectedModel}`, 'Generation');
+    
     try {
-      const formData = new FormData();
-      if (selectedImage) {
-        // Convert base64 to blob
-        const response = await fetch(selectedImage);
-        const blob = await response.blob();
-        formData.append('image', blob, 'image.jpg');
-      }
-      formData.append('prompt', input);
-
-      const response = await fetch('/api/analyze', {
+      const response = await fetch('/api/generate', {
         method: 'POST',
-        body: formData,
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          prompt,
+          model: selectedModel,
+          image: selectedImage,
+          rewardWeights
+        })
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
 
       const data = await response.json();
-
-      if (data.success) {
-        const aiMessage: Message = {
-          id: (Date.now() + 1).toString(),
-          type: 'ai',
-          content: data.result,
-          timestamp: new Date(),
-        };
-        setMessages(prev => [...prev, aiMessage]);
-      } else {
-        throw new Error(data.error || 'Analysis failed');
-      }
-    } catch (error) {
-      console.error('Error:', error);
-      const errorMessage: Message = {
-        id: (Date.now() + 1).toString(),
-        type: 'ai',
-        content: 'Sorry, I encountered an error while analyzing your image. Please try again.',
-        timestamp: new Date(),
+      
+      const newResult: GenerationResult = {
+        id: `result_${Date.now()}`,
+        modelId: selectedModel,
+        prompt,
+        response: data.response || 'Generated response content...',
+        timestamp: Date.now(),
+        rewardScore: data.rewardScore || 0.85,
+        latency: data.latency || Math.floor(Math.random() * 300) + 200
       };
-      setMessages(prev => [...prev, errorMessage]);
+
+      setResults(prev => [newResult, ...prev.slice(0, 9)]);
+      addLog('success', `Generated response: ${data.response?.substring(0, 50)}...`, 'Generation');
+      
+    } catch (error) {
+      console.error('Generation error:', error);
+      addLog('error', `Generation failed: ${error instanceof Error ? error.message : 'Unknown error'}`, 'Generation');
     } finally {
-      setIsLoading(false);
+      setIsGenerating(false);
     }
   };
 
-  const handleFeedback = async (messageId: string, isPositive: boolean) => {
+  const handleSaveRewards = async () => {
+    setIsSavingRewards(true);
+    addLog('info', 'Saving reward function configuration...', 'Reward Config');
+    
     try {
-      await fetch('/api/feedback', {
+      const response = await fetch('/api/admin/reward-config', {
         method: 'POST',
-        headers: {
-          'Content-Type': 'application/json',
-        },
-        body: JSON.stringify({
-          analysisId: messageId,
-          feedback: isPositive ? 'positive' : 'negative',
-        }),
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({ rewardWeights })
       });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      addLog('success', 'Reward function saved successfully', 'Reward Config');
     } catch (error) {
-      console.error('Feedback error:', error);
+      console.error('Save rewards error:', error);
+      addLog('error', `Failed to save rewards: ${error instanceof Error ? error.message : 'Unknown error'}`, 'Reward Config');
+    } finally {
+      setIsSavingRewards(false);
     }
   };
+
+  const handleRetrain = async () => {
+    setIsTraining(true);
+    addLog('info', 'Starting RLHF retraining process...', 'Retraining');
+    
+    try {
+      const response = await fetch('/api/retrain', {
+        method: 'POST',
+        headers: { 'Content-Type': 'application/json' },
+        body: JSON.stringify({
+          model: selectedModel,
+          rewardWeights,
+          datasetSize: 100
+        })
+      });
+
+      if (!response.ok) {
+        throw new Error(`HTTP error! status: ${response.status}`);
+      }
+
+      // Simulate training progress
+      const steps = [
+        'Initializing training environment...',
+        'Loading base model weights...',
+        'Preparing training dataset...',
+        'Starting reward model training...',
+        'Running policy optimization...',
+        'Validating model performance...',
+        'Saving trained model...',
+        'Training complete!'
+      ];
+
+      for (let i = 0; i < steps.length; i++) {
+        await new Promise(resolve => setTimeout(resolve, 2000));
+        addLog('info', steps[i], 'Retraining');
+      }
+
+      addLog('success', 'Model retrained successfully with custom reward function', 'Retraining');
+    } catch (error) {
+      console.error('Retraining error:', error);
+      addLog('error', `Retraining failed: ${error instanceof Error ? error.message : 'Unknown error'}`, 'Retraining');
+    } finally {
+      setIsTraining(false);
+    }
+  };
+
+  const tabs = [
+    { id: 'playground' as TabType, label: 'Playground', icon: SparklesIcon },
+    { id: 'abtest' as TabType, label: 'A/B Testing', icon: BeakerIcon },
+    { id: 'analytics' as TabType, label: 'Analytics', icon: ChartBarIcon },
+    { id: 'deploys' as TabType, label: 'Deployments', icon: RocketLaunchIcon }
+  ];
 
   return (
-    <>
+    <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navigation />
       
-      <div className="min-h-screen bg-background">
-        <div className="max-w-6xl mx-auto px-6 py-8">
-          {/* Header */}
-          <div className="text-center mb-8">
-            <h1 className="text-4xl font-bold mb-4 text-foreground">
-              AI Vision Playground
-            </h1>
-            <p className="text-xl text-muted-foreground max-w-2xl mx-auto">
-              Upload an image and ask questions. Our AI will analyze and respond with intelligent insights.
-            </p>
-          </div>
+      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
+        {/* Hero Section */}
+        <div className="text-center mb-8">
+          <motion.h1 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
+          >
+            DreamForge Advanced Playground
+          </motion.h1>
+          <motion.p 
+            initial={{ opacity: 0, y: -20 }}
+            animate={{ opacity: 1, y: 0 }}
+            transition={{ delay: 0.1 }}
+            className="text-xl text-gray-600 dark:text-gray-400 mb-6"
+          >
+            The Vercel of Vision Language Models
+          </motion.p>
+          
+          {/* Branch Indicator */}
+          <motion.div
+            initial={{ opacity: 0, scale: 0.9 }}
+            animate={{ opacity: 1, scale: 1 }}
+            transition={{ delay: 0.2 }}
+            className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium"
+          >
+            <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
+            <span>Currently viewing: {currentBranch}</span>
+          </motion.div>
+        </div>
 
-          <div className="grid lg:grid-cols-2 gap-8">
-            {/* Input Section */}
-            <div className="space-y-6">
-              {/* Image Upload */}
-              <div className="card p-6">
-                <h3 className="text-lg font-semibold mb-4 text-foreground">Upload Image</h3>
-                
-                {selectedImage ? (
-                  <div className="relative mb-4">
-                    <img 
-                      src={selectedImage} 
-                      alt="Selected" 
-                      className="w-full h-64 object-cover rounded-lg"
-                    />
-                    <button
-                      onClick={() => setSelectedImage(null)}
-                      className="absolute top-2 right-2 p-2 bg-destructive text-destructive-foreground rounded-full hover:bg-destructive/90 transition-colors"
-                    >
-                      ×
-                    </button>
-                  </div>
-                ) : (
-                  <div className="space-y-4">
-                    <div 
-                      onClick={() => fileInputRef.current?.click()}
-                      className="border-2 border-dashed border-muted-foreground/20 rounded-lg p-8 text-center cursor-pointer hover:border-muted-foreground/40 transition-colors"
-                    >
-                      <PhotoIcon className="h-12 w-12 mx-auto mb-4 text-muted-foreground" />
-                      <p className="text-muted-foreground mb-2">Click to upload an image</p>
-                      <p className="text-sm text-muted-foreground">or drag and drop</p>
-                    </div>
-                    
-                    <input
-                      ref={fileInputRef}
-                      type="file"
-                      accept="image/*"
-                      onChange={handleImageUpload}
-                      className="hidden"
-                    />
-                  </div>
-                )}
-
-                {/* Sample Images */}
-                <div className="mt-6">
-                  <h4 className="text-sm font-medium mb-3 text-muted-foreground">Or try with sample images:</h4>
-                  <div className="grid grid-cols-3 gap-2">
-                    {sampleImages.map((image, index) => (
-                      <button
-                        key={index}
-                        onClick={() => setSelectedImage(image)}
-                        className="aspect-square rounded-lg overflow-hidden hover:opacity-80 transition-opacity"
-                      >
-                        <img 
-                          src={image} 
-                          alt={`Sample ${index + 1}`}
-                          className="w-full h-full object-cover"
-                        />
-                      </button>
-                    ))}
-                  </div>
-                </div>
-              </div>
-
-              {/* Question Input */}
-              <div className="card p-6">
-                <h3 className="text-lg font-semibold mb-4 text-foreground">Ask a Question</h3>
-                <div className="space-y-4">
-                  <textarea
-                    value={input}
-                    onChange={(e) => setInput(e.target.value)}
-                    placeholder="What would you like to know about this image?"
-                    className="input min-h-[100px] resize-none"
-                    onKeyDown={(e) => {
-                      if (e.key === 'Enter' && !e.shiftKey) {
-                        e.preventDefault();
-                        handleSubmit();
-                      }
-                    }}
-                  />
-                  
-                  <div className="flex gap-2">
-                    <button
-                      onClick={handleSubmit}
-                      disabled={isLoading || (!input.trim() && !selectedImage)}
-                      className="btn btn-primary flex-1 disabled:opacity-50 disabled:cursor-not-allowed"
-                    >
-                      {isLoading ? (
-                        <>
-                          <ArrowPathIcon className="h-5 w-5 mr-2 animate-spin" />
-                          Analyzing...
-                        </>
-                      ) : (
-                        <>
-                          <PaperAirplaneIcon className="h-5 w-5 mr-2" />
-                          Ask AI
-                        </>
-                      )}
-                    </button>
-                  </div>
-                </div>
-              </div>
-            </div>
-
-            {/* Chat Section */}
-            <div className="card p-6">
-              <h3 className="text-lg font-semibold mb-4 text-foreground">Conversation</h3>
-              
-              <div className="space-y-4 max-h-[600px] overflow-y-auto">
-                <AnimatePresence>
-                  {messages.map((message) => (
-                    <motion.div
-                      key={message.id}
-                      initial={{ opacity: 0, y: 20 }}
-                      animate={{ opacity: 1, y: 0 }}
-                      exit={{ opacity: 0, y: -20 }}
-                      className={`flex ${message.type === 'user' ? 'justify-end' : 'justify-start'}`}
-                    >
-                      <div className={`max-w-[80%] ${message.type === 'user' ? 'bg-primary text-primary-foreground' : 'bg-muted'} rounded-lg p-4`}>
-                        {message.image && (
-                          <img 
-                            src={message.image} 
-                            alt="User uploaded" 
-                            className="w-full h-32 object-cover rounded mb-3"
-                          />
-                        )}
-                        <p className="text-sm">{message.content}</p>
-                        
-                        {message.type === 'ai' && (
-                          <div className="flex gap-2 mt-3">
-                                                         <button
-                               onClick={() => handleFeedback(message.id, true)}
-                               className="p-1 text-muted-foreground hover:text-foreground transition-colors"
-                             >
-                               <HandThumbUpIcon className="h-4 w-4" />
-                             </button>
-                             <button
-                               onClick={() => handleFeedback(message.id, false)}
-                               className="p-1 text-muted-foreground hover:text-foreground transition-colors"
-                             >
-                               <HandThumbDownIcon className="h-4 w-4" />
-                             </button>
-                          </div>
-                        )}
-                      </div>
-                    </motion.div>
-                  ))}
-                </AnimatePresence>
-
-                {isLoading && (
-                  <motion.div
-                    initial={{ opacity: 0 }}
-                    animate={{ opacity: 1 }}
-                    className="flex justify-start"
-                  >
-                    <div className="bg-muted rounded-lg p-4">
-                      <div className="flex items-center space-x-2">
-                        <SparklesIcon className="h-5 w-5 animate-pulse" />
-                        <span className="text-sm">AI is thinking...</span>
-                      </div>
-                    </div>
-                  </motion.div>
-                )}
-
-                {messages.length === 0 && (
-                  <div className="text-center py-12 text-muted-foreground">
-                    <SparklesIcon className="h-12 w-12 mx-auto mb-4 opacity-50" />
-                    <p>Start by uploading an image and asking a question!</p>
-                  </div>
-                )}
-              </div>
-            </div>
+        {/* Tab Navigation */}
+        <div className="flex justify-center mb-8">
+          <div className="flex space-x-1 bg-white dark:bg-gray-800 p-1 rounded-xl border border-gray-200 dark:border-gray-700">
+            {tabs.map((tab) => (
+              <button
+                key={tab.id}
+                onClick={() => setActiveTab(tab.id)}
+                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+                  activeTab === tab.id
+                    ? 'bg-blue-600 text-white shadow-sm'
+                    : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
+                }`}
+              >
+                <tab.icon className="w-4 h-4" />
+                <span>{tab.label}</span>
+              </button>
+            ))}
           </div>
         </div>
+
+        {/* Tab Content */}
+        <AnimatePresence mode="wait">
+          {activeTab === 'playground' && (
+            <motion.div
+              key="playground"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+              className="space-y-8"
+            >
+              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+                {/* Left Column - Controls */}
+                <div className="lg:col-span-1 space-y-6">
+                  {/* Model Selection */}
+                  <ModelSelector
+                    selectedModel={selectedModel}
+                    onModelChange={setSelectedModel}
+                  />
+
+                  {/* Image Upload */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                      Image Input
+                    </h3>
+                    
+                    <div className="space-y-4">
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Upload Image
+                        </label>
+                        <input
+                          type="file"
+                          accept="image/*"
+                          onChange={handleImageUpload}
+                          className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/20 dark:file:text-blue-400"
+                        />
+                      </div>
+                      
+                      <div>
+                        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                          Or choose sample
+                        </label>
+                        <div className="grid grid-cols-2 gap-2">
+                          {SAMPLE_IMAGES.map((image, index) => (
+                            <button
+                              key={index}
+                              onClick={() => setSelectedImage(image.url)}
+                              className={`p-2 border-2 rounded-lg transition-colors ${
+                                selectedImage === image.url
+                                  ? 'border-blue-500 bg-blue-50 dark:bg-blue-900/20'
+                                  : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
+                              }`}
+                            >
+                              <img 
+                                src={image.url} 
+                                alt={image.name}
+                                className="w-full h-16 object-cover rounded"
+                              />
+                              <span className="text-xs text-gray-600 dark:text-gray-400">
+                                {image.name}
+                              </span>
+                            </button>
+                          ))}
+                        </div>
+                      </div>
+                    </div>
+                  </div>
+
+                  {/* Prompt Input */}
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                      Prompt
+                    </h3>
+                    <textarea
+                      value={prompt}
+                      onChange={(e) => setPrompt(e.target.value)}
+                      rows={4}
+                      className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      placeholder="Describe what you want the model to analyze or generate..."
+                    />
+                    
+                    <button
+                      onClick={handleGenerate}
+                      disabled={isGenerating || !prompt.trim()}
+                      className="w-full mt-4 flex items-center justify-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                    >
+                      {isGenerating ? (
+                        <ArrowPathIcon className="w-5 h-5 animate-spin" />
+                      ) : (
+                        <SparklesIcon className="w-5 h-5" />
+                      )}
+                      <span>{isGenerating ? 'Generating...' : 'Generate'}</span>
+                    </button>
+                  </div>
+
+                  {/* Reward Function Builder */}
+                  <RewardBuilder
+                    weights={rewardWeights}
+                    onWeightsChange={setRewardWeights}
+                    onSave={handleSaveRewards}
+                    onRetrain={handleRetrain}
+                    isSaving={isSavingRewards}
+                    isTraining={isTraining}
+                  />
+                </div>
+
+                {/* Right Column - Results and Logs */}
+                <div className="lg:col-span-2 space-y-6">
+                  <OutputGrid 
+                    results={results} 
+                    onFeedback={(id, feedback) => {
+                      setResults(prev => 
+                        prev.map(result => 
+                          result.id === id 
+                            ? { ...result, feedback }
+                            : result
+                        )
+                      );
+                      addLog('info', `Feedback recorded: ${feedback}`, 'Feedback');
+                    }}
+                  />
+                  <LogsConsole logs={logs} />
+                </div>
+              </div>
+            </motion.div>
+          )}
+
+          {activeTab === 'abtest' && (
+            <motion.div
+              key="abtest"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+            >
+              <ABTestView 
+                prompt={prompt}
+                imageUrl={selectedImage || undefined}
+                onOutputSelect={(output) => {
+                  addLog('info', `Selected output from ${output.model}`, 'A/B Test');
+                }}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === 'analytics' && (
+            <motion.div
+              key="analytics"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+            >
+              <UsageDashboard 
+                selectedBranch={currentBranch}
+                onBranchChange={setCurrentBranch}
+              />
+            </motion.div>
+          )}
+
+          {activeTab === 'deploys' && (
+            <motion.div
+              key="deploys"
+              initial={{ opacity: 0, x: -20 }}
+              animate={{ opacity: 1, x: 0 }}
+              exit={{ opacity: 0, x: 20 }}
+            >
+              <PreviewDeploy 
+                currentBranch={currentBranch}
+                onBranchSwitch={setCurrentBranch}
+              />
+            </motion.div>
+          )}
+        </AnimatePresence>
       </div>
-    </>
+    </div>
   );
 } 

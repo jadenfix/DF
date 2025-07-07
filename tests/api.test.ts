@@ -1,6 +1,6 @@
 import { createMocks } from 'node-mocks-http';
-import analyzeHandler from '../pages/api/analyze';
-import feedbackHandler from '../pages/api/feedback';
+import { POST as analyzeHandler } from '../app/api/analyze/route';
+import { POST as feedbackHandler } from '../app/api/feedback/route';
 
 describe('API route handlers', () => {
   it('POST /api/analyze returns ok', async () => {

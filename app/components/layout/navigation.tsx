@@ -15,6 +15,7 @@ import {
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Playground', href: '/playground' },
+  { name: 'Advanced', href: '/playground-advanced' },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Docs', href: '/docs' },
 ];
