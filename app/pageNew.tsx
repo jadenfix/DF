@@ -35,21 +35,21 @@ export default function Home() {
               Constitutional AI Pipeline
             </h2>
             <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-              Our VL-RLHF pipeline boosts domain accuracy by 20-30% through human preference 
-              optimization and constitutional safety constraints.
+              Our VL-RLHF pipeline—detailed in our research paper—boosts domain accuracy by 20-30% 
+              through human preference optimization.
             </p>
             <div className="flex justify-center gap-4 mt-6">
               <a 
-                href="/rl-dashboard" 
+                href="#" 
                 className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
               >
-                � Try RL Dashboard
+                📄 Read Paper
               </a>
               <a 
-                href="/docs/rl-pipeline" 
+                href="#" 
                 className="border border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-6 py-3 rounded-lg font-medium transition-colors"
               >
-                � View Documentation
+                🔬 Open in Colab
               </a>
             </div>
           </motion.div>

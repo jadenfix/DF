@@ -31,11 +31,34 @@ interface OutputCardProps {
 function OutputCard({ result, onFeedback, rewardWeights }: OutputCardProps) {
   const [localFeedback, setLocalFeedback] = useState<'positive' | 'negative' | null>(result.feedback || null);
 
-  const handleFeedback = (feedback: 'positive' | 'negative') => {
+  const handleFeedback = async (feedback: 'positive' | 'negative') => {
     const newFeedback = localFeedback === feedback ? null : feedback;
     setLocalFeedback(newFeedback);
     if (newFeedback) {
       onFeedback(result.id, newFeedback);
+      
+      // Send feedback to RL pipeline
+      try {
+        await fetch('/api/rl/collect-feedback', {
+          method: 'POST',
+          headers: {
+            'Content-Type': 'application/json',
+          },
+          body: JSON.stringify({
+            feedbackData: `${result.id},${newFeedback},${result.prompt}`,
+            preferences: [{
+              outputId: result.id,
+              rating: newFeedback,
+              prompt: result.prompt,
+              output: result.response,
+              modelId: result.modelId,
+              timestamp: new Date().toISOString()
+            }]
+          }),
+        });
+      } catch (error) {
+        console.error('Error sending feedback to RL pipeline:', error);
+      }
     }
   };
 

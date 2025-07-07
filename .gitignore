@@ -15,6 +15,12 @@ build/
 .env.development.local
 .env.test.local
 .env.production.local
+.env.production
+
+# Secret files
+secrets.env.local
+setup-vercel-env.sh
+DEPLOYMENT_SUCCESS.md
 
 # Vercel
 .vercel

@@ -44,7 +44,8 @@ export default function Docs() {
                 <li>Visit the <a href="/playground" className="text-purple-600 hover:text-purple-700 dark:text-purple-400">AI Playground</a> to test Moondream's capabilities</li>
                 <li>Upload an image or select from our curated examples</li>
                 <li>Try different prompts: "Describe this image", "What objects do you see?", "Read the text in this image"</li>
-                <li>Explore the <a href="/playground-advanced" className="text-purple-600 hover:text-purple-700 dark:text-purple-400">Advanced Playground</a> for RLHF training and deployment tools</li>
+                <li>Explore the <a href="/rl-dashboard" className="text-purple-600 hover:text-purple-700 dark:text-purple-400">RL Dashboard</a> for constitutional AI training</li>
+                <li>Read the <a href="/docs/rl-pipeline" className="text-purple-600 hover:text-purple-700 dark:text-purple-400">RL Pipeline Documentation</a> to understand our training methodology</li>
               </ol>
             </div>
           </section>
