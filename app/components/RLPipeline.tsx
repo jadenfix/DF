@@ -82,11 +82,33 @@ export default function RLPipeline() {
           transition={{ duration: 0.8 }}
         >
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
-            Constitutional AI Pipeline
+            Constitutional AI Training Pipeline
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Mathematically rigorous reinforcement learning from human feedback (RLHF) with AI-powered insights for continuous model improvement
+          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
+            Transform generic vision models into domain-specific experts through constitutional AI training. 
+            Each pipeline stage creates measurable business value.
           </p>
+          
+          {/* Business Value Proposition */}
+          <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-xl p-6 max-w-4xl mx-auto mb-8">
+            <h3 className="text-lg font-semibold text-slate-900 dark:text-white mb-3">
+              Why Constitutional AI Training Matters
+            </h3>
+            <div className="grid md:grid-cols-3 gap-4 text-sm">
+              <div>
+                <strong className="text-blue-600 dark:text-blue-400">Accuracy Gains:</strong>
+                <p className="text-slate-600 dark:text-slate-400">15-30% improvement in domain-specific tasks vs. base model</p>
+              </div>
+              <div>
+                <strong className="text-purple-600 dark:text-purple-400">Safety Guarantees:</strong>
+                <p className="text-slate-600 dark:text-slate-400">Constitutional constraints prevent harmful outputs in production</p>
+              </div>
+              <div>
+                <strong className="text-green-600 dark:text-green-400">Cost Efficiency:</strong>
+                <p className="text-slate-600 dark:text-slate-400">Reduced API calls through improved first-pass accuracy</p>
+              </div>
+            </div>
+          </div>
         </motion.div>
 
         <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-8">

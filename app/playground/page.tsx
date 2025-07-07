@@ -69,12 +69,36 @@ export default function Playground() {
   const handleImageUpload = (event: React.ChangeEvent<HTMLInputElement>) => {
     const file = event.target.files?.[0];
     if (file) {
+      // Validate file size (10MB limit)
+      const maxSize = 10 * 1024 * 1024; // 10MB in bytes
+      if (file.size > maxSize) {
+        addLog('error', `File size too large: ${(file.size / 1024 / 1024).toFixed(1)}MB. Maximum allowed: 10MB`, 'Image Upload');
+        return;
+      }
+
+      // Validate file type
+      const allowedTypes = ['image/jpeg', 'image/png', 'image/webp', 'image/gif'];
+      if (!allowedTypes.includes(file.type)) {
+        addLog('error', `Invalid file type: ${file.type}. Allowed types: JPG, PNG, WebP, GIF`, 'Image Upload');
+        return;
+      }
+
       const reader = new FileReader();
       reader.onload = (e) => {
-        const base64 = e.target?.result as string;
-        setUploadedImage(base64);
-        setSelectedImage(base64);
-        addLog('info', `Uploaded image: ${file.name}`, 'Image Upload');
+        try {
+          const base64 = e.target?.result as string;
+          if (!base64) {
+            throw new Error('Failed to read file');
+          }
+          setUploadedImage(base64);
+          setSelectedImage(base64);
+          addLog('success', `Uploaded image: ${file.name} (${(file.size / 1024).toFixed(1)}KB)`, 'Image Upload');
+        } catch (error) {
+          addLog('error', `Failed to process image: ${error instanceof Error ? error.message : 'Unknown error'}`, 'Image Upload');
+        }
+      };
+      reader.onerror = () => {
+        addLog('error', 'Failed to read file', 'Image Upload');
       };
       reader.readAsDataURL(file);
     }
@@ -224,7 +248,7 @@ export default function Playground() {
             transition={{ delay: 0.1 }}
             className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-4 md:mb-6 px-4"
           >
-            The Vercel of Vision Language Models
+            The Future of Vision Language Models
           </motion.p>
           
           {/* Branch Indicator */}
@@ -282,26 +306,55 @@ export default function Playground() {
 
                   {/* Image Upload */}
                   <div className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-gray-700">
-                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+                    <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4 flex items-center">
+                      <PhotoIcon className="w-5 h-5 mr-2 text-blue-600" />
                       Image Input
                     </h3>
                     
                     <div className="space-y-4">
-                      <div>
+                      {/* File Upload */}
+                      <div className="border-2 border-dashed border-gray-300 dark:border-gray-600 rounded-lg p-4 text-center hover:border-blue-400 transition-colors">
+                        <PhotoIcon className="w-8 h-8 text-gray-400 mx-auto mb-2" />
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Upload Image
+                          Upload your image (JPG, PNG, WebP)
                         </label>
                         <input
                           type="file"
-                          accept="image/*"
+                          accept="image/jpeg,image/png,image/webp,image/gif"
                           onChange={handleImageUpload}
                           className="block w-full text-sm text-gray-500 dark:text-gray-400 file:mr-4 file:py-2 file:px-4 file:rounded-full file:border-0 file:text-sm file:font-semibold file:bg-blue-50 file:text-blue-700 hover:file:bg-blue-100 dark:file:bg-blue-900/20 dark:file:text-blue-400"
                         />
+                        <p className="text-xs text-gray-500 mt-1">
+                          Maximum file size: 10MB
+                        </p>
                       </div>
+
+                      {/* Image Preview */}
+                      {(selectedImage || uploadedImage) && (
+                        <div className="border border-gray-200 dark:border-gray-700 rounded-lg p-3">
+                          <p className="text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+                            Selected Image:
+                          </p>
+                          <img 
+                            src={selectedImage || uploadedImage || ''} 
+                            alt="Selected"
+                            className="w-full h-32 object-cover rounded-lg"
+                          />
+                          <button
+                            onClick={() => {
+                              setSelectedImage(null);
+                              setUploadedImage(null);
+                            }}
+                            className="text-xs text-red-600 hover:text-red-700 mt-2"
+                          >
+                            Remove image
+                          </button>
+                        </div>
+                      )}
                       
                       <div>
                         <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-                          Or choose sample
+                          Or try these samples
                         </label>
                         <div className="grid grid-cols-2 gap-2">
                           {SAMPLE_IMAGES.map((image, index) => (

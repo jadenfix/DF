@@ -18,7 +18,6 @@ const navigation = [
   { name: 'Advanced', href: '/playground-advanced' },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Documentation', href: '/docs' },
-  { name: 'Research', href: '/research', isNew: true },
 ];
 
 export default function Navigation() {
@@ -50,11 +49,6 @@ export default function Navigation() {
                   className="text-muted-foreground hover:text-foreground transition-colors font-medium flex items-center space-x-1"
                 >
                   <span>{item.name}</span>
-                  {item.isNew && (
-                    <span className="bg-blue-500 text-white text-xs px-2 py-0.5 rounded-full ml-2">
-                      New
-                    </span>
-                  )}
                 </Link>
               </div>
             ))}

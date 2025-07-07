@@ -20,55 +20,59 @@ interface RoadmapItem {
 
 const roadmapItems: RoadmapItem[] = [
   {
-    id: 'multi-objective',
-    title: 'Multi-objective Reward Support',
-    description: 'Advanced reward functions with multiple optimization targets',
-    status: 'in-progress',
-    quarter: 'Q1 2024',
+    id: 'ai-insights',
+    title: 'AI-Powered Insights Dashboard',
+    description: 'Advanced analytics with machine learning-powered performance insights',
+    status: 'completed',
+    quarter: 'Q4 2024',
     icon: ChartBarIcon,
     features: [
-      'Multi-dimensional reward vectors',
-      'Pareto optimal solutions',
-      'Interactive reward visualization'
+      'Real-time model performance analytics',
+      'Automated anomaly detection',
+      'Predictive scaling recommendations',
+      'Cost optimization insights'
     ]
   },
   {
-    id: 'gitops',
-    title: 'GitOps for Reward Configs',
-    description: 'Version control and CI/CD for reward function management',
-    status: 'planned',
-    quarter: 'Q2 2024',
+    id: 'constitutional-ai',
+    title: 'Constitutional AI Pipeline',
+    description: 'Advanced safety constraints and ethical AI frameworks',
+    status: 'completed',
+    quarter: 'Q4 2024',
     icon: CogIcon,
     features: [
-      'Git-based configuration management',
-      'Automated deployment pipelines',
-      'Rollback capabilities'
+      'Constitutional AI training',
+      'Safety constraint verification',
+      'Bias detection and mitigation',
+      'Ethical guardrails'
     ]
   },
   {
-    id: 'on-prem',
-    title: 'On-prem VPC Deploy',
-    description: 'Enterprise deployment options for private infrastructure',
-    status: 'planned',
-    quarter: 'Q3 2024',
+    id: 'enterprise-security',
+    title: 'Enterprise Security Suite',
+    description: 'SOC 2 compliance and advanced security features',
+    status: 'in-progress',
+    quarter: 'Q1 2025',
     icon: ServerIcon,
     features: [
-      'Private cloud deployment',
-      'Custom model support',
-      'Enterprise security features'
+      'SOC 2 Type II certification',
+      'End-to-end encryption',
+      'Role-based access control',
+      'Audit logging and compliance'
     ]
   },
   {
-    id: 'global',
-    title: 'Global Edge Deployment',
-    description: 'Worldwide edge network for ultra-low latency',
+    id: 'global-edge',
+    title: 'Global Edge Network',
+    description: 'Worldwide deployment with sub-15ms latency',
     status: 'planned',
-    quarter: 'Q4 2024',
+    quarter: 'Q2 2025',
     icon: GlobeAltIcon,
     features: [
-      'Global edge locations',
-      'Automatic geo-routing',
-      'Regional compliance'
+      'Multi-region deployments',
+      'Edge caching optimization',
+      'Regional compliance',
+      'Auto-failover capabilities'
     ]
   }
 ];

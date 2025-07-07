@@ -24,7 +24,7 @@ const infrastructureFeatures: InfrastructureFeature[] = [
   {
     id: 'deployment',
     title: 'Deployment Pipeline',
-    description: 'GitHub → Vercel Edge Functions → Auto-scaling',
+    description: 'GitHub → Edge Functions → Auto-scaling',
     icon: ServerIcon,
     metrics: [
       { label: 'Uptime', value: '99.9', unit: '%' },
@@ -141,7 +141,7 @@ export default function EnterpriseInfrastructure() {
               <h4 className="font-semibold mb-2">Frontend</h4>
               <p className="text-slate-300 text-sm">
                 Next.js + React<br />
-                Vercel Edge Functions<br />
+                Edge Functions<br />
                 Global CDN
               </p>
             </div>

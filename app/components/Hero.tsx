@@ -103,7 +103,8 @@ export default function Hero() {
           animate={{ opacity: 1, y: 0 }}
           transition={{ delay: 0.2, duration: 0.8 }}
         >
-          Deploy Moondream's vision-language model anywhere. Under 2B parameters, 1GB footprint, blazing fast performance.
+          Enterprise-grade deployment platform for Moondream's revolutionary 1.6B parameter vision-language model. 
+          From prototype to production in minutes, not months.
         </motion.p>
 
         {/* Live Code Snippet */}

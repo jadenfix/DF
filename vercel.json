@@ -3,15 +3,6 @@
   "buildCommand": "npm run build",
   "outputDirectory": ".next",
   "installCommand": "npm install",
-  "env": {
-    "MOONDREAM_KEY": "@moondream_key",
-    "MONGODB_URI": "@mongodb_uri",
-    "ANTHROPIC_API_KEY": "@anthropic_api_key",
-    "STRIPE_SECRET_KEY": "@stripe_secret_key",
-    "STRIPE_PUBLISHABLE_KEY": "@stripe_publishable_key",
-    "NEXTAUTH_SECRET": "@nextauth_secret",
-    "NEXTAUTH_URL": "@nextauth_url"
-  },
   "functions": {
     "app/api/**": {
       "maxDuration": 30

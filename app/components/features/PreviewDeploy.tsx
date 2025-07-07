@@ -30,7 +30,7 @@ export default function PreviewDeploy({ currentBranch = 'main', onBranchSwitch }
     {
       name: 'main',
       status: 'ready',
-      url: 'https://dreamforge-main.vercel.app',
+      url: 'https://dreamforge-main.production.app',
       commit: 'abc123f',
       deployedAt: Date.now() - 1000 * 60 * 30, // 30 minutes ago
       buildTime: 45
@@ -38,7 +38,7 @@ export default function PreviewDeploy({ currentBranch = 'main', onBranchSwitch }
     {
       name: 'feature/reward-tuning',
       status: 'ready',
-      url: 'https://dreamforge-feature-reward-tuning.vercel.app',
+      url: 'https://dreamforge-feature-reward-tuning.staging.app',
       commit: 'def456a',
       deployedAt: Date.now() - 1000 * 60 * 10, // 10 minutes ago
       buildTime: 38
@@ -52,7 +52,7 @@ export default function PreviewDeploy({ currentBranch = 'main', onBranchSwitch }
     {
       name: 'staging',
       status: 'ready',
-      url: 'https://dreamforge-staging.vercel.app',
+      url: 'https://dreamforge-staging.preview.app',
       commit: 'jkl012c',
       deployedAt: Date.now() - 1000 * 60 * 60 * 2, // 2 hours ago
       buildTime: 41
@@ -96,7 +96,7 @@ export default function PreviewDeploy({ currentBranch = 'main', onBranchSwitch }
               ? { 
                   ...branch, 
                   status: 'ready', 
-                  url: `https://dreamforge-feature-ceo-demo.vercel.app`,
+                  url: `https://dreamforge-feature-ceo-demo.preview.app`,
                   deployedAt: Date.now(),
                   buildTime: 30
                 }
@@ -161,7 +161,7 @@ export default function PreviewDeploy({ currentBranch = 'main', onBranchSwitch }
             Preview Deployments
           </h2>
           <p className="text-gray-600 dark:text-gray-400">
-            Every branch gets its own preview URL - just like Vercel
+            Every branch gets its own preview URL - enterprise deployment made simple
           </p>
         </div>
         
@@ -301,7 +301,7 @@ export default function PreviewDeploy({ currentBranch = 'main', onBranchSwitch }
           <ExclamationCircleIcon className="w-5 h-5 text-amber-600 dark:text-amber-400 mt-0.5 flex-shrink-0" />
           <div className="text-sm">
             <p className="font-medium text-amber-800 dark:text-amber-200 mb-1">
-              Vercel-Style Preview Deployments
+              Enterprise Preview Deployments
             </p>
             <p className="text-amber-700 dark:text-amber-300">
               Each branch automatically gets its own preview URL when you push commits. 
