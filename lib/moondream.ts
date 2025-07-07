@@ -18,42 +18,45 @@ export class MoondreamClient {
       
       // Enhanced mock responses based on image URL and prompt
       const lowerPrompt = prompt.toLowerCase();
-      const isUnsplashImage = image.includes('unsplash.com');
       
       // Try to detect image type from URL
-      let imageType = 'general';
-      if (image.includes('1449824913935') || lowerPrompt.includes('street') || lowerPrompt.includes('urban') || lowerPrompt.includes('city')) {
-        imageType = 'city';
-      } else if (image.includes('1556909114') || lowerPrompt.includes('food') || lowerPrompt.includes('kitchen') || lowerPrompt.includes('cooking')) {
-        imageType = 'food';
-      } else if (image.includes('1506905925346') || lowerPrompt.includes('mountain') || lowerPrompt.includes('lake') || lowerPrompt.includes('nature') || lowerPrompt.includes('landscape')) {
-        imageType = 'nature';
-      }
+      let contextualResponse = '';
       
-      // Generate contextual responses based on image type and prompt
-      if (imageType === 'city') {
-        if (lowerPrompt.includes('count') || lowerPrompt.includes('number')) {
-          return 'In this busy urban intersection, I can count approximately 8-10 vehicles including cars, buses, and motorcycles. There are about 15-20 pedestrians visible crossing streets and walking on sidewalks. The scene shows 3-4 prominent buildings with modern glass facades, multiple traffic lights, and various street signs and urban infrastructure elements.';
-        } else if (lowerPrompt.includes('emotion') || lowerPrompt.includes('mood')) {
-          return 'This urban street scene conveys the bustling energy and dynamic rhythm of city life. The busy intersection creates a sense of movement and urgency typical of metropolitan areas during peak hours. Despite the crowd, there\'s an organized flow that represents the efficient pulse of urban civilization.';
+      if (image.includes('photo-1547036967-23d11aacaee0') || lowerPrompt.includes('abstract') || lowerPrompt.includes('art') || lowerPrompt.includes('paint')) {
+        // Abstract artwork responses
+        if (lowerPrompt.includes('color') || lowerPrompt.includes('composition')) {
+          contextualResponse = 'This abstract artwork demonstrates masterful use of warm and cool color contrasts, with vibrant oranges and yellows flowing against deep blues and purples. The brushwork shows confident gestural strokes that create dynamic movement across the canvas. The composition employs asymmetrical balance with areas of intense color activity contrasted against more subdued passages, creating visual rhythm and depth.';
+        } else if (lowerPrompt.includes('technique') || lowerPrompt.includes('artistic')) {
+          contextualResponse = 'The painting technique shows evidence of both controlled and spontaneous mark-making. Layered applications of paint create texture and depth, while fluid brush movements suggest the artist worked both wet-into-wet and wet-into-dry. The gestural quality indicates an expressionistic approach, prioritizing emotional impact over representational accuracy.';
         } else {
-          return 'This busy urban intersection showcases typical metropolitan life with multiple vehicles navigating through organized traffic flow. Pedestrians cross at designated crosswalks while others gather at street corners. The surrounding architecture features modern commercial buildings with glass facades and urban design elements. Traffic control systems including lights and signage coordinate the movement of both vehicles and pedestrians in this dynamic city environment.';
+          contextualResponse = 'This dynamic abstract painting features bold, expressive brushstrokes that create a sense of movement and energy. The color palette combines warm yellows and oranges with cooler blues and purples, creating vibrant contrasts throughout the composition. The artistic technique shows confident, gestural marks that suggest both spontaneity and control in the creative process.';
         }
-      } else if (imageType === 'food') {
-        if (lowerPrompt.includes('count') || lowerPrompt.includes('number')) {
-          return 'In this professional kitchen setup, I can identify 6-8 different cooking utensils, 4-5 prep bowls of various sizes, and approximately 10-12 different fresh ingredients being prepared. There are 2-3 cutting boards visible along with multiple specialized kitchen tools arranged across the stainless steel work surfaces.';
-        } else if (lowerPrompt.includes('emotion') || lowerPrompt.includes('mood')) {
-          return 'This kitchen scene emanates focused concentration and culinary passion. The meticulously organized workspace suggests professional expertise and dedication to the craft. There\'s a palpable sense of creativity and precision, with the careful arrangement of ingredients reflecting the chef\'s commitment to quality and attention to detail.';
+      } else if (image.includes('photo-1554475901-4538ddfbccc2') || lowerPrompt.includes('document') || lowerPrompt.includes('text') || lowerPrompt.includes('scientific')) {
+        // Scientific document responses
+        if (lowerPrompt.includes('extract') || lowerPrompt.includes('read') || lowerPrompt.includes('ocr')) {
+          contextualResponse = 'The document contains structured scientific text with clear hierarchical organization. I can observe section headers, body paragraphs with technical terminology, and what appears to be data tables or figure references. The formatting follows academic standards with consistent typography and proper spacing for readability.';
+        } else if (lowerPrompt.includes('formula') || lowerPrompt.includes('equation')) {
+          contextualResponse = 'The scientific document displays mathematical expressions and formulas integrated within the text. These appear to be properly formatted equations with subscripts, superscripts, and mathematical symbols relevant to the research field being discussed.';
         } else {
-          return 'This professional kitchen scene captures an active food preparation environment where fresh ingredients are being skillfully processed. The stainless steel work surfaces display an organized array of chopped vegetables, prep bowls, and professional-grade cooking utensils. The systematic arrangement suggests this is either a high-end restaurant kitchen or culinary school during active service preparation, with emphasis on cleanliness, organization, and culinary excellence.';
+          contextualResponse = 'This appears to be a formal scientific or academic document with professional formatting. The layout includes structured text sections, technical vocabulary, and follows standard academic publishing conventions. The content suggests research findings or theoretical analysis within a specialized scientific field.';
         }
-      } else if (imageType === 'nature') {
-        if (lowerPrompt.includes('count') || lowerPrompt.includes('number')) {
-          return 'This pristine mountain landscape features 1 large reflective lake, 3-4 distinct mountain peaks rising in the background, and extensive evergreen forest coverage with hundreds of coniferous trees. The scene shows 2-3 different elevation levels and includes 1 perfect mirror reflection of the mountains in the calm lake surface.';
-        } else if (lowerPrompt.includes('emotion') || lowerPrompt.includes('mood')) {
-          return 'This serene mountain landscape evokes profound tranquility and peaceful solitude. The mirror-like lake reflection creates a sense of perfect harmony between earth and sky. The pristine wilderness setting offers a meditative escape from modern life, inspiring feelings of awe, restoration, and deep connection with the natural world.';
+      } else if (image.includes('photo-1449824913935-59a10b8d2000') || lowerPrompt.includes('urban') || lowerPrompt.includes('scene') || lowerPrompt.includes('complex')) {
+        // Urban scene responses
+        if (lowerPrompt.includes('count') || lowerPrompt.includes('number') || lowerPrompt.includes('how many')) {
+          contextualResponse = 'In this bustling urban intersection, I can count approximately 12-15 vehicles including cars, taxis, and delivery trucks. There are around 20-25 pedestrians visible at various points - some crossing streets, others waiting at corners. The scene includes 4-5 traffic lights, multiple street signs, and several storefronts with commercial signage.';
+        } else if (lowerPrompt.includes('spatial') || lowerPrompt.includes('relationship') || lowerPrompt.includes('arrangement')) {
+          contextualResponse = 'The urban scene demonstrates complex spatial relationships with vehicles organized in traffic lanes, pedestrians confined to sidewalks and crosswalks, and vertical architectural elements creating depth. The intersection serves as a focal point where multiple traffic flows converge in an organized pattern typical of metropolitan areas.';
         } else {
-          return 'This breathtaking mountain landscape showcases a crystal-clear alpine lake that serves as a perfect mirror for the surrounding peaks and dense evergreen forest. The towering mountains rise dramatically from the water\'s edge, their slopes covered in pristine coniferous trees that extend down to the shoreline. The lighting conditions suggest either golden hour timing, creating beautiful natural illumination across the scene with exceptional atmospheric clarity and stunning natural beauty.';
+          contextualResponse = 'This dynamic urban intersection captures the essence of busy city life with multiple lanes of vehicular traffic navigating through a controlled intersection. Pedestrians move along designated walkways and crossings while surrounding buildings create an urban canyon effect. The scene shows typical metropolitan activity with commercial signage, traffic control systems, and the organized chaos of city transportation.';
+        }
+      } else if (image.includes('photo-1518709268805-4e9042af2176') || lowerPrompt.includes('technical') || lowerPrompt.includes('circuit') || lowerPrompt.includes('diagram')) {
+        // Technical diagram responses
+        if (lowerPrompt.includes('component') || lowerPrompt.includes('identify') || lowerPrompt.includes('element')) {
+          contextualResponse = 'The circuit diagram displays various electronic components including resistors, capacitors, integrated circuits, and connection points. Each component is labeled with standard electrical engineering symbols and reference designators. The layout follows conventional schematic design principles with clear signal flow paths.';
+        } else if (lowerPrompt.includes('connection') || lowerPrompt.includes('path') || lowerPrompt.includes('flow')) {
+          contextualResponse = 'The technical schematic shows systematic connection pathways between components, with clear routing of electrical signals through the circuit. Connection points are properly marked, and the overall layout demonstrates logical signal flow from input to output stages.';
+        } else {
+          contextualResponse = 'This professional circuit diagram illustrates a complex electronic system with multiple interconnected components. The schematic follows standard engineering conventions with proper component symbols, reference designators, and connection pathways. The layout demonstrates professional design practices with clear organization and logical signal routing.';
         }
       }
       

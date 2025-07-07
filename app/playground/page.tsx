@@ -23,24 +23,24 @@ import {
 
 const SAMPLE_IMAGES = [
   {
-    url: 'https://images.unsplash.com/photo-1618477388954-7852f32655ec?w=400&h=300&fit=crop&auto=format',
+    url: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop&auto=format',
     name: 'Abstract Painting',
-    prompt: 'Analyze the artistic elements, color composition, and visual patterns in this abstract artwork.'
+    prompt: 'Analyze the artistic elements, color composition, brush techniques, and overall aesthetic approach in this abstract artwork. Describe the use of color theory and visual balance.'
   },
   {
-    url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&auto=format',
-    name: 'Scientific Document',
-    prompt: 'Extract and analyze any text, data, or scientific information visible in this document.'
+    url: 'https://images.unsplash.com/photo-1554475901-4538ddfbccc2?w=400&h=300&fit=crop&auto=format',
+    name: 'Scientific Document', 
+    prompt: 'Extract and analyze all visible text, mathematical formulas, charts, graphs, or scientific notation in this research document. Identify the field of study and key findings.'
   },
   {
-    url: 'https://images.unsplash.com/photo-1581833971358-2c8b550f87b3?w=400&h=300&fit=crop&auto=format',
-    name: 'Complex Scene',
-    prompt: 'Provide a detailed analysis of all objects, their relationships, and spatial arrangement in this scene.'
+    url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop&auto=format',
+    name: 'Complex Urban Scene',
+    prompt: 'Count and describe all visible objects, people, vehicles, and architectural elements in this complex scene. Analyze the spatial relationships and urban environment.'
   },
   {
-    url: 'https://images.unsplash.com/photo-1455849318743-b2233052fcff?w=400&h=300&fit=crop&auto=format',
-    name: 'Technical Diagram',
-    prompt: 'Identify and explain the technical components, annotations, and structural elements in this diagram.'
+    url: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop&auto=format',
+    name: 'Technical Circuit Diagram',
+    prompt: 'Identify and explain all electronic components, connections, labels, and technical specifications visible in this circuit diagram or technical schematic.'
   }
 ];
 
