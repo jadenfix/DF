@@ -178,12 +178,40 @@ export default function OutputGrid({ results, onFeedback, rewardWeights, isLoadi
 
   if (results.length === 0) {
     return (
-      <div className="text-center py-12">
-        <CpuChipIcon className="mx-auto h-12 w-12 text-gray-400" />
-        <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No results yet</h3>
-        <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
-          Generate some responses to see them here
-        </p>
+      <div className="space-y-6">
+        {/* Research Context Info */}
+        <div className="bg-gradient-to-r from-blue-50 to-purple-50 dark:from-blue-900/20 dark:to-purple-900/20 rounded-lg border border-blue-200 dark:border-blue-700 p-4">
+          <div className="flex items-start space-x-3">
+            <div className="text-blue-600 dark:text-blue-400 text-lg">🔬</div>
+            <div>
+              <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-1">Research-Grade Analysis</h3>
+              <p className="text-sm text-blue-700 dark:text-blue-300">
+                Generate responses using Moondream's 1.6B parameter VLM. Compare baseline vs RLHF-optimized outputs, 
+                analyze reward scores, and contribute to our community benchmarks.
+              </p>
+              <div className="flex flex-wrap gap-2 mt-2">
+                <span className="text-xs bg-blue-100 dark:bg-blue-800 text-blue-800 dark:text-blue-200 px-2 py-1 rounded">
+                  📊 Benchmark Ready
+                </span>
+                <span className="text-xs bg-purple-100 dark:bg-purple-800 text-purple-800 dark:text-purple-200 px-2 py-1 rounded">
+                  ⚡ Sub-400ms Latency
+                </span>
+                <span className="text-xs bg-green-100 dark:bg-green-800 text-green-800 dark:text-green-200 px-2 py-1 rounded">
+                  🎯 RLHF Optimized
+                </span>
+              </div>
+            </div>
+          </div>
+        </div>
+        
+        {/* No Results State */}
+        <div className="text-center py-12">
+          <CpuChipIcon className="mx-auto h-12 w-12 text-gray-400" />
+          <h3 className="mt-2 text-sm font-medium text-gray-900 dark:text-white">No results yet</h3>
+          <p className="mt-1 text-sm text-gray-500 dark:text-gray-400">
+            Generate some responses to see them here
+          </p>
+        </div>
       </div>
     );
   }

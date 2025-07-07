@@ -85,35 +85,20 @@ export default function Pricing() {
 						</motion.div>
 					</div>
 
-					{/* Usage Calculator */}
+					{/* Simple Pricing Header */}
 					<motion.div
 						initial={{ opacity: 0, y: 20 }}
 						animate={{ opacity: 1, y: 0 }}
 						transition={{ duration: 0.8, delay: 0.2 }}
-						className="card p-6 max-w-2xl mx-auto mb-16"
+						className="text-center mb-16"
 					>
-						<h2 className="text-2xl font-bold text-center mb-6 text-foreground">
-							Calculate Your Usage
+						<h2 className="text-2xl font-bold mb-4 text-foreground">
+							Transparent Pricing
 						</h2>
-						<div className="grid md:grid-cols-2 gap-6">
-							<div>
-								<label className="block text-sm font-medium text-muted-foreground mb-2">
-									Images per month
-								</label>
-								<input
-									type="number"
-									defaultValue="10000"
-									className="input"
-									placeholder="Enter number of images"
-								/>
-							</div>
-							<div>
-								<label className="block text-sm font-medium text-muted-foreground mb-2">
-									Estimated monthly cost
-								</label>
-								<div className="text-2xl font-bold text-primary">$49-149</div>
-							</div>
-						</div>
+						<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
+							All plans include full access to Moondream's vision AI capabilities. 
+							Scale as you grow with predictable, flat-rate pricing.
+						</p>
 					</motion.div>
 
 					{/* Plans */}

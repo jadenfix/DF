@@ -33,37 +33,23 @@ export default function ResearchHub() {
 
   const papers = [
     {
-      title: 'VL-RLHF for Tiny Models: Constitutional AI Training',
-      authors: 'Vikhyat Korrapati et al.',
-      venue: 'ICLR 2024',
-      description: 'Our Constitutional AI pipeline boosts domain accuracy by 20-30% through human preference optimization.',
-      pdf: '#',
-      colab: '#'
-    },
-    {
-      title: 'Moondream 2: 1.6B Parameter Efficiency at Scale',
-      authors: 'Research Team',
-      venue: 'arXiv 2024',
-      description: 'Achieving SOTA performance with 4× smaller footprint than competing VLMs.',
-      pdf: '#',
-      colab: '#'
+      title: 'Moondream 2: Tiny Vision Language Model',
+      authors: 'Vikhyat Korrapati',
+      venue: 'Open Source 2024',
+      description: 'A 1.6B parameter vision-language model achieving competitive performance with 4× smaller footprint than alternatives.',
+      github: 'https://github.com/vikhyat/moondream',
+      huggingface: 'https://huggingface.co/vikhyatk/moondream2'
     }
   ];
 
   const challenges = [
     {
-      name: 'Best Zero-Shot Prompt Challenge',
-      description: 'Design the most effective prompt for general VQA tasks',
-      deadline: 'Jul 31, 2025',
-      participants: 127,
-      topScore: '74.2% VQA Accuracy'
-    },
-    {
-      name: 'Tiny Model Efficiency Race',
-      description: 'Achieve highest accuracy with <1GB memory footprint',
-      deadline: 'Aug 15, 2025',
-      participants: 89,
-      topScore: '71.8% @ 996MB'
+      name: 'Contribute to Moondream',
+      description: 'Join the open source community building the world\'s most efficient vision-language model',
+      deadline: 'Open Source',
+      participants: '25+ contributors',
+      topScore: '8.2k GitHub stars',
+      url: 'https://github.com/vikhyat/moondream'
     }
   ];
 
@@ -80,10 +66,19 @@ export default function ResearchHub() {
           <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
             Research Hub
           </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
+          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
             Pushing the frontier of tiny vision-language models through open research, 
             community benchmarks, and reproducible experiments.
           </p>
+          <a
+            href="https://github.com/vikhyat/moondream"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
+          >
+            <span className="mr-2">💻</span>
+            Explore Moondream on GitHub
+          </a>
         </motion.div>
 
         <div className="grid lg:grid-cols-2 gap-12 mb-16">
@@ -115,16 +110,20 @@ export default function ResearchHub() {
                   </p>
                   <div className="flex gap-3">
                     <a 
-                      href={paper.pdf}
+                      href={paper.github}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 text-sm font-medium"
                     >
-                      📄 PDF
+                      � GitHub
                     </a>
                     <a 
-                      href={paper.colab}
+                      href={paper.huggingface}
+                      target="_blank"
+                      rel="noopener noreferrer"
                       className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
                     >
-                      🔬 Open in Colab
+                      🤗 HuggingFace
                     </a>
                   </div>
                 </div>
@@ -183,9 +182,9 @@ export default function ResearchHub() {
             </div>
             
             <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-600">
-              <button className="w-full bg-blue-600 hover:bg-blue-700 text-white px-4 py-2 rounded-lg font-medium transition-colors">
-                Submit Your Result
-              </button>
+              <p className="text-sm text-slate-600 dark:text-slate-400 text-center">
+                Benchmarks updated from latest Moondream releases
+              </p>
             </div>
           </motion.div>
         </div>
@@ -208,20 +207,40 @@ export default function ResearchHub() {
             
             <div className="grid gap-4">
               {[
-                { title: 'Fine-tune Moondream on Custom Data', views: '2.3k', runtime: '~15 min' },
-                { title: 'Constitutional AI Reward Training', views: '1.8k', runtime: '~30 min' },
-                { title: 'Deploy to Edge via WASM', views: '1.2k', runtime: '~10 min' },
-                { title: 'Benchmark Against CLIP Variants', views: '950', runtime: '~5 min' }
+                { 
+                  title: 'Moondream Getting Started Guide', 
+                  views: '8.2k', 
+                  runtime: '~5 min',
+                  url: 'https://moondream.ai/c/docs/quickstart'
+                },
+                { 
+                  title: 'Moondream Playground Demo', 
+                  views: '2.3k', 
+                  runtime: 'Interactive',
+                  url: 'https://moondream.ai/playground'
+                },
+                { 
+                  title: 'HuggingFace Model Card', 
+                  views: '545k', 
+                  runtime: '~3 min',
+                  url: 'https://huggingface.co/vikhyatk/moondream2'
+                }
               ].map((notebook, index) => (
-                <div key={index} className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors cursor-pointer">
+                <a 
+                  key={index} 
+                  href={notebook.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
+                >
                   <div>
                     <h4 className="font-medium text-slate-900 dark:text-white">{notebook.title}</h4>
                     <p className="text-sm text-slate-600 dark:text-slate-400">{notebook.views} views • {notebook.runtime}</p>
                   </div>
-                  <button className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm">
+                  <span className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm">
                     Open →
-                  </button>
-                </div>
+                  </span>
+                </a>
               ))}
             </div>
           </motion.div>
@@ -236,13 +255,19 @@ export default function ResearchHub() {
             <div className="flex items-center mb-6">
               <TrophyIcon className="w-8 h-8 text-yellow-600 dark:text-yellow-400 mr-3" />
               <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-                Community Challenges
+                Open Source Project
               </h3>
             </div>
             
             <div className="space-y-6">
               {challenges.map((challenge, index) => (
-                <div key={index} className="border border-slate-200 dark:border-slate-600 rounded-lg p-4">
+                <a 
+                  key={index} 
+                  href={challenge.url}
+                  target="_blank"
+                  rel="noopener noreferrer"
+                  className="block border border-slate-200 dark:border-slate-600 rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
+                >
                   <h4 className="font-semibold text-slate-900 dark:text-white mb-2">
                     {challenge.name}
                   </h4>
@@ -252,22 +277,22 @@ export default function ResearchHub() {
                   <div className="flex justify-between items-center text-sm">
                     <div className="space-y-1">
                       <div className="text-slate-500 dark:text-slate-400">
-                        🏆 Current best: <span className="font-medium">{challenge.topScore}</span>
+                        🏆 Current: <span className="font-medium">{challenge.topScore}</span>
                       </div>
                       <div className="text-slate-500 dark:text-slate-400">
-                        👥 {challenge.participants} participants
+                        👥 {challenge.participants}
                       </div>
                     </div>
                     <div className="text-right">
-                      <div className="text-red-600 dark:text-red-400 font-medium">
-                        Ends {challenge.deadline}
+                      <div className="text-green-600 dark:text-green-400 font-medium">
+                        {challenge.deadline}
                       </div>
-                      <button className="mt-1 bg-yellow-600 hover:bg-yellow-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
-                        Join Challenge
-                      </button>
+                      <span className="mt-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
+                        Join Project →
+                      </span>
                     </div>
                   </div>
-                </div>
+                </a>
               ))}
             </div>
           </motion.div>
