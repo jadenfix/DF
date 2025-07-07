@@ -18,6 +18,7 @@ const navigation = [
   { name: 'Advanced', href: '/playground-advanced' },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Documentation', href: '/docs' },
+  { name: 'Status', href: '/status' },
 ];
 
 export default function Navigation() {

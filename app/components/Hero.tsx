@@ -107,6 +107,27 @@ export default function Hero() {
           From prototype to production in minutes, not months.
         </motion.p>
 
+        {/* Real-time Metrics */}
+        <motion.div
+          className="flex justify-center gap-8 mb-8 text-center"
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ delay: 0.3, duration: 0.8 }}
+        >
+          <div className="text-slate-600 dark:text-slate-300">
+            <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">1M+</div>
+            <div className="text-sm">Images Processed</div>
+          </div>
+          <div className="text-slate-600 dark:text-slate-300">
+            <div className="text-2xl font-bold text-green-600 dark:text-green-400">15ms</div>
+            <div className="text-sm">Avg Latency</div>
+          </div>
+          <div className="text-slate-600 dark:text-slate-300">
+            <div className="text-2xl font-bold text-purple-600 dark:text-purple-400">99.9%</div>
+            <div className="text-sm">Uptime</div>
+          </div>
+        </motion.div>
+
         {/* Live Code Snippet */}
         <motion.div
           className="bg-slate-900 rounded-lg p-4 mb-8 max-w-2xl mx-auto"

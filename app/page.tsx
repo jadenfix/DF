@@ -18,6 +18,22 @@ export default function Home() {
       {/* Hero Section */}
       <Hero />
       
+      {/* Social Proof */}
+      <section className="py-16 bg-white dark:bg-slate-950 border-b border-slate-200 dark:border-slate-800">
+        <div className="max-w-7xl mx-auto px-4 text-center">
+          <p className="text-slate-600 dark:text-slate-400 mb-8 text-lg">
+            Trusted by innovative companies worldwide
+          </p>
+          <div className="flex justify-center items-center gap-8 opacity-60 hover:opacity-80 transition-opacity">
+            <div className="text-2xl font-bold text-slate-400">TechCorp</div>
+            <div className="text-2xl font-bold text-slate-400">VisionAI</div>
+            <div className="text-2xl font-bold text-slate-400">DataFlow</div>
+            <div className="text-2xl font-bold text-slate-400">CloudVision</div>
+            <div className="text-2xl font-bold text-slate-400">SmartSys</div>
+          </div>
+        </div>
+      </section>
+      
       {/* RL Pipeline Showcase */}
       <RLPipeline />
       
@@ -91,4 +107,4 @@ export default function Home() {
       </footer>
     </div>
   );
-} 
+}

@@ -87,6 +87,38 @@ export default function Docs() {
   }
 }`}</code>
               </pre>
+
+              <h3>Interactive API Explorer</h3>
+              <div className="bg-blue-50 dark:bg-blue-900/20 border border-blue-200 dark:border-blue-800 rounded-lg p-6 my-6">
+                <h4 className="text-lg font-semibold text-blue-900 dark:text-blue-100 mb-4">
+                  Try the API Live
+                </h4>
+                <div className="grid md:grid-cols-2 gap-4">
+                  <div>
+                    <label className="block text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                      Your Prompt
+                    </label>
+                    <textarea 
+                      className="w-full p-3 border border-blue-300 dark:border-blue-600 rounded-lg bg-white dark:bg-blue-950 text-blue-900 dark:text-blue-100"
+                      rows={3}
+                      placeholder="Describe this image in detail"
+                    />
+                  </div>
+                  <div>
+                    <label className="block text-sm font-medium text-blue-800 dark:text-blue-200 mb-2">
+                      Image URL or Upload
+                    </label>
+                    <input 
+                      type="file" 
+                      accept="image/*"
+                      className="w-full p-3 border border-blue-300 dark:border-blue-600 rounded-lg bg-white dark:bg-blue-950 text-blue-900 dark:text-blue-100 file:mr-4 file:py-1 file:px-2 file:rounded file:border-0 file:bg-blue-100 file:text-blue-700"
+                    />
+                  </div>
+                </div>
+                <button className="mt-4 bg-blue-600 hover:bg-blue-700 text-white px-6 py-2 rounded-lg font-medium">
+                  Test API Call
+                </button>
+              </div>
             </div>
           </section>
 
