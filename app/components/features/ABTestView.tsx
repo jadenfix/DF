@@ -141,9 +141,9 @@ export default function ABTestView({ prompt, imageUrl, onOutputSelect }: ABTestV
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             A/B Model Comparison
@@ -153,10 +153,10 @@ export default function ABTestView({ prompt, imageUrl, onOutputSelect }: ABTestV
           </p>
         </div>
         
-        <div className="flex items-center space-x-2">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-2">
           <button
             onClick={() => setViewMode(viewMode === 'grid' ? 'slider' : 'grid')}
-            className="flex items-center space-x-2 px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-3 py-1 text-sm text-gray-600 dark:text-gray-400 hover:bg-gray-100 dark:hover:bg-gray-700 rounded-lg transition-colors"
           >
             {viewMode === 'grid' ? <ArrowsPointingOutIcon className="w-4 h-4" /> : <DocumentDuplicateIcon className="w-4 h-4" />}
             <span>{viewMode === 'grid' ? 'Slider View' : 'Grid View'}</span>
@@ -165,7 +165,7 @@ export default function ABTestView({ prompt, imageUrl, onOutputSelect }: ABTestV
           <button
             onClick={generateOutputs}
             disabled={isGenerating || !prompt.trim()}
-            className="flex items-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+            className="w-full sm:w-auto flex items-center justify-center space-x-2 px-4 py-2 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
           >
             <BeakerIcon className="w-4 h-4" />
             <span>{isGenerating ? 'Generating...' : 'Run A/B Test'}</span>
@@ -175,7 +175,7 @@ export default function ABTestView({ prompt, imageUrl, onOutputSelect }: ABTestV
 
       {/* Grid View */}
       {viewMode === 'grid' && (
-        <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+        <div className="grid grid-cols-1 md:grid-cols-2 gap-4 md:gap-6">
           {models.map((model, index) => {
             const output = outputs[index];
             const isSelected = selectedOutput === index;
@@ -192,15 +192,15 @@ export default function ABTestView({ prompt, imageUrl, onOutputSelect }: ABTestV
                     : 'border-gray-200 dark:border-gray-700 hover:border-gray-300 dark:hover:border-gray-600'
                 }`}
               >
-                <div className="p-6">
+                <div className="p-4 md:p-6">
                   {/* Model Header */}
                   <div className="flex items-center justify-between mb-4">
-                    <div>
-                      <h4 className="font-semibold text-gray-900 dark:text-white">
+                    <div className="min-w-0 flex-1">
+                      <h4 className="font-semibold text-gray-900 dark:text-white text-sm md:text-base">
                         {model}
                       </h4>
                       {output && (
-                        <div className="flex items-center space-x-3 mt-1 text-xs text-gray-500 dark:text-gray-400">
+                        <div className="flex items-center space-x-2 md:space-x-3 mt-1 text-xs text-gray-500 dark:text-gray-400">
                           <span className={getConfidenceColor(output.confidence)}>
                             {formatMetric(output.confidence, 'confidence')}
                           </span>
@@ -233,7 +233,7 @@ export default function ABTestView({ prompt, imageUrl, onOutputSelect }: ABTestV
                   </div>
                   
                   {/* Response */}
-                  <div className="min-h-[120px]">
+                  <div className="min-h-[100px] md:min-h-[120px]">
                     {output ? (
                       <p className="text-sm text-gray-700 dark:text-gray-300 leading-relaxed">
                         {output.response}

@@ -8,7 +8,12 @@
     "start": "next start",
     "lint": "next lint",
     "test": "jest --runInBand",
+    "test:api": "jest --runInBand --testPathPatterns=api",
+    "test:mobile": "jest --runInBand tests/api-new.test.ts",
     "e2e": "playwright test",
+    "e2e:mobile": "playwright test --project='Mobile Chrome' --project='Mobile Safari'",
+    "e2e:all": "playwright test --project='Mobile Chrome' --project='Mobile Safari' --project='iPad' --project='chromium'",
+    "test:all": "npm run test && npm run e2e:all",
     "dev:turbo": "CSS_TRANSFORMER_WASM=1 next dev --turbo"
   },
   "dependencies": {

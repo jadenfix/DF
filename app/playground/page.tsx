@@ -210,11 +210,11 @@ export default function Playground() {
       
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">
         {/* Hero Section */}
-        <div className="text-center mb-8">
+        <div className="text-center mb-6 md:mb-8">
           <motion.h1 
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
-            className="text-4xl font-bold text-gray-900 dark:text-white mb-4"
+            className="text-2xl md:text-4xl font-bold text-gray-900 dark:text-white mb-2 md:mb-4"
           >
             DreamForge Advanced Playground
           </motion.h1>
@@ -222,7 +222,7 @@ export default function Playground() {
             initial={{ opacity: 0, y: -20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: 0.1 }}
-            className="text-xl text-gray-600 dark:text-gray-400 mb-6"
+            className="text-lg md:text-xl text-gray-600 dark:text-gray-400 mb-4 md:mb-6 px-4"
           >
             The Vercel of Vision Language Models
           </motion.p>
@@ -232,28 +232,30 @@ export default function Playground() {
             initial={{ opacity: 0, scale: 0.9 }}
             animate={{ opacity: 1, scale: 1 }}
             transition={{ delay: 0.2 }}
-            className="inline-flex items-center space-x-2 px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium"
+            className="inline-flex items-center space-x-2 px-3 md:px-4 py-2 bg-blue-100 dark:bg-blue-900/30 text-blue-800 dark:text-blue-200 rounded-full text-sm font-medium"
           >
             <div className="w-2 h-2 bg-green-500 rounded-full animate-pulse"></div>
-            <span>Currently viewing: {currentBranch}</span>
+            <span className="hidden sm:inline">Currently viewing: {currentBranch}</span>
+            <span className="sm:hidden">{currentBranch}</span>
           </motion.div>
         </div>
 
         {/* Tab Navigation */}
-        <div className="flex justify-center mb-8">
-          <div className="flex space-x-1 bg-white dark:bg-gray-800 p-1 rounded-xl border border-gray-200 dark:border-gray-700">
+        <div className="flex justify-center mb-6 md:mb-8 px-2">
+          <div className="flex space-x-1 bg-white dark:bg-gray-800 p-1 rounded-xl border border-gray-200 dark:border-gray-700 w-full max-w-2xl overflow-x-auto">
             {tabs.map((tab) => (
               <button
                 key={tab.id}
                 onClick={() => setActiveTab(tab.id)}
-                className={`flex items-center space-x-2 px-4 py-2 rounded-lg font-medium text-sm transition-all ${
+                className={`flex items-center space-x-2 px-3 md:px-4 py-2 rounded-lg font-medium text-sm transition-all whitespace-nowrap ${
                   activeTab === tab.id
                     ? 'bg-blue-600 text-white shadow-sm'
                     : 'text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white hover:bg-gray-50 dark:hover:bg-gray-700'
                 }`}
               >
                 <tab.icon className="w-4 h-4" />
-                <span>{tab.label}</span>
+                <span className="hidden sm:inline">{tab.label}</span>
+                <span className="sm:hidden">{tab.label.split(' ')[0]}</span>
               </button>
             ))}
           </div>
@@ -269,9 +271,9 @@ export default function Playground() {
               exit={{ opacity: 0, x: 20 }}
               className="space-y-8"
             >
-              <div className="grid grid-cols-1 lg:grid-cols-3 gap-8">
+              <div className="grid grid-cols-1 xl:grid-cols-3 gap-6 md:gap-8">
                 {/* Left Column - Controls */}
-                <div className="lg:col-span-1 space-y-6">
+                <div className="xl:col-span-1 space-y-4 md:space-y-6">
                   {/* Model Selection */}
                   <ModelSelector
                     selectedModel={selectedModel}
@@ -279,7 +281,7 @@ export default function Playground() {
                   />
 
                   {/* Image Upload */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-gray-700">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                       Image Input
                     </h3>
@@ -315,7 +317,7 @@ export default function Playground() {
                               <img 
                                 src={image.url} 
                                 alt={image.name}
-                                className="w-full h-16 object-cover rounded"
+                                className="w-full h-12 md:h-16 object-cover rounded"
                               />
                               <span className="text-xs text-gray-600 dark:text-gray-400">
                                 {image.name}
@@ -328,7 +330,7 @@ export default function Playground() {
                   </div>
 
                   {/* Prompt Input */}
-                  <div className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700">
+                  <div className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-gray-700">
                     <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
                       Prompt
                     </h3>
@@ -336,14 +338,14 @@ export default function Playground() {
                       value={prompt}
                       onChange={(e) => setPrompt(e.target.value)}
                       rows={4}
-                      className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white"
+                      className="w-full p-3 border border-gray-300 dark:border-gray-600 rounded-lg focus:ring-2 focus:ring-blue-500 focus:border-transparent bg-white dark:bg-gray-700 text-gray-900 dark:text-white text-sm md:text-base"
                       placeholder="Describe what you want the model to analyze or generate..."
                     />
                     
                     <button
                       onClick={handleGenerate}
                       disabled={isGenerating || !prompt.trim()}
-                      className="w-full mt-4 flex items-center justify-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors"
+                      className="w-full mt-4 flex items-center justify-center space-x-2 px-4 py-3 bg-blue-600 text-white rounded-lg hover:bg-blue-700 disabled:opacity-50 disabled:cursor-not-allowed transition-colors text-sm md:text-base"
                     >
                       {isGenerating ? (
                         <ArrowPathIcon className="w-5 h-5 animate-spin" />
@@ -366,7 +368,7 @@ export default function Playground() {
                 </div>
 
                 {/* Right Column - Results and Logs */}
-                <div className="lg:col-span-2 space-y-6">
+                <div className="xl:col-span-2 space-y-4 md:space-y-6">
                   <OutputGrid 
                     results={results} 
                     onFeedback={(id, feedback) => {

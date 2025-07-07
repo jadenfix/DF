@@ -135,24 +135,24 @@ export default function UsageDashboard({ selectedBranch = 'main', onBranchChange
   };
 
   return (
-    <div className="space-y-6">
+    <div className="space-y-4 md:space-y-6">
       {/* Header */}
-      <div className="flex items-center justify-between">
+      <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4">
         <div>
-          <h2 className="text-2xl font-bold text-gray-900 dark:text-white">
+          <h2 className="text-xl md:text-2xl font-bold text-gray-900 dark:text-white">
             Usage Dashboard
           </h2>
-          <p className="text-gray-600 dark:text-gray-400">
+          <p className="text-gray-600 dark:text-gray-400 text-sm md:text-base">
             Monitor API usage and performance across branches
           </p>
         </div>
         
-        <div className="flex items-center space-x-4">
+        <div className="flex flex-col sm:flex-row items-start sm:items-center space-y-2 sm:space-y-0 sm:space-x-4">
           {/* Branch Selector */}
           <select
             value={selectedBranch}
             onChange={(e) => onBranchChange?.(e.target.value)}
-            className="rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:w-auto rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             {branches.map((branch) => (
               <option key={branch} value={branch}>
@@ -165,7 +165,7 @@ export default function UsageDashboard({ selectedBranch = 'main', onBranchChange
           <select
             value={timeRange}
             onChange={(e) => setTimeRange(e.target.value)}
-            className="rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
+            className="w-full sm:w-auto rounded-lg border border-gray-300 dark:border-gray-700 bg-white dark:bg-gray-800 px-3 py-2 text-sm focus:outline-none focus:ring-2 focus:ring-blue-500"
           >
             <option value="1h">Last Hour</option>
             <option value="24h">Last 24 Hours</option>
@@ -176,35 +176,35 @@ export default function UsageDashboard({ selectedBranch = 'main', onBranchChange
       </div>
 
       {/* Metrics Grid */}
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-2 lg:grid-cols-4 gap-3 md:gap-6">
         {metrics.map((metric, index) => (
           <motion.div
             key={metric.label}
             initial={{ opacity: 0, y: 20 }}
             animate={{ opacity: 1, y: 0 }}
             transition={{ delay: index * 0.1 }}
-            className="bg-white dark:bg-gray-800 rounded-xl p-6 border border-gray-200 dark:border-gray-700 shadow-sm"
+            className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-gray-700 shadow-sm"
           >
             <div className="flex items-center justify-between">
               <div className={`p-2 rounded-lg bg-${metric.color}-100 dark:bg-${metric.color}-900/20`}>
-                <metric.icon className={`w-6 h-6 text-${metric.color}-600`} />
+                <metric.icon className={`w-4 h-4 md:w-6 md:h-6 text-${metric.color}-600`} />
               </div>
               <div className="flex items-center space-x-1">
                 {metric.change >= 0 ? (
-                  <ArrowTrendingUpIcon className="w-4 h-4 text-green-500" />
+                  <ArrowTrendingUpIcon className="w-3 h-3 md:w-4 md:h-4 text-green-500" />
                 ) : (
-                  <ArrowTrendingDownIcon className="w-4 h-4 text-red-500" />
+                  <ArrowTrendingDownIcon className="w-3 h-3 md:w-4 md:h-4 text-red-500" />
                 )}
-                <span className={`text-sm font-medium ${metric.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
+                <span className={`text-xs md:text-sm font-medium ${metric.change >= 0 ? 'text-green-500' : 'text-red-500'}`}>
                   {Math.abs(metric.change).toFixed(1)}%
                 </span>
               </div>
             </div>
             <div className="mt-4">
-              <div className="text-2xl font-bold text-gray-900 dark:text-white">
+              <div className="text-lg md:text-2xl font-bold text-gray-900 dark:text-white">
                 {metric.value}
               </div>
-              <div className="text-sm text-gray-600 dark:text-gray-400">
+              <div className="text-xs md:text-sm text-gray-600 dark:text-gray-400">
                 {metric.label}
               </div>
             </div>
@@ -214,7 +214,7 @@ export default function UsageDashboard({ selectedBranch = 'main', onBranchChange
 
       {/* API Calls Table */}
       <div className="bg-white dark:bg-gray-800 rounded-xl border border-gray-200 dark:border-gray-700 shadow-sm">
-        <div className="px-6 py-4 border-b border-gray-200 dark:border-gray-700">
+        <div className="px-4 md:px-6 py-4 border-b border-gray-200 dark:border-gray-700">
           <h3 className="text-lg font-semibold text-gray-900 dark:text-white">
             Recent API Calls
           </h3>
@@ -223,7 +223,40 @@ export default function UsageDashboard({ selectedBranch = 'main', onBranchChange
           </p>
         </div>
         
-        <div className="overflow-x-auto">
+        {/* Mobile-friendly table */}
+        <div className="block md:hidden">
+          <div className="divide-y divide-gray-200 dark:divide-gray-700">
+            {apiCalls.slice(0, 10).map((call, index) => (
+              <motion.div
+                key={index}
+                initial={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+                transition={{ delay: index * 0.05 }}
+                className="p-4 hover:bg-gray-50 dark:hover:bg-gray-700/50"
+              >
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-mono text-sm text-gray-600 dark:text-gray-400">
+                    {call.endpoint}
+                  </span>
+                  <span className={getStatusColor(call.status)}>
+                    {call.status}
+                  </span>
+                </div>
+                <div className="flex items-center justify-between text-sm text-gray-500 dark:text-gray-400">
+                  <span>{call.model}</span>
+                  <span>{formatTime(call.timestamp)}</span>
+                </div>
+                <div className="flex items-center justify-between text-xs text-gray-400 dark:text-gray-500 mt-1">
+                  <span>{call.latency.toFixed(0)}ms</span>
+                  <span>${call.cost.toFixed(4)}</span>
+                </div>
+              </motion.div>
+            ))}
+          </div>
+        </div>
+        
+        {/* Desktop table */}
+        <div className="hidden md:block overflow-x-auto">
           <table className="w-full">
             <thead className="bg-gray-50 dark:bg-gray-900/50">
               <tr>

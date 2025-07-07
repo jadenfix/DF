@@ -49,55 +49,61 @@ export default function ModelSelector({ selectedModel, onModelChange }: ModelSel
   const selected = MOONDREAM_MODELS.find(m => m.id === selectedModel) || MOONDREAM_MODELS[0];
 
   return (
-    <div className="relative">
-      <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
-        Select Model
-      </label>
+    <div className="bg-white dark:bg-gray-800 rounded-xl p-4 md:p-6 border border-gray-200 dark:border-gray-700">
+      <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-4">
+        Model Selection
+      </h3>
       
-      <button
-        type="button"
-        className="relative w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-4 py-3 text-left shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
-        onClick={() => setIsOpen(!isOpen)}
-      >
-        <div className="flex items-center justify-between">
-          <div>
-            <div className="font-medium text-gray-900 dark:text-white">
-              {selected.name}
+      <div className="relative">
+        <label className="block text-sm font-medium text-gray-700 dark:text-gray-300 mb-2">
+          Select Model
+        </label>
+        
+        <button
+          type="button"
+          className="relative w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg px-3 md:px-4 py-3 text-left shadow-sm focus:border-blue-500 focus:ring-1 focus:ring-blue-500"
+          onClick={() => setIsOpen(!isOpen)}
+        >
+          <div className="flex items-center justify-between">
+            <div className="min-w-0 flex-1">
+              <div className="font-medium text-gray-900 dark:text-white text-sm md:text-base">
+                {selected.name}
+              </div>
+              <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400 truncate">
+                {selected.params} • {selected.latency} • {selected.cost}
+              </div>
             </div>
-            <div className="text-sm text-gray-500 dark:text-gray-400">
-              {selected.params} • {selected.latency} • {selected.cost}
-            </div>
+            <ChevronDownIcon 
+              className={`h-5 w-5 text-gray-400 transition-transform flex-shrink-0 ml-2 ${isOpen ? 'rotate-180' : ''}`}
+            />
           </div>
-          <ChevronDownIcon 
-            className={`h-5 w-5 text-gray-400 transition-transform ${isOpen ? 'rotate-180' : ''}`}
-          />
-        </div>
-      </button>
+        </button>
 
-      {isOpen && (
-        <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg">
-          {MOONDREAM_MODELS.map((model) => (
-            <button
-              key={model.id}
-              className="w-full px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg"
-              onClick={() => {
-                onModelChange(model.id);
-                setIsOpen(false);
-              }}
-            >
-              <div className="font-medium text-gray-900 dark:text-white">
-                {model.name}
-              </div>
-              <div className="text-sm text-gray-500 dark:text-gray-400">
-                {model.description}
-              </div>
-              <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
-                {model.params} • {model.latency} • {model.cost}
-              </div>
-            </button>
-          ))}
-        </div>
-      )}
+        {isOpen && (
+          <div className="absolute z-10 mt-1 w-full bg-white dark:bg-gray-800 border border-gray-300 dark:border-gray-600 rounded-lg shadow-lg max-h-60 overflow-y-auto">
+            {MOONDREAM_MODELS.map((model) => (
+              <button
+                key={model.id}
+                className="w-full px-3 md:px-4 py-3 text-left hover:bg-gray-50 dark:hover:bg-gray-700 first:rounded-t-lg last:rounded-b-lg"
+                onClick={() => {
+                  onModelChange(model.id);
+                  setIsOpen(false);
+                }}
+              >
+                <div className="font-medium text-gray-900 dark:text-white text-sm md:text-base">
+                  {model.name}
+                </div>
+                <div className="text-xs md:text-sm text-gray-500 dark:text-gray-400">
+                  {model.description}
+                </div>
+                <div className="text-xs text-gray-400 dark:text-gray-500 mt-1">
+                  {model.params} • {model.latency} • {model.cost}
+                </div>
+              </button>
+            ))}
+          </div>
+        )}
+      </div>
     </div>
   );
 }
