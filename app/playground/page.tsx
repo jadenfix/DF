@@ -23,22 +23,22 @@ import {
 
 const SAMPLE_IMAGES = [
   {
-    url: 'https://images.unsplash.com/photo-1547036967-23d11aacaee0?w=400&h=300&fit=crop&auto=format',
+    url: 'https://images.unsplash.com/photo-1578662996442-48f60103fc96?w=400&h=300&fit=crop&auto=format',
     name: 'Abstract Painting',
     prompt: 'Analyze the artistic elements, color composition, brush techniques, and overall aesthetic approach in this abstract artwork. Describe the use of color theory and visual balance.'
   },
   {
-    url: 'https://images.unsplash.com/photo-1554475901-4538ddfbccc2?w=400&h=300&fit=crop&auto=format',
+    url: 'https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?w=400&h=300&fit=crop&auto=format',
     name: 'Scientific Document', 
     prompt: 'Extract and analyze all visible text, mathematical formulas, charts, graphs, or scientific notation in this research document. Identify the field of study and key findings.'
   },
   {
-    url: 'https://images.unsplash.com/photo-1449824913935-59a10b8d2000?w=400&h=300&fit=crop&auto=format',
+    url: 'https://images.unsplash.com/photo-1485827404703-89b55fcc595e?w=400&h=300&fit=crop&auto=format',
     name: 'Complex Urban Scene',
     prompt: 'Count and describe all visible objects, people, vehicles, and architectural elements in this complex scene. Analyze the spatial relationships and urban environment.'
   },
   {
-    url: 'https://images.unsplash.com/photo-1518709268805-4e9042af2176?w=400&h=300&fit=crop&auto=format',
+    url: 'https://images.unsplash.com/photo-1581094288338-2314dddb7ece?w=400&h=300&fit=crop&auto=format',
     name: 'Technical Circuit Diagram',
     prompt: 'Identify and explain all electronic components, connections, labels, and technical specifications visible in this circuit diagram or technical schematic.'
   }
@@ -143,94 +143,40 @@ export default function Playground() {
         })
       });
 
-      let apiSuccess = false;
-      let apiResult: any = null;
-
-      if (response.ok) {
-        const data = await response.json();
-        if (data.success && data.result?.response) {
-          apiSuccess = true;
-          apiResult = data.result;
-          addLog('success', `API response received (${data.result.latency}ms)`, 'Generation');
-        }
+      if (!response.ok) {
+        throw new Error(`API request failed with status ${response.status}`);
       }
 
-      // Use API result if successful, otherwise provide enhanced demo result
-      const newResult: GenerationResult = apiSuccess && apiResult ? {
-        id: apiResult.id || `result_${Date.now()}`,
-        modelId: apiResult.modelId || selectedModel,
+      const data = await response.json();
+      
+      if (!data.success || !data.result?.response) {
+        throw new Error(data.error || 'API response was not successful');
+      }
+
+      // Only use real API results - no fallbacks
+      const newResult: GenerationResult = {
+        id: data.result.id || `result_${Date.now()}`,
+        modelId: data.result.modelId || selectedModel,
         prompt,
-        response: apiResult.response,
-        timestamp: apiResult.timestamp || Date.now(),
-        rewardScore: apiResult.rewardScore || 0.75,
-        latency: apiResult.latency || 200
-      } : {
-        id: `result_${Date.now()}_${Math.random().toString(36).substr(2, 9)}`,
-        modelId: selectedModel,
-        prompt,
-        response: generateDemoResponse(prompt, selectedImage),
-        timestamp: Date.now(),
-        rewardScore: Math.random() * 0.25 + 0.65, // Random score between 65-90%
-        latency: Math.floor(Math.random() * 250) + 150 // Random latency 150-400ms
+        response: data.result.response,
+        timestamp: data.result.timestamp || Date.now(),
+        rewardScore: data.result.rewardScore || 0.75,
+        latency: data.result.latency || 200
       };
 
       setResults(prev => [newResult, ...prev.slice(0, 9)]);
       
       const scorePercent = ((newResult.rewardScore || 0) * 100).toFixed(0);
-      addLog('success', `Response generated successfully! Score: ${scorePercent}%, Latency: ${newResult.latency}ms`, 'Generation');
-      
-      if (!apiSuccess) {
-        addLog('info', 'Using demo response (API unavailable)', 'Generation');
-      }
+      addLog('success', `Real API response received! Score: ${scorePercent}%, Latency: ${newResult.latency}ms`, 'Generation');
       
     } catch (error) {
       console.error('Generation error:', error);
       const errorMessage = error instanceof Error ? error.message : 'Unknown error occurred';
-      addLog('error', `Generation failed: ${errorMessage}`, 'Generation');
-      
-      // Provide fallback demo result even on error
-      const demoResult: GenerationResult = {
-        id: `demo_${Date.now()}`,
-        modelId: selectedModel,
-        prompt,
-        response: generateDemoResponse(prompt, selectedImage),
-        timestamp: Date.now(),
-        rewardScore: Math.random() * 0.2 + 0.6, // Random score between 60-80%
-        latency: Math.floor(Math.random() * 200) + 100
-      };
-      setResults(prev => [demoResult, ...prev.slice(0, 9)]);
-      addLog('info', `Demo response provided (Score: ${((demoResult.rewardScore || 0) * 100).toFixed(0)}%)`, 'Generation');
+      addLog('error', `API call failed: ${errorMessage}`, 'Generation');
+      addLog('error', 'Please check your API configuration and try again', 'Generation');
     } finally {
       setIsGenerating(false);
     }
-  };
-
-  const generateDemoResponse = (prompt: string, imageUrl: string): string => {
-    const lowerPrompt = prompt.toLowerCase();
-    
-    // More sophisticated demo responses based on prompt analysis
-    if (lowerPrompt.includes('abstract') || lowerPrompt.includes('artistic') || lowerPrompt.includes('paint')) {
-      return "This abstract artwork demonstrates a sophisticated use of color theory and compositional balance. The piece features dynamic brushstrokes that create movement across the canvas, with a harmonious palette of complementary colors. The layering technique suggests depth and texture, while the overall composition maintains visual equilibrium through strategic placement of both bold and subtle elements. The artist has employed various techniques including color blending, contrast manipulation, and spatial organization to create a piece that engages the viewer both emotionally and intellectually.";
-    }
-    
-    if (lowerPrompt.includes('text') || lowerPrompt.includes('document') || lowerPrompt.includes('read') || lowerPrompt.includes('ocr')) {
-      return "The document contains structured textual information with clear typographic hierarchy. I can observe several text blocks with different formatting levels, including what appears to be headers, body text, and possibly data tables or lists. The layout follows standard document formatting conventions with appropriate white space and alignment. The text appears to be clearly legible with good contrast against the background. Based on the visible elements, this appears to be a technical or academic document with multiple sections containing detailed information.";
-    }
-    
-    if (lowerPrompt.includes('technical') || lowerPrompt.includes('diagram') || lowerPrompt.includes('engineering')) {
-      return "This technical diagram illustrates a complex system with multiple interconnected components. The schematic shows clear relationships between different elements through connecting lines and standardized symbols. Key components are properly labeled and positioned according to engineering conventions. The diagram includes both functional blocks and detailed specifications, suggesting this is a professional technical document. The layout demonstrates good information hierarchy with primary systems prominently displayed and secondary components appropriately integrated into the overall design flow.";
-    }
-    
-    if (lowerPrompt.includes('scene') || lowerPrompt.includes('objects') || lowerPrompt.includes('detailed')) {
-      return "The scene presents a complex arrangement of multiple objects positioned within a carefully structured environment. Each element demonstrates specific characteristics in terms of size, color, texture, and spatial positioning. The lighting creates interesting shadows and highlights that define the three-dimensional relationships between objects. The composition shows depth through overlapping elements and perspective cues. Environmental context suggests this is either an indoor or controlled setting with deliberate arrangement of elements to create visual interest and narrative meaning.";
-    }
-    
-    if (lowerPrompt.includes('color') || lowerPrompt.includes('palette') || lowerPrompt.includes('visual')) {
-      return "The image exhibits a rich and carefully curated color palette that creates visual harmony and emotional impact. The dominant colors work together through complementary and analogous relationships, creating both contrast and unity. The saturation levels vary strategically throughout the composition, with some areas featuring vibrant, saturated hues while others employ more muted tones. The color distribution creates visual flow and guides the viewer's attention through the composition. Overall, the color choices demonstrate sophisticated understanding of color theory and visual psychology.";
-    }
-    
-    // Default comprehensive response
-    return "This image demonstrates excellent visual composition with multiple layers of meaning and technical sophistication. The visual elements are carefully arranged to create both aesthetic appeal and functional clarity. The use of lighting, color, and spatial organization creates a compelling visual narrative that engages viewers on multiple levels. Technical execution shows attention to detail in both foreground and background elements. The overall composition successfully balances complexity with clarity, making it both visually interesting and easily comprehensible to viewers.";
   };
 
   const handleSaveRewards = async () => {
