@@ -1,303 +1,322 @@
 'use client';
 
-import { motion } from 'framer-motion';
-import { DocumentTextIcon, ChartBarIcon, BeakerIcon, TrophyIcon } from '@heroicons/react/24/outline';
+import { useState } from 'react';
+import { 
+  ArrowTopRightOnSquareIcon, 
+  DocumentTextIcon, 
+  CodeBracketIcon,
+  CircleStackIcon,
+  BookOpenIcon 
+} from '@heroicons/react/24/outline';
+
+interface Paper {
+  id: string;
+  title: string;
+  authors: string[];
+  venue: string;
+  year: number;
+  description: string;
+  category: string;
+  tags: string[];
+  links: {
+    pdf?: string;
+    arxiv?: string;
+    github?: string;
+    huggingface?: string;
+    demo?: string;
+    proceedings?: string;
+  };
+}
+
+const papers: Paper[] = [
+  {
+    id: 'moondream2',
+    title: 'Moondream 2: A tiny vision language model',
+    authors: ['Vikhyat Korrapati', 'Moondream Team'],
+    venue: 'Moondream',
+    year: 2024,
+    description: 'A compact 1.86B parameter vision-language model that achieves competitive performance on visual question answering tasks while being efficient enough to run on edge devices.',
+    category: 'Vision-Language Models',
+    tags: ['VLM', 'Efficiency', 'Edge Computing', 'Visual QA'],
+    links: {
+      huggingface: 'https://huggingface.co/vikhyatk/moondream2',
+      github: 'https://github.com/vikhyat/moondream',
+      demo: 'https://huggingface.co/spaces/vikhyatk/moondream2'
+    }
+  },
+  {
+    id: 'clip',
+    title: 'Learning Transferable Visual Representations from Natural Language Supervision',
+    authors: ['Alec Radford', 'Jong Wook Kim', 'Chris Hallacy', 'Aditya Ramesh', 'Gabriel Goh', 'Sandhini Agarwal', 'Girish Sastry', 'Amanda Askell', 'Pamela Mishkin', 'Jack Clark', 'Gretchen Krueger', 'Ilya Sutskever'],
+    venue: 'ICML',
+    year: 2021,
+    description: 'CLIP learns visual concepts from natural language supervision, demonstrating impressive zero-shot transfer capabilities across various vision tasks.',
+    category: 'Vision-Language Models',
+    tags: ['Vision-Language', 'Zero-shot', 'Contrastive Learning', 'Transfer Learning'],
+    links: {
+      arxiv: 'https://arxiv.org/abs/2103.00020',
+      github: 'https://github.com/openai/CLIP',
+      proceedings: 'https://proceedings.mlr.press/v139/radford21a.html'
+    }
+  },
+  {
+    id: 'llava',
+    title: 'Visual Instruction Tuning',
+    authors: ['Haotian Liu', 'Chunyuan Li', 'Qingyang Wu', 'Yong Jae Lee'],
+    venue: 'NeurIPS',
+    year: 2023,
+    description: 'LLaVA introduces visual instruction tuning to build large multimodal models with enhanced visual understanding and reasoning capabilities.',
+    category: 'Vision-Language Models',
+    tags: ['Instruction Tuning', 'Multimodal', 'Visual Reasoning', 'Large Language Models'],
+    links: {
+      arxiv: 'https://arxiv.org/abs/2304.08485',
+      github: 'https://github.com/haotian-liu/LLaVA',
+      huggingface: 'https://huggingface.co/llava-hf',
+      proceedings: 'https://papers.nips.cc/paper_files/paper/2023/hash/6dcf277ea32ce3288914faf369fe6de0-Abstract-Conference.html'
+    }
+  },
+  {
+    id: 'blip2',
+    title: 'BLIP-2: Bootstrapping Language-Image Pre-training with Frozen Image Encoders and Large Language Models',
+    authors: ['Junnan Li', 'Dongxu Li', 'Silvio Savarese', 'Steven Hoi'],
+    venue: 'ICML',
+    year: 2023,
+    description: 'BLIP-2 achieves state-of-the-art performance on various vision-language tasks by bootstrapping from frozen pre-trained models.',
+    category: 'Vision-Language Models',
+    tags: ['Bootstrapping', 'Frozen Models', 'Vision-Language', 'Pre-training'],
+    links: {
+      arxiv: 'https://arxiv.org/abs/2301.12597',
+      github: 'https://github.com/salesforce/BLIP',
+      huggingface: 'https://huggingface.co/Salesforce/blip2-opt-2.7b',
+      proceedings: 'https://proceedings.mlr.press/v202/li23q.html'
+    }
+  },
+  {
+    id: 'flamingo',
+    title: 'Flamingo: a Visual Language Model for Few-Shot Learning',
+    authors: ['Jean-Baptiste Alayrac', 'Jeff Donahue', 'Pauline Luc', 'Antoine Miech', 'Iain Barr', 'Yana Hasson', 'Karel Lenc', 'Arthur Mensch', 'Katherine Millican', 'Malcolm Reynolds', 'Roman Ring', 'Eliza Rutherford', 'Serkan Cabi', 'Tengda Han', 'Zhitao Gong', 'Sina Samangooei', 'Marianne Monteiro', 'Jacob Menick', 'Sebastian Borgeaud', 'Andy Brock', 'Aida Nematzadeh', 'Sahand Sharifzadeh', 'Mikolaj Binkowski', 'Ricardo Barreira', 'Oriol Vinyals', 'Andrew Zisserman', 'Karen Simonyan'],
+    venue: 'NeurIPS',
+    year: 2022,
+    description: 'Flamingo demonstrates remarkable few-shot learning capabilities on a wide range of multimodal tasks by bridging powerful pre-trained vision and language models.',
+    category: 'Vision-Language Models',
+    tags: ['Few-shot Learning', 'Multimodal', 'Vision-Language', 'Transfer Learning'],
+    links: {
+      arxiv: 'https://arxiv.org/abs/2204.14198',
+      proceedings: 'https://papers.nips.cc/paper_files/paper/2022/hash/960a172bc7fbf0177ccccbb411a7d800-Abstract-Conference.html'
+    }
+  },
+  {
+    id: 'gpt4v',
+    title: 'GPT-4V(ision) System Card',
+    authors: ['OpenAI'],
+    venue: 'OpenAI',
+    year: 2023,
+    description: 'GPT-4V extends GPT-4 with vision capabilities, enabling it to accept image inputs and demonstrate strong performance across diverse vision-language tasks.',
+    category: 'Vision-Language Models',
+    tags: ['GPT-4', 'Vision', 'Multimodal', 'Large Language Models'],
+    links: {
+      pdf: 'https://cdn.openai.com/papers/GPTV_System_Card.pdf'
+    }
+  },
+  {
+    id: 'instructblip',
+    title: 'InstructBLIP: Towards General-purpose Vision-Language Models with Instruction Tuning',
+    authors: ['Wenliang Dai', 'Junnan Li', 'Dongxu Li', 'Anthony Meng Huat Tiong', 'Junqi Zhao', 'Weisheng Wang', 'Boyang Li', 'Pascale Fung', 'Steven Hoi'],
+    venue: 'arXiv',
+    year: 2023,
+    description: 'InstructBLIP introduces comprehensive instruction tuning for vision-language models, achieving strong performance across diverse multimodal tasks.',
+    category: 'Vision-Language Models',
+    tags: ['Instruction Tuning', 'Vision-Language', 'General Purpose', 'Multimodal'],
+    links: {
+      arxiv: 'https://arxiv.org/abs/2305.06500',
+      github: 'https://github.com/salesforce/LAVIS/tree/main/projects/instructblip',
+      huggingface: 'https://huggingface.co/Salesforce/instructblip-vicuna-7b'
+    }
+  },
+  {
+    id: 'minigpt4',
+    title: 'MiniGPT-4: Enhancing Vision-Language Understanding with Advanced Large Language Models',
+    authors: ['Deyao Zhu', 'Jun Chen', 'Xiaoqian Shen', 'Xiang Li', 'Mohamed Elhoseiny'],
+    venue: 'arXiv',
+    year: 2023,
+    description: 'MiniGPT-4 aligns a frozen visual encoder with a frozen LLM using just one projection layer, achieving impressive vision-language generation capabilities.',
+    category: 'Vision-Language Models',
+    tags: ['Vision-Language', 'Large Language Models', 'Alignment', 'Generation'],
+    links: {
+      arxiv: 'https://arxiv.org/abs/2304.10592',
+      github: 'https://github.com/Vision-CAIR/MiniGPT-4',
+      huggingface: 'https://huggingface.co/Vision-CAIR/MiniGPT-4',
+      demo: 'https://minigpt-4.github.io/'
+    }
+  }
+];
+
+const categories = ['All', 'Vision-Language Models', 'Medical VLM', 'Video Understanding', 'Document Understanding'];
 
 export default function ResearchHub() {
-  const benchmarkData = [
-    {
-      task: 'COCO Captions',
-      metric: 'BLEU-4',
-      moondream: '36.2',
-      moondream4bit: '35.9',
-      competitor: '34.0 (CLIP Tiny)',
-      improvement: '+6.5%'
-    },
-    {
-      task: 'VQA v2.0',
-      metric: 'Accuracy',
-      moondream: '71.8%',
-      moondream4bit: '71.5%',
-      competitor: '69.2% (CLIP Tiny)',
-      improvement: '+3.8%'
-    },
-    {
-      task: 'TextVQA',
-      metric: 'Accuracy',
-      moondream: '58.4%',
-      moondream4bit: '58.1%',
-      competitor: '54.2% (LLaVA-1.5)',
-      improvement: '+7.8%'
-    }
-  ];
+  const [selectedCategory, setSelectedCategory] = useState('All');
+  const [searchTerm, setSearchTerm] = useState('');
 
-  const papers = [
-    {
-      title: 'Moondream 2: Tiny Vision Language Model',
-      authors: 'Vikhyat Korrapati',
-      venue: 'Open Source 2024',
-      description: 'A 1.6B parameter vision-language model achieving competitive performance with 4× smaller footprint than alternatives.',
-      github: 'https://github.com/vikhyat/moondream',
-      huggingface: 'https://huggingface.co/vikhyatk/moondream2'
-    }
-  ];
+  const filteredPapers = papers.filter(paper => {
+    const matchesCategory = selectedCategory === 'All' || paper.category === selectedCategory;
+    const matchesSearch = searchTerm === '' || 
+      paper.title.toLowerCase().includes(searchTerm.toLowerCase()) ||
+      paper.authors.some(author => author.toLowerCase().includes(searchTerm.toLowerCase())) ||
+      paper.tags.some(tag => tag.toLowerCase().includes(searchTerm.toLowerCase()));
+    return matchesCategory && matchesSearch;
+  });
 
-  const challenges = [
-    {
-      name: 'Contribute to Moondream',
-      description: 'Join the open source community building the world\'s most efficient vision-language model',
-      deadline: 'Open Source',
-      participants: '25+ contributors',
-      topScore: '8.2k GitHub stars',
-      url: 'https://github.com/vikhyat/moondream'
+  const getLinkIcon = (type: string) => {
+    switch (type) {
+      case 'pdf':
+      case 'arxiv':
+        return <DocumentTextIcon className="h-4 w-4" />;
+      case 'github':
+        return <CodeBracketIcon className="h-4 w-4" />;
+      case 'huggingface':
+        return <CircleStackIcon className="h-4 w-4" />;
+      case 'proceedings':
+        return <BookOpenIcon className="h-4 w-4" />;
+      default:
+        return <ArrowTopRightOnSquareIcon className="h-4 w-4" />;
     }
-  ];
+  };
+
+  const getLinkLabel = (type: string) => {
+    switch (type) {
+      case 'pdf':
+        return 'PDF';
+      case 'arxiv':
+        return 'arXiv';
+      case 'github':
+        return 'GitHub';
+      case 'huggingface':
+        return 'HuggingFace';
+      case 'demo':
+        return 'Demo';
+      case 'proceedings':
+        return 'Proceedings';
+      default:
+        return 'Link';
+    }
+  };
 
   return (
-    <section className="py-20 bg-gradient-to-br from-purple-50 via-white to-blue-50 dark:from-purple-950/20 dark:via-slate-900 dark:to-blue-950/20">
-      <div className="max-w-7xl mx-auto px-4">
-        {/* Header */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          viewport={{ once: true }}
-          className="text-center mb-16"
-        >
-          <h2 className="text-4xl md:text-5xl font-bold text-slate-900 dark:text-white mb-6">
-            Research Hub
-          </h2>
-          <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto mb-8">
-            Pushing the frontier of tiny vision-language models through open research, 
-            community benchmarks, and reproducible experiments.
+    <div className="min-h-screen bg-gradient-to-br from-purple-50 via-blue-50 to-indigo-100 dark:from-gray-900 dark:via-purple-900 dark:to-indigo-900">
+      <div className="container mx-auto px-4 py-12">
+        <div className="text-center mb-12">
+          <h1 className="text-5xl font-bold mb-4 bg-gradient-to-r from-purple-600 to-blue-600 bg-clip-text text-transparent">
+            VLM Research Hub
+          </h1>
+          <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
+            Explore cutting-edge research in Vision-Language Models. Discover papers, implementations, and resources 
+            from the latest breakthroughs in multimodal AI.
           </p>
-          <a
-            href="https://github.com/vikhyat/moondream"
-            target="_blank"
-            rel="noopener noreferrer"
-            className="inline-flex items-center bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-          >
-            <span className="mr-2">💻</span>
-            Explore Moondream on GitHub
-          </a>
-        </motion.div>
-
-        <div className="grid lg:grid-cols-2 gap-12 mb-16">
-          {/* Papers & Publications */}
-          <motion.div
-            initial={{ opacity: 0, x: -20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700"
-          >
-            <div className="flex items-center mb-6">
-              <DocumentTextIcon className="w-8 h-8 text-purple-600 dark:text-purple-400 mr-3" />
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-                Papers & Preprints
-              </h3>
-            </div>
-            
-            <div className="space-y-6">
-              {papers.map((paper, index) => (
-                <div key={index} className="border-l-4 border-purple-500 pl-4">
-                  <h4 className="font-semibold text-slate-900 dark:text-white mb-2">
-                    {paper.title}
-                  </h4>
-                  <p className="text-sm text-slate-600 dark:text-slate-400 mb-2">
-                    {paper.authors} • {paper.venue}
-                  </p>
-                  <p className="text-slate-700 dark:text-slate-300 mb-3">
-                    {paper.description}
-                  </p>
-                  <div className="flex gap-3">
-                    <a 
-                      href={paper.github}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-purple-600 hover:text-purple-700 dark:text-purple-400 dark:hover:text-purple-300 text-sm font-medium"
-                    >
-                      � GitHub
-                    </a>
-                    <a 
-                      href={paper.huggingface}
-                      target="_blank"
-                      rel="noopener noreferrer"
-                      className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 text-sm font-medium"
-                    >
-                      🤗 HuggingFace
-                    </a>
-                  </div>
-                </div>
-              ))}
-            </div>
-          </motion.div>
-
-          {/* Benchmarks & Leaderboard */}
-          <motion.div
-            initial={{ opacity: 0, x: 20 }}
-            whileInView={{ opacity: 1, x: 0 }}
-            viewport={{ once: true }}
-            className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700"
-          >
-            <div className="flex items-center mb-6">
-              <ChartBarIcon className="w-8 h-8 text-blue-600 dark:text-blue-400 mr-3" />
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-                Live Benchmarks
-              </h3>
-            </div>
-            
-            <div className="overflow-x-auto">
-              <table className="w-full text-sm">
-                <thead>
-                  <tr className="border-b border-slate-200 dark:border-slate-600">
-                    <th className="text-left py-2 text-slate-900 dark:text-white">Task</th>
-                    <th className="text-center py-2 text-slate-900 dark:text-white">FP16</th>
-                    <th className="text-center py-2 text-slate-900 dark:text-white">4-bit</th>
-                    <th className="text-center py-2 text-slate-900 dark:text-white">vs Best</th>
-                  </tr>
-                </thead>
-                <tbody>
-                  {benchmarkData.map((row, index) => (
-                    <tr key={index} className="border-b border-slate-100 dark:border-slate-700 last:border-b-0">
-                      <td className="py-3">
-                        <div>
-                          <div className="font-medium text-slate-900 dark:text-white">{row.task}</div>
-                          <div className="text-xs text-slate-500 dark:text-slate-400">{row.metric}</div>
-                        </div>
-                      </td>
-                      <td className="text-center py-3 font-mono text-green-600 dark:text-green-400 font-medium">
-                        {row.moondream}
-                      </td>
-                      <td className="text-center py-3 font-mono text-green-600 dark:text-green-400 font-medium">
-                        {row.moondream4bit}
-                      </td>
-                      <td className="text-center py-3">
-                        <span className="bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-2 py-1 rounded text-xs font-medium">
-                          {row.improvement}
-                        </span>
-                      </td>
-                    </tr>
-                  ))}
-                </tbody>
-              </table>
-            </div>
-            
-            <div className="mt-6 pt-4 border-t border-slate-200 dark:border-slate-600">
-              <p className="text-sm text-slate-600 dark:text-slate-400 text-center">
-                Benchmarks updated from latest Moondream releases
-              </p>
-            </div>
-          </motion.div>
         </div>
 
-        {/* Notebooks & Community Challenges */}
-        <div className="grid md:grid-cols-2 gap-8">
-          {/* Notebooks Gallery */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700"
-          >
-            <div className="flex items-center mb-6">
-              <BeakerIcon className="w-8 h-8 text-teal-600 dark:text-teal-400 mr-3" />
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-                Notebooks & Datasets
-              </h3>
-            </div>
-            
-            <div className="grid gap-4">
-              {[
-                { 
-                  title: 'Moondream Getting Started Guide', 
-                  views: '8.2k', 
-                  runtime: '~5 min',
-                  url: 'https://moondream.ai/c/docs/quickstart'
-                },
-                { 
-                  title: 'Moondream Playground Demo', 
-                  views: '2.3k', 
-                  runtime: 'Interactive',
-                  url: 'https://moondream.ai/playground'
-                },
-                { 
-                  title: 'HuggingFace Model Card', 
-                  views: '545k', 
-                  runtime: '~3 min',
-                  url: 'https://huggingface.co/vikhyatk/moondream2'
-                }
-              ].map((notebook, index) => (
-                <a 
-                  key={index} 
-                  href={notebook.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="flex items-center justify-between p-4 bg-slate-50 dark:bg-slate-700 rounded-lg hover:bg-slate-100 dark:hover:bg-slate-600 transition-colors"
-                >
-                  <div>
-                    <h4 className="font-medium text-slate-900 dark:text-white">{notebook.title}</h4>
-                    <p className="text-sm text-slate-600 dark:text-slate-400">{notebook.views} views • {notebook.runtime}</p>
-                  </div>
-                  <span className="text-blue-600 hover:text-blue-700 dark:text-blue-400 dark:hover:text-blue-300 font-medium text-sm">
-                    Open →
-                  </span>
-                </a>
-              ))}
-            </div>
-          </motion.div>
+        {/* Search and Filter Controls */}
+        <div className="flex flex-col md:flex-row gap-4 mb-8 max-w-4xl mx-auto">
+          <input
+            type="text"
+            placeholder="Search papers, authors, or tags..."
+            value={searchTerm}
+            onChange={(e) => setSearchTerm(e.target.value)}
+            className="flex-1 px-4 py-2 rounded-lg border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-800 focus:ring-2 focus:ring-purple-500 focus:border-transparent"
+          />
+          <div className="flex gap-2 flex-wrap">
+            {categories.map((category) => (
+              <button
+                key={category}
+                onClick={() => setSelectedCategory(category)}
+                className={`px-3 py-1 text-sm rounded-md transition-colors whitespace-nowrap ${
+                  selectedCategory === category
+                    ? 'bg-purple-600 text-white'
+                    : 'bg-white dark:bg-gray-800 text-gray-700 dark:text-gray-300 border border-gray-300 dark:border-gray-600 hover:bg-gray-50 dark:hover:bg-gray-700'
+                }`}
+              >
+                {category}
+              </button>
+            ))}
+          </div>
+        </div>
 
-          {/* Community Challenges */}
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="bg-white dark:bg-slate-800 rounded-2xl p-8 shadow-xl border border-slate-200 dark:border-slate-700"
-          >
-            <div className="flex items-center mb-6">
-              <TrophyIcon className="w-8 h-8 text-yellow-600 dark:text-yellow-400 mr-3" />
-              <h3 className="text-2xl font-bold text-slate-900 dark:text-white">
-                Open Source Project
+        {/* Papers Grid */}
+        <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
+          {filteredPapers.map((paper) => (
+            <div key={paper.id} className="bg-white dark:bg-gray-800 rounded-lg shadow-lg hover:shadow-xl transition-shadow p-6 h-full flex flex-col">
+              {/* Header */}
+              <div className="flex justify-between items-start gap-2 mb-4">
+                <span className="inline-flex items-center px-2.5 py-0.5 rounded-full text-xs font-medium bg-purple-100 text-purple-800 dark:bg-purple-900 dark:text-purple-200">
+                  {paper.category}
+                </span>
+                <span className="text-sm text-gray-500 dark:text-gray-400">
+                  {paper.year}
+                </span>
+              </div>
+              
+              {/* Title and Authors */}
+              <h3 className="text-lg font-semibold text-gray-900 dark:text-white mb-2 leading-tight">
+                {paper.title}
               </h3>
+              <div className="text-sm text-gray-600 dark:text-gray-300 mb-1">
+                <strong>Authors:</strong> {paper.authors.slice(0, 3).join(', ')}
+                {paper.authors.length > 3 && ' et al.'}
+              </div>
+              <div className="text-sm text-gray-600 dark:text-gray-300 mb-4">
+                <strong>Venue:</strong> {paper.venue}
+              </div>
+
+              {/* Description */}
+              <p className="text-sm text-gray-600 dark:text-gray-300 mb-4 flex-1">
+                {paper.description}
+              </p>
+              
+              {/* Tags */}
+              <div className="flex flex-wrap gap-1 mb-4">
+                {paper.tags.map((tag) => (
+                  <span
+                    key={tag}
+                    className="inline-flex items-center px-2 py-1 rounded text-xs font-medium bg-gray-100 text-gray-800 dark:bg-gray-700 dark:text-gray-200"
+                  >
+                    {tag}
+                  </span>
+                ))}
+              </div>
+
+              {/* Links */}
+              <div className="flex flex-wrap gap-2">
+                {Object.entries(paper.links).map(([type, url]) => (
+                  <a
+                    key={type}
+                    href={url}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="inline-flex items-center gap-1 px-3 py-1 text-xs rounded-md border border-gray-300 dark:border-gray-600 bg-white dark:bg-gray-700 text-gray-700 dark:text-gray-300 hover:bg-gray-50 dark:hover:bg-gray-600 transition-colors"
+                  >
+                    {getLinkIcon(type)}
+                    {getLinkLabel(type)}
+                  </a>
+                ))}
+              </div>
             </div>
-            
-            <div className="space-y-6">
-              {challenges.map((challenge, index) => (
-                <a 
-                  key={index} 
-                  href={challenge.url}
-                  target="_blank"
-                  rel="noopener noreferrer"
-                  className="block border border-slate-200 dark:border-slate-600 rounded-lg p-4 hover:bg-slate-50 dark:hover:bg-slate-700 transition-colors"
-                >
-                  <h4 className="font-semibold text-slate-900 dark:text-white mb-2">
-                    {challenge.name}
-                  </h4>
-                  <p className="text-slate-600 dark:text-slate-400 text-sm mb-3">
-                    {challenge.description}
-                  </p>
-                  <div className="flex justify-between items-center text-sm">
-                    <div className="space-y-1">
-                      <div className="text-slate-500 dark:text-slate-400">
-                        🏆 Current: <span className="font-medium">{challenge.topScore}</span>
-                      </div>
-                      <div className="text-slate-500 dark:text-slate-400">
-                        👥 {challenge.participants}
-                      </div>
-                    </div>
-                    <div className="text-right">
-                      <div className="text-green-600 dark:text-green-400 font-medium">
-                        {challenge.deadline}
-                      </div>
-                      <span className="mt-1 bg-green-600 hover:bg-green-700 text-white px-3 py-1 rounded text-xs font-medium transition-colors">
-                        Join Project →
-                      </span>
-                    </div>
-                  </div>
-                </a>
-              ))}
-            </div>
-          </motion.div>
+          ))}
+        </div>
+
+        {filteredPapers.length === 0 && (
+          <div className="text-center py-12">
+            <p className="text-gray-500 dark:text-gray-400 text-lg">
+              No papers found matching your criteria.
+            </p>
+          </div>
+        )}
+
+        {/* Footer */}
+        <div className="text-center mt-16 pt-8 border-t border-gray-200 dark:border-gray-700">
+          <p className="text-gray-600 dark:text-gray-400">
+            Discover and explore the latest breakthroughs in Vision-Language Models
+          </p>
         </div>
       </div>
-    </section>
+    </div>
   );
 }

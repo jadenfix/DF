@@ -84,13 +84,13 @@ export default function Navigation() {
                   href="/playground"
                   className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
                 >
-                  Try Free
+                  Try Free Now
                 </Link>
                 <button
                   onClick={() => signIn()}
-                  className="px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
+                  className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
                 >
-                  Sign In
+                  Get Started
                 </button>
               </div>
             )}
@@ -161,16 +161,16 @@ export default function Navigation() {
                       className="block text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
                       onClick={() => setMobileMenuOpen(false)}
                     >
-                      Try Free
+                      Try Free Now
                     </Link>
                     <button
                       onClick={() => {
                         signIn();
                         setMobileMenuOpen(false);
                       }}
-                      className="w-full px-4 py-2 bg-gray-900 dark:bg-white text-white dark:text-gray-900 rounded-lg font-medium hover:bg-gray-800 dark:hover:bg-gray-100 transition-colors"
+                      className="w-full px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
                     >
-                      Sign In
+                      Get Started
                     </button>
                   </div>
                 )}

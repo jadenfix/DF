@@ -2,13 +2,8 @@
 
 import { motion } from 'framer-motion';
 import Hero from './components/Hero';
-import ResearchHub from './components/ResearchHub';
-import RLPipeline from './components/RLPipeline';
-import RewardFunctionBuilder from './components/RewardFunctionBuilder';
-import ModelGallery from './components/ModelGallery';
-import CodeSandbox from './components/CodeSandbox';
-import EnterpriseInfrastructure from './components/EnterpriseInfrastructure';
-import Roadmap from './components/Roadmap';
+import CompetitorComparison from './components/CompetitorComparison';
+import SimpleRLPipeline from './components/SimpleRLPipeline';
 import Navigation from './components/layout/navigation';
 
 export default function Home() {
@@ -16,114 +11,63 @@ export default function Home() {
     <div className="min-h-screen bg-white dark:bg-black">
       <Navigation />
       
-      {/* Hero Section - Research-First */}
+      {/* Hero Section - Developer-Focused */}
       <Hero />
       
-      {/* Research Hub - New Priority Section */}
-      <ResearchHub />
+      {/* OpenAI vs DreamForge Comparison */}
+      <CompetitorComparison />
       
-      {/* Collapsible RL Pipeline */}
-      <section className="py-16 bg-slate-50 dark:bg-slate-900">
-        <div className="max-w-7xl mx-auto px-4">
-          <motion.div
-            initial={{ opacity: 0, y: 20 }}
-            whileInView={{ opacity: 1, y: 0 }}
-            viewport={{ once: true }}
-            className="text-center mb-12"
-          >
-            <h2 className="text-3xl md:text-4xl font-bold text-slate-900 dark:text-white mb-4">
-              Constitutional AI Pipeline
-            </h2>
-            <p className="text-xl text-slate-600 dark:text-slate-400 max-w-3xl mx-auto">
-              Our VL-RLHF pipeline boosts domain accuracy by 20-30% through human preference 
-              optimization and constitutional safety constraints.
-            </p>
-            <div className="flex justify-center gap-4 mt-6">
-              <a 
-                href="/rl-dashboard" 
-                className="bg-purple-600 hover:bg-purple-700 text-white px-6 py-3 rounded-lg font-medium transition-colors"
-              >
-                � Try RL Dashboard
-              </a>
-              <a 
-                href="/docs/rl-pipeline" 
-                className="border border-purple-600 text-purple-600 hover:bg-purple-600 hover:text-white px-6 py-3 rounded-lg font-medium transition-colors"
-              >
-                � View Documentation
-              </a>
-            </div>
-          </motion.div>
-        </div>
-      </section>
+      {/* Simple RL Pipeline Demo */}
+      <SimpleRLPipeline />
       
-      {/* Collapsed RL Pipeline Details */}
-      <RLPipeline />
-      
-      {/* Reward Function Builder */}
-      <RewardFunctionBuilder />
-      
-      {/* Model Variants with Cost Calculator */}
-      <ModelGallery />
-      
-      {/* Developer SDK & CLI */}
-      <CodeSandbox />
-      
-      {/* Enterprise Infrastructure - Condensed */}
-      <EnterpriseInfrastructure />
-      
-      {/* Roadmap & Community */}
-      <Roadmap />
-      
-      {/* Footer - Updated with Research Links */}
+      {/* Footer - Simple */}
       <footer className="bg-slate-900 text-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">
             <div>
-              <h3 className="text-xl font-bold mb-4">🌔 DreamForge</h3>
+              <h3 className="text-xl font-bold mb-4">🚀 DreamForge</h3>
               <p className="text-slate-300 mb-4">
-                Research platform for Moondream&apos;s tiny vision-language models. 
-                Pushing the frontier of efficient AI through open science.
+                High-performance vision AI that&apos;s faster and cheaper than OpenAI. 
+                Built for developers who want results without the complexity.
               </p>
               <div className="text-sm text-slate-400">
-                Built for the AI research community
+                Enterprise-ready vision AI
               </div>
-            </div>
-            <div>
-              <h4 className="font-semibold mb-4">Research</h4>
-              <ul className="space-y-2 text-slate-300">
-                <li><a href="#" className="hover:text-white transition-colors">📄 Papers & Preprints</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">🏆 Benchmarks & Leaderboards</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">🔬 Notebooks & Datasets</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">🎯 Community Challenges</a></li>
-              </ul>
             </div>
             <div>
               <h4 className="font-semibold mb-4">Product</h4>
               <ul className="space-y-2 text-slate-300">
                 <li><a href="/playground" className="hover:text-white transition-colors">AI Playground</a></li>
-                <li><a href="/playground-advanced" className="hover:text-white transition-colors">Advanced Features</a></li>
                 <li><a href="/docs" className="hover:text-white transition-colors">Documentation</a></li>
                 <li><a href="/pricing" className="hover:text-white transition-colors">Pricing</a></li>
+                <li><a href="/research" className="hover:text-white transition-colors">Research</a></li>
               </ul>
             </div>
             <div>
-              <h4 className="font-semibold mb-4">Community</h4>
+              <h4 className="font-semibold mb-4">Company</h4>
               <ul className="space-y-2 text-slate-300">
-                <li><a href="#" className="hover:text-white transition-colors">⭐ GitHub (8.2k stars)</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">💬 Discord Community</a></li>
-                <li><a href="#" className="hover:text-white transition-colors">📧 Research Grants</a></li>
-                <li><a href="/status" className="hover:text-white transition-colors">🔍 System Status</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">About</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Blog</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Careers</a></li>
+                <li><a href="/status" className="hover:text-white transition-colors">Status</a></li>
+              </ul>
+            </div>
+            <div>
+              <h4 className="font-semibold mb-4">Support</h4>
+              <ul className="space-y-2 text-slate-300">
+                <li><a href="#" className="hover:text-white transition-colors">Help Center</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">API Reference</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Community</a></li>
+                <li><a href="#" className="hover:text-white transition-colors">Contact</a></li>
               </ul>
             </div>
           </div>
           <div className="border-t border-slate-800 mt-12 pt-8 flex flex-col md:flex-row justify-between items-center">
-            <p className="text-slate-400 text-sm">
-              &copy; 2025 DreamForge. Open source research platform.
-            </p>
+            <p className="text-slate-400 text-sm">© 2025 DreamForge. Better vision AI for everyone.</p>
             <div className="flex space-x-6 mt-4 md:mt-0">
-              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Apache 2.0 License</a>
               <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Privacy</a>
-              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Research Ethics</a>
+              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Terms</a>
+              <a href="#" className="text-slate-400 hover:text-white transition-colors text-sm">Security</a>
             </div>
           </div>
         </div>
