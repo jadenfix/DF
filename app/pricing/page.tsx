@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { CheckIcon, SparklesIcon } from '@heroicons/react/24/outline';
-import Navigation from '../components/layout/navigation';
+import Navigation from '../../components/Navigation';
 
 const plans = [
 	{

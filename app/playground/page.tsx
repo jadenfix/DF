@@ -2,7 +2,7 @@
 
 import { useState, useEffect } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
-import Navigation from '../components/layout/navigation';
+import Navigation from '../../components/Navigation';
 import ModelSelector from '../components/features/ModelSelector';
 import RewardBuilder, { RewardWeights } from '../components/features/RewardBuilder';
 import OutputGrid, { GenerationResult } from '../components/features/OutputGrid';

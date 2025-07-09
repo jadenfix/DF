@@ -1,6 +1,6 @@
 'use client';
 import { motion } from 'framer-motion';
-import Navigation from '../components/layout/navigation';
+import Navigation from '../../components/Navigation';
 
 export default function Docs() {
   return (

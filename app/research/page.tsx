@@ -1,7 +1,7 @@
 'use client';
 
 import { motion } from 'framer-motion';
-import Navigation from '../components/layout/navigation';
+import Navigation from '../../components/Navigation';
 import { DocumentTextIcon, ChartBarIcon, BeakerIcon, TrophyIcon, ArrowDownTrayIcon, PlayIcon } from '@heroicons/react/24/outline';
 
 export default function ResearchPage() {
@@ -197,16 +197,19 @@ export default function ResearchPage() {
             className="flex flex-wrap justify-center gap-4 mb-12"
           >
             {[
-              { label: 'Published Papers', value: '12', icon: '📄' },
-              { label: 'Open Datasets', value: '6', icon: '📊' },
-              { label: 'Benchmark Tasks', value: '8', icon: '🏆' },
-              { label: 'GitHub Stars', value: '8.2k', icon: '⭐' }
+              { label: 'Published Papers', value: '12', icon: DocumentTextIcon },
+              { label: 'Open Datasets', value: '6', icon: ChartBarIcon },
+              { label: 'Benchmark Tasks', value: '8', icon: TrophyIcon },
+              { label: 'GitHub Stars', value: '8.2k', icon: BeakerIcon }
             ].map((stat, index) => (
               <div key={index} className="bg-white dark:bg-slate-800 px-6 py-4 rounded-lg shadow-md">
-                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400">
-                  {stat.icon} {stat.value}
+                <div className="flex items-center justify-center mb-2">
+                  <stat.icon className="w-6 h-6 text-blue-600 dark:text-blue-400" />
                 </div>
-                <div className="text-sm text-slate-600 dark:text-slate-400">
+                <div className="text-2xl font-bold text-blue-600 dark:text-blue-400 text-center">
+                  {stat.value}
+                </div>
+                <div className="text-sm text-slate-600 dark:text-slate-400 text-center">
                   {stat.label}
                 </div>
               </div>
@@ -251,7 +254,7 @@ export default function ResearchPage() {
             className="text-center mb-16"
           >
             <h2 className="text-4xl font-bold text-slate-900 dark:text-white mb-4">
-              📄 Research Papers
+              Research Papers
             </h2>
             <p className="text-xl text-slate-600 dark:text-slate-400">
               Peer-reviewed publications and preprints advancing tiny VLM research
@@ -272,7 +275,7 @@ export default function ResearchPage() {
               >
                 {paper.featured && (
                   <div className="inline-flex items-center gap-2 bg-purple-100 dark:bg-purple-900/30 text-purple-800 dark:text-purple-300 px-3 py-1 rounded-full text-sm font-medium mb-4">
-                    ⭐ Featured Paper
+                    Featured Paper
                   </div>
                 )}
                 

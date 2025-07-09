@@ -10,10 +10,10 @@ export default function Hero() {
   const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false);
 
   const realTimeMetrics = [
-    { label: 'Models Deployed', value: '8.2k+', icon: '🚀' },
-    { label: 'Avg Latency', value: '15ms', icon: '⚡' },
-    { label: 'Uptime', value: '99.9%', icon: '🎯' },
-    { label: 'GitHub Stars', value: '8.2k', icon: '⭐' }
+    { label: 'Models Deployed', value: '8.2k+', icon: '' },
+    { label: 'Avg Latency', value: '15ms', icon: '' },
+    { label: 'Uptime', value: '99.9%', icon: '' },
+    { label: 'GitHub Stars', value: '8.2k', icon: '' }
   ];
 
   return (
@@ -63,9 +63,9 @@ export default function Hero() {
                 transition={{ delay: 0.2 }}
                 className="inline-flex items-center gap-2 bg-green-100 dark:bg-green-900/30 text-green-800 dark:text-green-300 px-4 py-2 rounded-full text-sm font-medium mb-6"
               >
-                <span>💰</span>
-                <span>Save 95% vs OpenAI Vision</span>
-                <span className="bg-green-600 text-white px-2 py-0.5 rounded-full text-xs">ROI</span>
+                <span className="w-2 h-2 bg-green-600 dark:bg-green-500 rounded-full"></span>
+                <span>Powered by Moondream 1.6B</span>
+                <span className="bg-green-600 text-white px-2 py-0.5 rounded-full text-xs">NEW</span>
               </motion.div>
 
               {/* Main Headline */}
@@ -76,11 +76,11 @@ export default function Hero() {
                 className="text-5xl md:text-7xl font-bold text-slate-900 dark:text-white mb-6 leading-tight"
               >
                 <span className="bg-gradient-to-r from-blue-600 to-purple-600 bg-clip-text text-transparent">
-                  Vision AI
+                  Moondream
                 </span>
                 <br />
                 <span className="text-3xl md:text-4xl text-slate-700 dark:text-slate-300">
-                  That Actually Saves Money
+                  Vision AI That Just Works
                 </span>
               </motion.h1>
 
@@ -91,10 +91,10 @@ export default function Hero() {
                 transition={{ delay: 0.4 }}
                 className="text-xl md:text-2xl text-slate-600 dark:text-slate-400 mb-8 max-w-2xl"
               >
-                Same quality as OpenAI Vision, but{' '}
-                <span className="text-green-600 dark:text-green-400 font-semibold">20x faster</span>{' '}
-                and{' '}
-                <span className="text-green-600 dark:text-green-400 font-semibold">95% cheaper</span>
+                Revolutionary 1.6B parameter model that delivers{' '}
+                <span className="text-green-600 dark:text-green-400 font-semibold">OpenAI-level accuracy</span>{' '}
+                at{' '}
+                <span className="text-green-600 dark:text-green-400 font-semibold">95% lower cost</span>
               </motion.p>
 
               {/* Business Metrics */}
@@ -139,7 +139,7 @@ export default function Hero() {
                   Try Free Now
                 </button>
                 <button className="border-2 border-slate-300 dark:border-slate-600 text-slate-700 dark:text-slate-300 hover:border-blue-500 dark:hover:border-blue-400 hover:text-blue-600 dark:hover:text-blue-400 px-8 py-4 rounded-lg font-semibold text-lg transition-all flex items-center justify-center gap-3">
-                  <span>💰</span>
+                  <span className="w-2 h-2 bg-green-600 dark:bg-green-500 rounded-full"></span>
                   Calculate Savings
                 </button>
               </motion.div>
@@ -152,22 +152,22 @@ export default function Hero() {
                 className="flex flex-wrap gap-6 justify-center lg:justify-start text-sm"
               >
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">💰</span>
+                  <span className="w-2 h-2 bg-green-600 dark:bg-green-500 rounded-full"></span>
                   <span className="text-slate-600 dark:text-slate-400">Cost Savings:</span>
                   <span className="font-semibold text-green-600 dark:text-green-400">95% vs OpenAI</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">⚡</span>
+                  <span className="w-2 h-2 bg-blue-600 dark:bg-blue-500 rounded-full"></span>
                   <span className="text-slate-600 dark:text-slate-400">Speed:</span>
                   <span className="font-semibold text-slate-900 dark:text-white">20x Faster</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">🎯</span>
+                  <span className="w-2 h-2 bg-purple-600 dark:bg-purple-500 rounded-full"></span>
                   <span className="text-slate-600 dark:text-slate-400">Accuracy:</span>
                   <span className="font-semibold text-slate-900 dark:text-white">Same Quality</span>
                 </div>
                 <div className="flex items-center gap-2">
-                  <span className="text-lg">🚀</span>
+                  <span className="w-2 h-2 bg-orange-600 dark:bg-orange-500 rounded-full"></span>
                   <span className="text-slate-600 dark:text-slate-400">Setup:</span>
                   <span className="font-semibold text-slate-900 dark:text-white">5 minutes</span>
                 </div>

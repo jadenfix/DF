@@ -9,7 +9,7 @@ import ModelGallery from './components/ModelGallery';
 import CodeSandbox from './components/CodeSandbox';
 import EnterpriseInfrastructure from './components/EnterpriseInfrastructure';
 import Roadmap from './components/Roadmap';
-import Navigation from './components/layout/navigation';
+import Navigation from '../components/Navigation';
 
 export default function Home() {
   return (

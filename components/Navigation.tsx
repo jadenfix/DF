@@ -1,23 +1,30 @@
+'use client';
+
 import { useState } from 'react';
 import Link from 'next/link';
 import { useSession, signIn, signOut } from 'next-auth/react';
+import { useTheme } from 'next-themes';
 import { motion, AnimatePresence } from 'framer-motion';
 import { 
   Bars3Icon,
   XMarkIcon,
   UserCircleIcon,
-  SparklesIcon
+  SparklesIcon,
+  SunIcon,
+  MoonIcon
 } from '@heroicons/react/24/outline';
 
 const navigation = [
   { name: 'Home', href: '/' },
   { name: 'Playground', href: '/playground' },
+  { name: 'Research', href: '/research' },
   { name: 'Pricing', href: '/pricing' },
   { name: 'Docs', href: '/docs' },
 ];
 
 export default function Navigation() {
   const { data: session, status } = useSession();
+  const { theme, setTheme } = useTheme();
   const [mobileMenuOpen, setMobileMenuOpen] = useState(false);
 
   return (
@@ -51,16 +58,23 @@ export default function Navigation() {
 
           {/* Desktop Auth */}
           <div className="hidden md:flex items-center space-x-4">
+            {/* Theme Toggle */}
+            <button
+              onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+              className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+              aria-label="Toggle theme"
+            >
+              {theme === 'dark' ? (
+                <SunIcon className="h-5 w-5" />
+              ) : (
+                <MoonIcon className="h-5 w-5" />
+              )}
+            </button>
+            
             {status === 'loading' ? (
               <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse" />
             ) : session ? (
               <div className="flex items-center space-x-4">
-                <Link
-                  href="/playground"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Playground
-                </Link>
                 <div className="relative group">
                   <button className="flex items-center space-x-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors">
                     <UserCircleIcon className="h-6 w-6" />
@@ -80,12 +94,6 @@ export default function Navigation() {
               </div>
             ) : (
               <div className="flex items-center space-x-4">
-                <Link
-                  href="/playground"
-                  className="text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors"
-                >
-                  Try Free Now
-                </Link>
                 <button
                   onClick={() => signIn()}
                   className="px-4 py-2 bg-blue-600 text-white rounded-lg font-medium hover:bg-blue-700 transition-colors"
@@ -134,6 +142,22 @@ export default function Navigation() {
               ))}
               
               <div className="pt-4 border-t border-gray-200 dark:border-gray-700">
+                {/* Theme Toggle Mobile */}
+                <div className="flex items-center justify-between mb-4">
+                  <span className="text-gray-600 dark:text-gray-400">Theme</span>
+                  <button
+                    onClick={() => setTheme(theme === 'dark' ? 'light' : 'dark')}
+                    className="p-2 text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors rounded-lg hover:bg-gray-100 dark:hover:bg-gray-700"
+                    aria-label="Toggle theme"
+                  >
+                    {theme === 'dark' ? (
+                      <SunIcon className="h-5 w-5" />
+                    ) : (
+                      <MoonIcon className="h-5 w-5" />
+                    )}
+                  </button>
+                </div>
+                
                 {status === 'loading' ? (
                   <div className="w-8 h-8 bg-gray-200 dark:bg-gray-700 rounded-full animate-pulse" />
                 ) : session ? (
@@ -156,13 +180,6 @@ export default function Navigation() {
                   </div>
                 ) : (
                   <div className="space-y-4">
-                    <Link
-                      href="/playground"
-                      className="block text-gray-600 dark:text-gray-400 hover:text-gray-900 dark:hover:text-white transition-colors font-medium"
-                      onClick={() => setMobileMenuOpen(false)}
-                    >
-                      Try Free Now
-                    </Link>
                     <button
                       onClick={() => {
                         signIn();

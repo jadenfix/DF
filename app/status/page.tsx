@@ -2,7 +2,7 @@
 
 import { motion } from 'framer-motion';
 import { CheckCircleIcon, ExclamationTriangleIcon, ClockIcon } from '@heroicons/react/24/outline';
-import Navigation from '../components/layout/navigation';
+import Navigation from '../../components/Navigation';
 
 const services = [
   {

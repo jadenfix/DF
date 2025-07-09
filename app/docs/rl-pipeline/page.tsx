@@ -11,7 +11,7 @@ import {
   ShieldCheckIcon,
   RocketLaunchIcon
 } from '@heroicons/react/24/outline';
-import Navigation from '../../components/layout/navigation';
+import Navigation from '../../../components/Navigation';
 
 interface AccordionItemProps {
   title: string;

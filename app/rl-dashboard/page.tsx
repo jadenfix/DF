@@ -11,7 +11,7 @@ import {
   PlayIcon,
   StopIcon
 } from '@heroicons/react/24/outline';
-import Navigation from '../components/layout/navigation';
+import Navigation from '../../components/Navigation';
 
 interface TrainingJob {
   id: string;

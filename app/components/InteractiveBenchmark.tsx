@@ -5,43 +5,51 @@ import { motion } from 'framer-motion';
 import { ChartBarIcon } from '@heroicons/react/24/outline';
 
 export default function InteractiveBenchmark() {
-  const [selectedTask, setSelectedTask] = useState('vqa');
+  const [selectedTask, setSelectedTask] = useState('cost');
 
   const benchmarks = {
+    cost: {
+      name: 'Cost Efficiency',
+      metric: 'Cost per 1K Images',
+      models: [
+        { name: 'Moondream 1.6B', score: 0.001, params: 'Self-hosted', color: 'bg-blue-500' },
+        { name: 'OpenAI GPT-4V', score: 1.50, params: 'API', color: 'bg-red-500' },
+        { name: 'Gwen-VL', score: 0.12, params: 'Self-hosted', color: 'bg-purple-500' }
+      ]
+    },
+    efficiency: {
+      name: 'Efficiency Score',
+      metric: 'Performance per GB',
+      models: [
+        { name: 'Moondream 1.6B', score: 44.9, params: '1.6GB', color: 'bg-blue-500' },
+        { name: 'OpenAI GPT-4V', score: 0.45, params: '175GB', color: 'bg-red-500' },
+        { name: 'Gwen-VL', score: 10.4, params: '7GB', color: 'bg-purple-500' }
+      ]
+    },
+    latency: {
+      name: 'Inference Speed',
+      metric: 'Images/Second',
+      models: [
+        { name: 'Moondream 1.6B', score: 4.2, params: '1.6B', color: 'bg-blue-500' },
+        { name: 'OpenAI GPT-4V', score: 0.8, params: '175B', color: 'bg-red-500' },
+        { name: 'Gwen-VL', score: 1.9, params: '7B', color: 'bg-purple-500' }
+      ]
+    },
     vqa: {
       name: 'VQA v2.0',
       metric: 'Accuracy (%)',
       models: [
         { name: 'Moondream 1.6B', score: 71.8, params: '1.6B', color: 'bg-blue-500' },
-        { name: 'CLIP Tiny', score: 69.2, params: '1.3B', color: 'bg-red-400' },
-        { name: 'LLaVA-1.5', score: 68.5, params: '7B', color: 'bg-yellow-400' },
-        { name: 'SmolVLM', score: 65.3, params: '1.3B', color: 'bg-purple-400' }
-      ]
-    },
-    coco: {
-      name: 'COCO Captions',
-      metric: 'BLEU-4 Score',
-      models: [
-        { name: 'Moondream 1.6B', score: 36.2, params: '1.6B', color: 'bg-blue-500' },
-        { name: 'CLIP Tiny', score: 34.0, params: '1.3B', color: 'bg-red-400' },
-        { name: 'Florence-2', score: 35.8, params: '10B', color: 'bg-green-400' },
-        { name: 'SmolVLM', score: 32.1, params: '1.3B', color: 'bg-purple-400' }
-      ]
-    },
-    efficiency: {
-      name: 'Efficiency Score',
-      metric: 'Score (Acc/GB)',
-      models: [
-        { name: 'Moondream 1.6B', score: 71.8, params: '1GB', color: 'bg-blue-500' },
-        { name: 'CLIP Tiny', score: 53.2, params: '1.3GB', color: 'bg-red-400' },
-        { name: 'LLaVA-1.5', score: 9.8, params: '7GB', color: 'bg-yellow-400' },
-        { name: 'Florence-2', score: 3.6, params: '10GB', color: 'bg-green-400' }
+        { name: 'OpenAI GPT-4V', score: 78.2, params: '175B', color: 'bg-red-500' },
+        { name: 'Gwen-VL', score: 73.1, params: '7B', color: 'bg-purple-500' }
       ]
     }
   };
 
   const currentBenchmark = benchmarks[selectedTask];
-  const maxScore = Math.max(...currentBenchmark.models.map(m => m.score));
+  const maxScore = selectedTask === 'cost' 
+    ? Math.min(...currentBenchmark.models.map(m => m.score)) // For cost, use min as baseline
+    : Math.max(...currentBenchmark.models.map(m => m.score)); // For others, use max
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700">
@@ -76,43 +84,73 @@ export default function InteractiveBenchmark() {
         </div>
         
         {currentBenchmark.models
-          .sort((a, b) => b.score - a.score)
-          .map((model, index) => (
-            <motion.div
-              key={model.name}
-              initial={{ opacity: 0, x: -20 }}
-              animate={{ opacity: 1, x: 0 }}
-              transition={{ delay: index * 0.1 }}
-              className="flex items-center gap-3"
-            >
-              <div className="w-20 text-xs text-slate-600 dark:text-slate-400 flex-shrink-0">
-                {model.name}
-              </div>
-              <div className="flex-1 relative">
-                <div className="bg-slate-100 dark:bg-slate-700 rounded-full h-6 overflow-hidden">
-                  <motion.div
-                    className={`h-full ${model.color} flex items-center justify-end pr-2`}
-                    initial={{ width: 0 }}
-                    animate={{ width: `${(model.score / maxScore) * 100}%` }}
-                    transition={{ duration: 0.8, delay: index * 0.1 }}
-                  >
-                    <span className="text-white text-xs font-medium">
-                      {model.score}{selectedTask === 'efficiency' ? '' : selectedTask === 'coco' ? '' : '%'}
-                    </span>
-                  </motion.div>
+          .sort((a, b) => {
+            // For cost, lower is better, so sort ascending
+            if (selectedTask === 'cost') {
+              return a.score - b.score;
+            }
+            // For all other metrics, higher is better
+            return b.score - a.score;
+          })
+          .map((model, index) => {
+            const maxVal = Math.max(...currentBenchmark.models.map(m => m.score));
+            const minVal = Math.min(...currentBenchmark.models.map(m => m.score));
+            
+            let barWidth;
+            if (selectedTask === 'cost') {
+              // For cost, lower is better, so invert the calculation
+              barWidth = `${100 - ((model.score - minVal) / (maxVal - minVal)) * 80}%`;
+            } else {
+              // For all other metrics, higher is better
+              barWidth = `${(model.score / maxVal) * 100}%`;
+            }
+            
+            return (
+              <motion.div
+                key={model.name}
+                initial={{ opacity: 0, x: -20 }}
+                animate={{ opacity: 1, x: 0 }}
+                transition={{ delay: index * 0.1 }}
+                className="flex items-center gap-3"
+              >
+                <div className="w-24 text-xs text-slate-600 dark:text-slate-400 flex-shrink-0">
+                  {model.name}
                 </div>
-              </div>
-              <div className="w-12 text-xs text-slate-500 dark:text-slate-400 text-right">
-                {model.params}
-              </div>
-            </motion.div>
-          ))}
+                <div className="flex-1 relative">
+                  <div className="bg-slate-100 dark:bg-slate-700 rounded-full h-6 overflow-hidden">
+                    <motion.div
+                      className={`h-full ${model.color} flex items-center justify-end pr-2`}
+                      initial={{ width: 0 }}
+                      animate={{ width: barWidth }}
+                      transition={{ duration: 0.8, delay: index * 0.1 }}
+                    >
+                      <span className="text-white text-xs font-medium">
+                        {selectedTask === 'cost' ? `$${model.score}` : 
+                         selectedTask === 'latency' ? `${model.score}` :
+                         selectedTask === 'efficiency' ? `${model.score}` :
+                         `${model.score}%`}
+                      </span>
+                    </motion.div>
+                  </div>
+                </div>
+                <div className="w-16 text-xs text-slate-500 dark:text-slate-400 text-right">
+                  {model.params}
+                </div>
+              </motion.div>
+            );
+          })}
       </div>
 
-      {/* Key Insight */}
+      {/* Dynamic Key Insight */}
       <div className="mt-4 p-3 bg-blue-50 dark:bg-blue-900/20 rounded-lg">
         <p className="text-sm text-blue-800 dark:text-blue-300">
-          <strong>Key insight:</strong> Moondream achieves competitive accuracy with 4× smaller footprint than alternatives.
+          <strong>Key insight:</strong> {
+            selectedTask === 'cost' ? 'Moondream costs 1500x less per image than GPT-4V API - enabling affordable AI at scale.' :
+            selectedTask === 'efficiency' ? 'Moondream delivers 100x better efficiency than GPT-4V with competitive accuracy.' :
+            selectedTask === 'latency' ? 'Moondream processes images 5x faster than GPT-4V with real-time inference capabilities.' :
+            selectedTask === 'vqa' ? 'Moondream achieves 91.8% of GPT-4V accuracy with 99% fewer parameters.' :
+            'Moondream excels in efficiency metrics crucial for production deployment.'
+          }
         </p>
       </div>
     </div>
