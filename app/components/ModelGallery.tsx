@@ -73,7 +73,7 @@ export default function ModelGallery() {
             Moondream Model Variants
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Deploy Moondream's 1.6B parameter vision-language model with different quantization levels. AI-powered insights included.
+            Deploy Moondream&apos;s 1.6B parameter vision-language model with different quantization levels. AI-powered insights included.
           </p>
         </motion.div>
 
@@ -207,7 +207,7 @@ export default function ModelGallery() {
                 </tr>
               </thead>
               <tbody>
-                {models.map((model, index) => (
+                {models.map((model) => (
                   <tr
                     key={model.id}
                     className={`border-b border-slate-100 dark:border-slate-700 ${

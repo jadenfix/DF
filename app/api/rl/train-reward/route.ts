@@ -6,8 +6,7 @@ export async function POST(request: NextRequest) {
     const { 
       learningRate = 1e-5, 
       batchSize = 32, 
-      epochs = 10,
-      feedbackId 
+      epochs = 10 
     } = body;
 
     // Simulate reward model training

@@ -1,6 +1,6 @@
 'use client';
 
-import { motion } from 'framer-motion';
+
 import Hero from './components/Hero';
 // import CompetitorComparison from './components/CompetitorComparison';
 // import SimpleRLPipeline from './components/SimpleRLPipeline';
@@ -104,7 +104,7 @@ export default function Home() {
               Moondream vs OpenAI vs Gwen
             </h2>
             <p className="text-xl text-gray-600 dark:text-gray-300 max-w-3xl mx-auto">
-              See how Moondream's revolutionary architecture delivers superior ROI with unmatched efficiency.
+              See how Moondream&apos;s revolutionary architecture delivers superior ROI with unmatched efficiency.
             </p>
           </div>
 
@@ -276,7 +276,7 @@ export default function Home() {
           <div className="bg-white dark:bg-slate-800 rounded-2xl shadow-xl p-8 max-w-4xl mx-auto">
             <div className="text-center mb-8">
               <h3 className="text-2xl font-bold text-gray-900 dark:text-white mb-4">Calculate Your Savings</h3>
-              <p className="text-gray-600 dark:text-gray-300">See how much you'll save by switching from OpenAI or Gwen to Moondream</p>
+              <p className="text-gray-600 dark:text-gray-300">See how much you&apos;ll save by switching from OpenAI or Gwen to Moondream</p>
             </div>
             
             <div className="grid md:grid-cols-3 gap-8">
@@ -549,7 +549,7 @@ export default function Home() {
                 Ready to Experience Moondream?
               </h3>
               <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-                Join 5,000+ developers who've already saved millions by switching to Moondream. No contracts, no enterprise sales calls.
+                Join 5,000+ developers who&apos;ve already saved millions by switching to Moondream. No contracts, no enterprise sales calls.
               </p>
               <div className="flex flex-col sm:flex-row gap-4 justify-center">
                 <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">

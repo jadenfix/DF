@@ -96,7 +96,7 @@ export default function Pricing() {
 							Transparent Pricing
 						</h2>
 						<p className="text-lg text-muted-foreground max-w-2xl mx-auto">
-							All plans include full access to Moondream's vision AI capabilities. 
+							All plans include full access to Moondream&apos;s vision AI capabilities. 
 							Scale as you grow with predictable, flat-rate pricing.
 						</p>
 					</motion.div>

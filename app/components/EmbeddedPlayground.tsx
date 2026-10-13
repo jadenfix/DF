@@ -164,7 +164,7 @@ export default function EmbeddedPlayground({ isOpen, onClose }: EmbeddedPlaygrou
                   🌔 Moondream Playground
                 </h2>
                 <p className="text-slate-600 dark:text-slate-400">
-                  Try Moondream's vision-language capabilities instantly
+                  Try Moondream&apos;s vision-language capabilities instantly
                 </p>
               </div>
               <button

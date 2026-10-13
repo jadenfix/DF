@@ -15,7 +15,7 @@ import Navigation from '../../../components/Navigation';
 
 interface AccordionItemProps {
   title: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   children: React.ReactNode;
   isOpen: boolean;
   onToggle: () => void;
@@ -74,7 +74,7 @@ export default function RLPipelineDocs() {
               Constitutional AI Training Pipeline
             </h1>
             <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-              Learn how DreamForge implements Moondream's reinforcement learning pipeline 
+              Learn how DreamForge implements Moondream&apos;s reinforcement learning pipeline 
               to create safer, more capable vision-language models.
             </p>
           </motion.div>
@@ -222,7 +222,7 @@ export default function RLPipelineDocs() {
             >
               <div className="space-y-4">
                 <p className="text-slate-700 dark:text-slate-300">
-                  Use Proximal Policy Optimization (PPO) to fine-tune Moondream's policy 
+                  Use Proximal Policy Optimization (PPO) to fine-tune Moondream&apos;s policy 
                   using the trained reward model, with KL divergence constraints.
                 </p>
 

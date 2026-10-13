@@ -41,133 +41,13 @@ export default function ResearchPage() {
     }
   ];
 
-  const benchmarkData = [
-    {
-      benchmark: 'VQA v2.0',
-      description: 'Visual Question Answering on real-world images',
-      metric: 'Accuracy (%)',
-      moondreamFP16: 71.8,
-      moondream4bit: 71.5,
-      competitors: [
-        { name: 'LLaVA-1.5-7B', score: 68.5, params: '7B' },
-        { name: 'CLIP-ViT-B', score: 69.2, params: '1.3B' },
-        { name: 'SmolVLM', score: 65.3, params: '1.3B' }
-      ],
-      dataset: 'https://visualqa.org/',
-      lastUpdated: '2025-01-15'
-    },
-    {
-      benchmark: 'COCO Captions',
-      description: 'Image captioning on MS COCO dataset',
-      metric: 'BLEU-4 Score',
-      moondreamFP16: 36.2,
-      moondream4bit: 35.9,
-      competitors: [
-        { name: 'Florence-2-Large', score: 35.8, params: '10B' },
-        { name: 'CLIP-ViT-B', score: 34.0, params: '1.3B' },
-        { name: 'SmolVLM', score: 32.1, params: '1.3B' }
-      ],
-      dataset: 'https://cocodataset.org/',
-      lastUpdated: '2025-01-15'
-    },
-    {
-      benchmark: 'TextVQA',
-      description: 'Question answering on images with text',
-      metric: 'Accuracy (%)',
-      moondreamFP16: 58.4,
-      moondream4bit: 58.1,
-      competitors: [
-        { name: 'LLaVA-1.5-7B', score: 54.2, params: '7B' },
-        { name: 'Florence-2-Base', score: 56.1, params: '3B' },
-        { name: 'SmolVLM', score: 48.7, params: '1.3B' }
-      ],
-      dataset: 'https://textvqa.org/',
-      lastUpdated: '2025-01-15'
-    }
-  ];
+  
 
-  const notebooks = [
-    {
-      title: 'Fine-tune Moondream on Custom Dataset',
-      description: 'Complete pipeline for training Moondream on your own image-text pairs',
-      runtime: '~20 min',
-      views: '2.3k',
-      difficulty: 'Intermediate',
-      colab: '#',
-      github: '#'
-    },
-    {
-      title: 'Constitutional AI Reward Function Training',
-      description: 'Implement RLHF with custom reward functions for domain adaptation',
-      runtime: '~45 min',
-      views: '1.8k',
-      difficulty: 'Advanced',
-      colab: '#',
-      github: '#'
-    },
-    {
-      title: 'Benchmark Evaluation Suite',
-      description: 'Run standardized benchmarks and compare with other models',
-      runtime: '~10 min',
-      views: '1.2k',
-      difficulty: 'Beginner',
-      colab: '#',
-      github: '#'
-    },
-    {
-      title: 'Edge Deployment with ONNX/TensorRT',
-      description: 'Deploy quantized models for real-time inference on edge devices',
-      runtime: '~30 min',
-      views: '950',
-      difficulty: 'Advanced',
-      colab: '#',
-      github: '#'
-    }
-  ];
+  
 
-  const challenges = [
-    {
-      name: 'Zero-Shot Prompt Engineering Challenge',
-      description: 'Design the most effective prompts for general-purpose VQA tasks without fine-tuning',
-      deadline: 'August 15, 2025',
-      participants: 127,
-      prize: '$2,000',
-      currentLeader: 'research_team_42',
-      currentScore: '74.2% VQA Accuracy',
-      rules: '#',
-      leaderboard: '#'
-    },
-    {
-      name: 'Tiny Model Efficiency Race',
-      description: 'Achieve highest accuracy with <1GB memory footprint on mobile devices',
-      deadline: 'September 30, 2025',
-      participants: 89,
-      prize: '$3,000',
-      currentLeader: 'mobile_ai_lab',
-      currentScore: '71.8% @ 996MB',
-      rules: '#',
-      leaderboard: '#'
-    }
-  ];
+  
 
-  const datasets = [
-    {
-      name: 'DreamBench-VQA',
-      description: 'Curated VQA dataset for evaluating tiny vision-language models',
-      size: '50k image-question pairs',
-      domains: ['Indoor scenes', 'Outdoor environments', 'Documents', 'Charts'],
-      download: '#',
-      paper: '#'
-    },
-    {
-      name: 'Constitutional-VL',
-      description: 'Human preference dataset for training constitutional AI rewards',
-      size: '25k preference annotations',
-      domains: ['Safety', 'Helpfulness', 'Honesty', 'Harmlessness'],
-      download: '#',
-      paper: '#'
-    }
-  ];
+  
 
   return (
     <div className="min-h-screen bg-white dark:bg-black">

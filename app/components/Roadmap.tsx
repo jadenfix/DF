@@ -14,7 +14,7 @@ interface RoadmapItem {
   description: string;
   status: 'completed' | 'in-progress' | 'planned';
   quarter: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   features: string[];
 }
 
@@ -118,7 +118,7 @@ export default function Roadmap() {
             Product Roadmap
           </h2>
           <p className="text-xl text-slate-600 dark:text-slate-300 max-w-3xl mx-auto">
-            Our development roadmap shows what's coming next. We're building the future of vision-language AI.
+            Our development roadmap shows what&apos;s coming next. We&apos;re building the future of vision-language AI.
           </p>
         </motion.div>
 

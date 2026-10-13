@@ -176,7 +176,7 @@ const CompetitorComparison: React.FC = () => {
                 Calculate Your Savings
               </h3>
               <p className="text-gray-600 mb-6">
-                See how much you'll save by switching from OpenAI to DreamForge for your vision AI needs.
+                See how much you&apos;ll save by switching from OpenAI to DreamForge for your vision AI needs.
               </p>
               <div className="space-y-4">
                 <div className="flex items-center">

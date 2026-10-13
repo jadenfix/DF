@@ -92,9 +92,9 @@ export class MoondreamClient {
         
         return result.caption || '';
       }
-    } catch (err: any) {
-      console.error('[Moondream] API error:', err?.message || err);
-      throw new Error(`Moondream API error: ${err?.message || 'Unknown error'}`);
+    } catch (err) {
+      console.error('[Moondream] API error:', err instanceof Error ? err.message : err);
+      throw new Error(`Moondream API error: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   }
 
@@ -154,9 +154,9 @@ export class MoondreamClient {
       }
       
       return result.caption || '';
-    } catch (err: any) {
-      console.error('[Moondream] Caption API error:', err?.message || err);
-      throw new Error(`Moondream Caption API error: ${err?.message || 'Unknown error'}`);
+    } catch (err) {
+      console.error('[Moondream] Caption API error:', err instanceof Error ? err.message : err);
+      throw new Error(`Moondream Caption API error: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   }
 
@@ -195,9 +195,9 @@ export class MoondreamClient {
       }
       
       return result.answer || '';
-    } catch (err: any) {
-      console.error('[Moondream] Query API error:', err?.message || err);
-      throw new Error(`Moondream Query API error: ${err?.message || 'Unknown error'}`);
+    } catch (err) {
+      console.error('[Moondream] Query API error:', err instanceof Error ? err.message : err);
+      throw new Error(`Moondream Query API error: ${err instanceof Error ? err.message : 'Unknown error'}`);
     }
   }
 }

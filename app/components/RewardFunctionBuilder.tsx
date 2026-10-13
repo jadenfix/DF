@@ -4,9 +4,7 @@ import { motion } from 'framer-motion';
 import { useState } from 'react';
 import { 
   PlusIcon, 
-  TrashIcon, 
-  ArrowUpIcon, 
-  ArrowDownIcon 
+  TrashIcon 
 } from '@heroicons/react/24/outline';
 
 interface RewardMetric {
@@ -67,7 +65,7 @@ export default function RewardFunctionBuilder() {
     setMetrics(metrics.filter(m => m.id !== id));
   };
 
-  const updateMetric = (id: string, field: keyof RewardMetric, value: any) => {
+  const updateMetric = <K extends keyof RewardMetric>(id: string, field: K, value: RewardMetric[K]) => {
     setMetrics(metrics.map(m => 
       m.id === id ? { ...m, [field]: value } : m
     ));
@@ -195,7 +193,7 @@ export default function RewardFunctionBuilder() {
                         </label>
                         <select
                           value={metric.operator}
-                          onChange={(e) => updateMetric(metric.id, 'operator', e.target.value)}
+                          onChange={(e) => updateMetric(metric.id, 'operator', e.target.value === 'minimize' ? 'minimize' : 'maximize')}
                           className="w-full px-3 py-2 border border-slate-300 dark:border-slate-600 rounded-lg bg-white dark:bg-slate-700 text-slate-900 dark:text-white"
                         >
                           <option value="maximize">Maximize</option>

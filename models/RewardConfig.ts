@@ -6,4 +6,5 @@ const RewardConfigSchema = new mongoose.Schema({
   latency: { type: Number, default: -1 },
 }, { timestamps: true });
 
-export default mongoose.models.RewardConfig || mongoose.model('RewardConfig', RewardConfigSchema); 
+export type RewardConfigRecord = mongoose.InferSchemaType<typeof RewardConfigSchema>;
+export default (mongoose.models.RewardConfig as mongoose.Model<RewardConfigRecord> | undefined) || mongoose.model<RewardConfigRecord>('RewardConfig', RewardConfigSchema); 

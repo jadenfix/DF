@@ -46,7 +46,7 @@ export async function POST(request: NextRequest) {
   }
 }
 
-function calculateRewardScore(response: string, weights: any = {}, latency: number): number {
+function calculateRewardScore(response: string, weights: Record<string, number> = {}, latency: number): number {
   // Default weights if not provided
   const defaultWeights = {
     accuracy: 1.0,
@@ -60,7 +60,7 @@ function calculateRewardScore(response: string, weights: any = {}, latency: numb
   const w = { ...defaultWeights, ...weights };
   
   // Simple heuristics for scoring
-  const responseLength = response.length;
+  
   const wordCount = response.split(' ').length;
   const hasDetails = wordCount > 20;
   const isCreative = response.toLowerCase().includes('unique') || 

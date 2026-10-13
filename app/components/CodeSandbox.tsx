@@ -253,7 +253,7 @@ export default function CodeSandbox() {
                   Result
                 </h4>
                 <div className="text-slate-600 dark:text-slate-300 text-sm">
-                  Click "Run Analysis" to see the AI response...
+                  Click &quot;Run Analysis&quot; to see the AI response...
                 </div>
               </div>
             </div>

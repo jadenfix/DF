@@ -275,7 +275,7 @@ const SimpleRLPipeline: React.FC = () => {
               Ready to Get Started?
             </h3>
             <p className="text-blue-100 mb-6 max-w-2xl mx-auto">
-              Join thousands of developers who've already made the switch to faster, cheaper, and more accurate vision AI.
+              Join thousands of developers who&apos;ve already made the switch to faster, cheaper, and more accurate vision AI.
             </p>
             <div className="flex flex-col sm:flex-row gap-4 justify-center">
               <button className="bg-white text-blue-600 px-8 py-3 rounded-lg font-semibold hover:bg-gray-100 transition-colors">

@@ -18,7 +18,7 @@ export async function GET(req: NextRequest) {
     return NextResponse.json({ error: 'Unauthorized' }, { status: 401 });
   }
   await db();
-  const RewardModel = RewardConfig as any;
+  const RewardModel = RewardConfig;
   const doc = await RewardModel.findOne({}).sort({ updatedAt: -1 });
   return NextResponse.json({ data: doc });
 }
@@ -33,7 +33,7 @@ export async function PUT(req: NextRequest) {
     return NextResponse.json({ error: parse.error.flatten() }, { status: 400 });
   }
   await db();
-  const RewardModel = RewardConfig as any;
+  const RewardModel = RewardConfig;
   const doc = await RewardModel.findOneAndUpdate({}, parse.data, { upsert: true, new: true });
   return NextResponse.json({ data: doc });
 } 

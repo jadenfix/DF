@@ -10,4 +10,5 @@ const AnalysisSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Analysis || mongoose.model('Analysis', AnalysisSchema); 
+export type AnalysisRecord = mongoose.InferSchemaType<typeof AnalysisSchema>;
+export default (mongoose.models.Analysis as mongoose.Model<AnalysisRecord> | undefined) || mongoose.model<AnalysisRecord>('Analysis', AnalysisSchema); 

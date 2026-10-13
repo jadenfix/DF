@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowsPointingOutIcon,
@@ -27,7 +27,7 @@ interface ABTestViewProps {
   onOutputSelect?: (output: ModelOutput) => void;
 }
 
-export default function ABTestView({ prompt, imageUrl, onOutputSelect }: ABTestViewProps) {
+export default function ABTestView({ prompt, onOutputSelect }: ABTestViewProps) {
   const [outputs, setOutputs] = useState<ModelOutput[]>([]);
   const [selectedOutput, setSelectedOutput] = useState<number | null>(null);
   const [isGenerating, setIsGenerating] = useState(false);
@@ -245,7 +245,7 @@ export default function ABTestView({ prompt, imageUrl, onOutputSelect }: ABTestV
                       </div>
                     ) : (
                       <div className="text-gray-400 text-sm">
-                        Click "Run A/B Test" to generate responses
+                        Click &quot;Run A/B Test&quot; to generate responses
                       </div>
                     )}
                   </div>

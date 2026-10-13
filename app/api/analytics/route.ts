@@ -52,7 +52,7 @@ export async function GET(request: NextRequest) {
 function generateRecentCalls(branch: string, count: number) {
   const endpoints = ['/api/generate', '/api/retrain', '/api/analyze'];
   const models = ['moondream2', 'moondream2-text', 'moondream2-detailed'];
-  const calls: any[] = [];
+  const calls: Array<{ timestamp: number; endpoint: string; model: string; latency: number; cost: number; status: string; branch: string }> = [];
   
   for (let i = 0; i < count; i++) {
     calls.push({

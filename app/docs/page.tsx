@@ -20,7 +20,7 @@ export default function Docs() {
             </span>
           </h1>
           <p className="text-xl text-slate-700 dark:text-gray-300 max-w-3xl mx-auto">
-            Deploy Moondream's vision-language AI with enterprise-grade infrastructure and AI-powered insights
+            Deploy Moondream&apos;s vision-language AI with enterprise-grade infrastructure and AI-powered insights
           </p>
         </motion.div>
 
@@ -28,7 +28,7 @@ export default function Docs() {
           <section id="getting-started">
             <h2 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">Getting Started with Moondream</h2>
             <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
-              <p className="text-slate-800 dark:text-slate-200">DreamForge is the premier deployment platform for Moondream, the world's most efficient vision-language model. With just 1.6B parameters and a 1GB footprint, Moondream delivers enterprise-grade visual AI.</p>
+              <p className="text-slate-800 dark:text-slate-200">DreamForge is the premier deployment platform for Moondream, the world&apos;s most efficient vision-language model. With just 1.6B parameters and a 1GB footprint, Moondream delivers enterprise-grade visual AI.</p>
               
               <h3 className="text-slate-900 dark:text-white">Core Capabilities</h3>
               <ul className="text-slate-800 dark:text-slate-200">
@@ -41,9 +41,9 @@ export default function Docs() {
               
               <h3 className="text-slate-900 dark:text-white">Quick Start</h3>
               <ol className="text-slate-800 dark:text-slate-200">
-                <li>Visit the <a href="/playground" className="text-purple-600 hover:text-purple-700 dark:text-purple-400">AI Playground</a> to test Moondream's capabilities</li>
+                <li>Visit the <a href="/playground" className="text-purple-600 hover:text-purple-700 dark:text-purple-400">AI Playground</a> to test Moondream&apos;s capabilities</li>
                 <li>Upload an image or select from our curated examples</li>
-                <li>Try different prompts: "Describe this image", "What objects do you see?", "Read the text in this image"</li>
+                <li>Try different prompts: &quot;Describe this image&quot;, &quot;What objects do you see?&quot;, &quot;Read the text in this image&quot;</li>
                 <li>Explore the <a href="/rl-dashboard" className="text-purple-600 hover:text-purple-700 dark:text-purple-400">RL Dashboard</a> for constitutional AI training</li>
                 <li>Read the <a href="/docs/rl-pipeline" className="text-purple-600 hover:text-purple-700 dark:text-purple-400">RL Pipeline Documentation</a> to understand our training methodology</li>
               </ol>
@@ -54,7 +54,7 @@ export default function Docs() {
             <h2 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">Moondream API Reference</h2>
             <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
               <h3 className="text-slate-900 dark:text-white">Image Analysis Endpoint</h3>
-              <p className="text-slate-800 dark:text-slate-200">Deploy Moondream's vision-language capabilities through our RESTful API:</p>
+              <p className="text-slate-800 dark:text-slate-200">Deploy Moondream&apos;s vision-language capabilities through our RESTful API:</p>
               
               <pre className="bg-gray-100 dark:bg-gray-800 p-4 rounded-lg overflow-x-auto">
                 <code>{`curl -X POST https://api.dreamforge.ai/v1/analyze \\
@@ -126,7 +126,7 @@ export default function Docs() {
           <section id="rl-training">
             <h2 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">Constitutional AI Training Pipeline</h2>
             <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
-              <p className="text-slate-800 dark:text-slate-200">DreamForge's Constitutional AI training pipeline transforms generic Moondream models into domain-specific experts that deliver measurable business value.</p>
+              <p className="text-slate-800 dark:text-slate-200">DreamForge&apos;s Constitutional AI training pipeline transforms generic Moondream models into domain-specific experts that deliver measurable business value.</p>
               
               <h3 className="text-slate-900 dark:text-white">Business Impact of Constitutional AI Training</h3>
               <div className="grid md:grid-cols-2 gap-6 my-6">
@@ -190,7 +190,7 @@ export default function Docs() {
           <section id="architecture">
             <h2 className="text-3xl font-bold mb-6 text-slate-900 dark:text-white">DreamForge Architecture</h2>
             <div className="prose prose-lg prose-slate dark:prose-invert max-w-none">
-              <p className="text-slate-800 dark:text-slate-200">DreamForge provides enterprise-grade infrastructure for deploying Moondream's vision-language capabilities at scale.</p>
+              <p className="text-slate-800 dark:text-slate-200">DreamForge provides enterprise-grade infrastructure for deploying Moondream&apos;s vision-language capabilities at scale.</p>
               
               <h3 className="text-slate-900 dark:text-white">Core Components</h3>
               <ul className="text-slate-800 dark:text-slate-200">

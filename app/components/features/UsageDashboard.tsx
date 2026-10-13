@@ -15,7 +15,7 @@ interface UsageMetric {
   label: string;
   value: string;
   change: number;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   color: string;
 }
 
@@ -37,7 +37,7 @@ interface UsageDashboardProps {
 export default function UsageDashboard({ selectedBranch = 'main', onBranchChange }: UsageDashboardProps) {
   const [metrics, setMetrics] = useState<UsageMetric[]>([]);
   const [apiCalls, setApiCalls] = useState<ApiCall[]>([]);
-  const [loading, setLoading] = useState(false);
+  
   const [timeRange, setTimeRange] = useState('24h');
 
   const branches = ['main', 'feature/reward-tuning', 'feature/ui-improvements', 'staging'];
