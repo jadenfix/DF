@@ -170,7 +170,7 @@ export default function RLDashboard() {
 
           {/* Pipeline Stages */}
           <div className="mb-12">
-            <div className="flex justify-between items-center mb-8">
+            <div className="flex flex-wrap justify-between items-center gap-4 mb-8">
               {stages.map((stage, index) => {
                 const Icon = stage.icon;
                 const isActive = currentJob.stage === stage.id;

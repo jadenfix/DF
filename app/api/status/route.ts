@@ -1,24 +1,23 @@
 import { NextResponse } from 'next/server';
 
-export async function GET() {
-  try {
-    const status = {
-      status: 'healthy',
-      timestamp: new Date().toISOString(),
-      version: '1.0.0',
-      services: {
-        api: 'operational',
-        database: 'operational',
-        ai: 'operational',
-      },
-      uptime: process.uptime(),
-    };
+export const dynamic = 'force-dynamic';
 
-    return NextResponse.json(status);
-  } catch (error) {
-    return NextResponse.json(
-      { status: 'error', error: 'Service unavailable' },
-      { status: 503 }
-    );
-  }
-} 
+export async function GET() {
+  // Configuration is observable here; remote service availability is not.
+  const databaseConfigured = Boolean(process.env.MONGODB_URI?.trim()) &&
+    !process.env.MONGODB_URI?.includes('your-');
+  const visionConfigured = Boolean(process.env.MOONDREAM_KEY?.trim()) &&
+    process.env.MOONDREAM_KEY !== 'your-real-moondream-api-key';
+  return NextResponse.json({
+    status: databaseConfigured && visionConfigured ? 'unverified' : 'degraded',
+    timestamp: new Date().toISOString(),
+    version: '1.0.0',
+    services: {
+      api: 'operational',
+      database: databaseConfigured ? 'configured_unverified' : 'not_configured',
+      ai: visionConfigured ? 'configured_unverified' : 'not_configured',
+    },
+    dependenciesVerified: false,
+    uptime: process.uptime(),
+  });
+}
