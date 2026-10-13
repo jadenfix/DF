@@ -202,4 +202,5 @@ Run `npm test -- tests/moondream-config.test.ts` for the request-time credential
 regression. A compiled frontend is not proof of live inference: configure a real
 Moondream key and verify upload → inference → displayed response before recording
 that workflow. Existing reward scores use heuristics and are not measured model
-accuracy. The current ESLint9/Next14 configuration also needs compatibility work.
+accuracy. ESLint is pinned to the major supported by Next14's lint command. Lint now runs and
+reports existing source violations; passing compilation does not mean lint is clean.
