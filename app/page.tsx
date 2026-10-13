@@ -10,6 +10,7 @@ export default function Home() {
   return (
     <div className="min-h-screen bg-white dark:bg-gray-900">
       <Navigation />
+      <main>
       
       {/* Hero Section - Moondream-Focused */}
       <Hero />
@@ -565,6 +566,7 @@ export default function Home() {
       </section>
       
       {/* Footer - Simple */}
+      </main>
       <footer className="bg-slate-900 dark:bg-slate-950 text-white py-16">
         <div className="max-w-7xl mx-auto px-4">
           <div className="grid md:grid-cols-4 gap-8">

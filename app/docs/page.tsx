@@ -7,7 +7,7 @@ export default function Docs() {
     <div className="min-h-screen bg-white dark:bg-black">
       <Navigation />
       
-      <div className="max-w-7xl mx-auto px-4 py-20">
+      <main className="max-w-7xl mx-auto px-4 py-20">
         <motion.div
           className="text-center mb-16"
           initial={{ opacity: 0, y: 20 }}
@@ -257,7 +257,7 @@ NEXTAUTH_URL=http://localhost:3000`}</code>
             </div>
           </section>
         </div>
-      </div>
+      </main>
     </div>
   );
 }

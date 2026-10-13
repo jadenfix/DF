@@ -3,9 +3,9 @@ import { test, expect } from '@playwright/test';
 test.describe('Home Page Tests', () => {
   test('home page loads and shows main heading', async ({ page }) => {
     await page.goto('/');
-    await expect(page.getByRole('heading', { name: 'DreamForge' })).toBeVisible();
-    // Check that Get Started button is visible
-    await expect(page.getByRole('button', { name: /Get Started/i })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Moondream.*Vision AI That Just Works/ })).toBeVisible();
+    // The hero CTA is available before optional authentication is configured.
+    await expect(page.getByRole('button', { name: 'Try Free Now' })).toBeVisible();
   });
 
   test('home page is responsive across devices', async ({ page, isMobile }) => {
@@ -30,7 +30,7 @@ test.describe('Home Page Tests', () => {
     }
     
     // Universal tests for all devices
-    await expect(page.getByRole('heading', { name: 'DreamForge' })).toBeVisible();
+    await expect(page.getByRole('heading', { name: /Moondream.*Vision AI That Just Works/ })).toBeVisible();
   });
 
   test('navigation works on all devices', async ({ page, isMobile }) => {
@@ -38,7 +38,7 @@ test.describe('Home Page Tests', () => {
     
     if (isMobile) {
       // Mobile navigation test
-      const mobileMenuButton = page.locator('button[aria-label*="menu"], [data-testid="mobile-menu"]');
+      const mobileMenuButton = page.getByRole('button', { name: 'Toggle navigation' });
       if (await mobileMenuButton.count() > 0) {
         await mobileMenuButton.first().click();
         await page.waitForTimeout(300);
@@ -46,7 +46,7 @@ test.describe('Home Page Tests', () => {
     }
     
     // Test navigation links
-    const navLinks = page.locator('nav a, [role="navigation"] a');
+    const navLinks = page.locator('nav a:visible');
     const linkCount = await navLinks.count();
     
     if (linkCount > 0) {
@@ -57,8 +57,9 @@ test.describe('Home Page Tests', () => {
       const docsLink = navLinks.filter({ hasText: /docs/i });
       if (await docsLink.count() > 0) {
         await docsLink.first().click();
-        await page.waitForLoadState('networkidle');
-        expect(page.url()).toContain('docs');
+        await page.waitForLoadState('domcontentloaded');
+        await expect(page).toHaveURL(/\/docs$/);
+        await expect(page.getByRole('heading', { name: 'DreamForge Documentation' })).toBeVisible();
       }
     }
   });
@@ -103,15 +104,15 @@ test.describe('Home Page Tests', () => {
     await page.goto('/');
     
     // Test button interactions
-    const buttons = page.locator('button');
+    const buttons = page.locator('button:visible');
     if (await buttons.count() > 0) {
       const button = buttons.first();
       
       // Ensure minimum touch target size
       const boundingBox = await button.boundingBox();
       if (boundingBox) {
-        expect(boundingBox.height).toBeGreaterThan(44);
-        expect(boundingBox.width).toBeGreaterThan(44);
+        expect(boundingBox.height).toBeGreaterThanOrEqual(44);
+        expect(boundingBox.width).toBeGreaterThanOrEqual(44);
       }
       
       // Test touch interaction
@@ -120,13 +121,13 @@ test.describe('Home Page Tests', () => {
     }
     
     // Test link interactions
-    const links = page.locator('a').filter({ hasText: /.+/ });
+    const links = page.locator('nav a:visible').filter({ hasText: /.+/ });
     if (await links.count() > 0) {
       const link = links.first();
       const boundingBox = await link.boundingBox();
       
       if (boundingBox) {
-        expect(boundingBox.height).toBeGreaterThan(32);
+        expect(boundingBox.height).toBeGreaterThanOrEqual(44);
       }
     }
   });
