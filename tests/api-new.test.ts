@@ -1,303 +1,128 @@
+// Header/request contracts with explicit provider/database mocks. Device headers
+// do not simulate rendered mobile layout or a real network.
 import { NextRequest } from 'next/server';
-import { POST as analyzeHandler } from '../app/api/analyze/route';
-import { POST as feedbackHandler } from '../app/api/feedback/route';
-import { GET as statusHandler } from '../app/api/status/route';
-import { POST as generateHandler } from '../app/api/generate/route';
-import { POST as retrainHandler } from '../app/api/retrain/route';
-import { GET as analyticsHandler } from '../app/api/analytics/route';
+import { POST as analyze } from '../app/api/analyze/route';
+import { POST as feedback } from '../app/api/feedback/route';
+import { GET as status } from '../app/api/status/route';
+import { POST as generate } from '../app/api/generate/route';
+import { POST as retrain } from '../app/api/retrain/route';
+import { GET as analytics } from '../app/api/analytics/route';
+import { moondream } from '../lib/moondream';
+import db from '../lib/mongodb';
+import Feedback from '../models/Feedback';
 
-// Mock user agents for different mobile devices
-const MOBILE_USER_AGENTS = {
-  'iPhone': 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1',
-  'Android': 'Mozilla/5.0 (Linux; Android 11; SM-G991B) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/89.0.4389.72 Mobile Safari/537.36',
-  'iPad': 'Mozilla/5.0 (iPad; CPU OS 15_0 like Mac OS X) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/15.0 Mobile/15E148 Safari/604.1'
-};
+jest.mock('../lib/moondream', () => ({ moondream: { analyzeImage: jest.fn() } }));
+jest.mock('../lib/mongodb', () => ({ __esModule: true, default: jest.fn() }));
+jest.mock('../models/Feedback', () => ({ __esModule: true, default: { create: jest.fn() } }));
+const agents = { iPhone: 'Mozilla/5.0 (iPhone; CPU iPhone OS 15_0 like Mac OS X)',
+  Android: 'Mozilla/5.0 (Linux; Android 11; SM-G991B)', iPad: 'Mozilla/5.0 (iPad; CPU OS 15_0 like Mac OS X)' };
+const devices = Object.keys(agents) as (keyof typeof agents)[];
+const image = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
+const request = (path: string, body?: unknown, device: keyof typeof agents = 'iPhone') => new NextRequest(`http://localhost/api/${path}`, {
+  method: body === undefined ? 'GET' : 'POST', headers: { 'content-type': 'application/json',
+    'user-agent': agents[device], 'viewport-width': device === 'iPad' ? '1024' : '375', 'cache-control': 'no-cache' },
+  ...(body === undefined ? {} : { body: JSON.stringify(body) }),
+});
+const vision = jest.mocked(moondream.analyzeImage);
+const save = jest.mocked(Feedback.create);
+const original = { vision: process.env.MOONDREAM_KEY, mongo: process.env.MONGODB_URI };
 
-// Helper to create mobile-optimized request
-const createMobileRequest = (url: string, options: any, device: keyof typeof MOBILE_USER_AGENTS = 'iPhone') => {
-  const headers = {
-    ...options.headers,
-    'user-agent': MOBILE_USER_AGENTS[device],
-    'viewport-width': device === 'iPad' ? '1024' : '375',
-    'accept': 'application/json, text/plain, */*',
-    'accept-encoding': 'gzip, deflate, br',
-    'connection': 'keep-alive'
-  };
-  
-  return new NextRequest(url, { ...options, headers });
-};
-
-describe('API route handlers - Mobile Optimized', () => {
-  describe('Status API - Cross Device', () => {
-    it('GET /api/status returns healthy status on desktop', async () => {
-      const response = await statusHandler();
+describe('API request contracts across device headers', () => {
+  beforeEach(() => {
+    jest.resetAllMocks(); process.env.MOONDREAM_KEY = 'fixture-only-key'; delete process.env.MONGODB_URI;
+    vision.mockResolvedValue('Fixture mobile analysis'); jest.mocked(db).mockResolvedValue(undefined as never);
+    save.mockResolvedValue({} as never);
+  });
+  afterAll(() => {
+    for (const [name, value] of Object.entries({ MOONDREAM_KEY: original.vision, MONGODB_URI: original.mongo })) {
+      if (value === undefined) delete process.env[name]; else process.env[name] = value;
+    }
+  });
+  it('desktop status describes configuration, not measured health', async () => {
+    expect(await (await status()).json()).toMatchObject({ status: 'degraded', dependenciesVerified: false });
+  });
+  it.each(devices)('%s status is independent of device headers', async () => {
+    const response = await status(); expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ dependenciesVerified: false, services: { ai: 'configured_unverified' } });
+  });
+  it('requires image input on mobile', async () => {
+    expect((await analyze(request('analyze', { prompt: 'Describe' }))).status).toBe(400);
+    expect(vision).not.toHaveBeenCalled();
+  });
+  it('returns the supplied small-image provider result', async () => {
+    const response = await analyze(request('analyze', { image, prompt: 'Describe quickly' }));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ success: true, result: 'Fixture mobile analysis' });
+    expect(vision).toHaveBeenCalledWith(image, 'Describe quickly');
+  });
+  it.each(devices)('forwards %s analysis requests', async device => {
+    const prompt = `Analysis from ${device}`;
+    expect((await analyze(request('analyze', { image, prompt }, device))).status).toBe(200);
+    expect(vision).toHaveBeenCalledWith(image, prompt);
+  });
+  it('generation returns provider output and finite heuristic reward', async () => {
+    const response = await generate(request('generate', { modelId: 'moondream2', image, prompt: 'Quick mobile test' }));
+    expect(response.status).toBe(200);
+    const body = await response.json(); expect(body.success).toBe(true);
+    expect(body.result.response).toBe('Fixture mobile analysis');
+    expect(Number.isFinite(body.result.rewardScore)).toBe(true);
+  });
+  it('generation with missing credentials refuses provider work', async () => {
+    delete process.env.MOONDREAM_KEY;
+    expect((await generate(request('generate', { image, prompt: 'Quick test' }))).status).toBe(503);
+    expect(vision).not.toHaveBeenCalled();
+  });
+  it('generation provider failures remain failures', async () => {
+    vision.mockRejectedValue(new Error('Provider unavailable'));
+    const response = await generate(request('generate', { image, prompt: 'Quick test' }));
+    expect(response.status).toBe(500);
+    expect(await response.json()).toEqual({ success: false, error: 'Generation failed' });
+  });
+  it('analytics returns the prototype data shape, without asserting live metrics', async () => {
+    const response = await analytics(request('analytics?branch=staging&timeRange=24h'));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toMatchObject({ branch: 'staging', timeRange: '24h', metrics: expect.any(Object), recentCalls: expect.any(Array) });
+  });
+  it('retraining validates missing reward weights', async () => {
+    const response = await retrain(request('retrain', { model: 'moondream2', rewardFunction: 'mobile_optimized', datasetSize: 'small' }));
+    expect(response.status).toBe(400);
+    expect(await response.json()).toEqual({ success: false, error: 'Reward weights are required' });
+  });
+  it('retraining returns a prototype plan, not proof of a trained model', async () => {
+    const response = await retrain(request('retrain', { rewardWeights: { accuracy: 1 } }));
+    expect(response.status).toBe(200);
+    expect((await response.json()).steps).toEqual(expect.arrayContaining([expect.objectContaining({ step: 'complete' })]));
+  });
+  it('invalid analysisId is explicitly labeled demo feedback and not persisted', async () => {
+    const response = await feedback(request('feedback', { analysisId: 'invalid-id', feedback: 'positive' }));
+    expect(response.status).toBe(200);
+    expect(await response.json()).toEqual({ success: true, message: 'Feedback received (demo mode)' });
+    expect(save).not.toHaveBeenCalled();
+  });
+  it.each(devices)('persists valid %s feedback', async device => {
+    const comment = `Great answer from ${device}`;
+    expect((await feedback(request('feedback', { analysisId: '507f1f77bcf86cd799439011', feedback: 'positive', rewardScore: 1, comment }, device))).status).toBe(200);
+    expect(save).toHaveBeenCalledWith(expect.objectContaining({ upvote: true, comment }));
+  });
+  it('accepts supported sentiment alongside touch metadata', async () => {
+    expect((await feedback(request('feedback', { analysisId: '507f1f77bcf86cd799439012', feedback: 'negative', rewardScore: 0.5,
+      comment: 'Touch feedback', interactionType: 'touch', sessionDuration: 1500 }))).status).toBe(200);
+    expect(save).toHaveBeenCalledWith(expect.objectContaining({ upvote: false, comment: 'Touch feedback' }));
+  });
+  it('a delayed provider is awaited before returning its result', async () => {
+    let resolve: (value: string) => void = () => { throw new Error('No pending provider request'); };
+    vision.mockImplementation(() => new Promise<string>(done => { resolve = done; }));
+    const pending = analyze(request('analyze', { image, prompt: 'Slow connection' }));
+    await new Promise(done => setImmediate(done));
+    expect(vision).toHaveBeenCalledTimes(1);
+    resolve('Delayed fixture answer');
+    expect((await (await pending).json()).result).toBe('Delayed fixture answer');
+  });
+  it('concurrent status requests each return a complete honest response', async () => {
+    const responses = await Promise.all(devices.map(() => status()));
+    for (const response of responses) {
       expect(response.status).toBe(200);
-      const json = await response.json();
-      expect(json.status).toBe('healthy');
-    });
-
-    it('GET /api/status returns healthy status on mobile devices', async () => {
-      // Test with different mobile devices
-      for (const device of ['iPhone', 'Android', 'iPad'] as const) {
-        const response = await statusHandler();
-        expect(response.status).toBe(200);
-        const json = await response.json();
-        expect(json.status).toBe('healthy');
-        expect(json.timestamp).toBeDefined();
-      }
-    });
-  });
-
-  describe('Image Analysis API - Mobile Optimized', () => {
-    const testImageSmall = 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==';
-    
-    it('POST /api/analyze validates required fields on mobile', async () => {
-      const req = createMobileRequest('http://localhost:3000/api/analyze', {
-        method: 'POST',
-        body: JSON.stringify({ prompt: 'Describe' }), // Missing image
-        headers: { 'content-type': 'application/json' }
-      });
-      
-      const response = await analyzeHandler(req);
-      expect(response.status).toBe(400);
-      const json = await response.json();
-      expect(json.success).toBe(false);
-      expect(json.error).toMatch(/required/);
-    });
-
-    it('POST /api/analyze handles small images efficiently on mobile', async () => {
-      // Mock the moondream module
-      jest.mock('../lib/moondream', () => ({
-        moondream: {
-          analyzeImage: jest.fn().mockResolvedValue('Mobile-optimized analysis result')
-        }
-      }));
-
-      const req = createMobileRequest('http://localhost:3000/api/analyze', {
-        method: 'POST',
-        body: JSON.stringify({ 
-          image: testImageSmall, 
-          prompt: 'Describe this image quickly' 
-        }),
-        headers: { 'content-type': 'application/json' }
-      });
-      
-      try {
-        const response = await analyzeHandler(req);
-        expect([200, 500].includes(response.status)).toBe(true);
-        
-        if (response.status === 200) {
-          const json = await response.json();
-          expect(json.result).toBeDefined();
-          expect(typeof json.result).toBe('string');
-        }
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
-    });
-
-    it('POST /api/analyze handles requests across different mobile devices', async () => {
-      const devices: (keyof typeof MOBILE_USER_AGENTS)[] = ['iPhone', 'Android', 'iPad'];
-      
-      for (const device of devices) {
-        const req = createMobileRequest('http://localhost:3000/api/analyze', {
-          method: 'POST',
-          body: JSON.stringify({ 
-            image: testImageSmall, 
-            prompt: `Analysis from ${device}` 
-          }),
-          headers: { 'content-type': 'application/json' }
-        }, device);
-        
-        try {
-          const response = await analyzeHandler(req);
-          expect([200, 400, 500].includes(response.status)).toBe(true);
-        } catch (error) {
-          expect(error).toBeDefined();
-        }
-      }
-    });
-  });
-
-  describe('Generation API - Mobile Performance', () => {
-    it('POST /api/generate handles mobile requests efficiently', async () => {
-      const req = createMobileRequest('http://localhost:3000/api/generate', {
-        method: 'POST',
-        body: JSON.stringify({
-          model: 'moondream2',
-          prompt: 'Quick mobile test',
-          image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg=='
-        }),
-        headers: { 'content-type': 'application/json' }
-      });
-
-      try {
-        const response = await generateHandler(req);
-        expect([200, 400, 500].includes(response.status)).toBe(true);
-        
-        if (response.status === 200) {
-          const json = await response.json();
-          expect(json.success).toBeDefined();
-        }
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
-    });
-  });
-
-  describe('Analytics API - Mobile Dashboard', () => {
-    it('GET /api/analytics returns mobile-friendly data structure', async () => {
-      const req = createMobileRequest('http://localhost:3000/api/analytics', {
-        method: 'GET',
-        headers: { 'content-type': 'application/json' }
-      });
-
-      try {
-        const response = await analyticsHandler(req);
-        expect([200, 500].includes(response.status)).toBe(true);
-        
-        if (response.status === 200) {
-          const json = await response.json();
-          expect(json).toBeDefined();
-          // Ensure the response structure is mobile-friendly
-          expect(typeof json).toBe('object');
-        }
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
-    });
-  });
-
-  describe('Retraining API - Mobile Workflow', () => {
-    it('POST /api/retrain handles mobile retraining requests', async () => {
-      const req = createMobileRequest('http://localhost:3000/api/retrain', {
-        method: 'POST',
-        body: JSON.stringify({
-          model: 'moondream2',
-          rewardFunction: 'mobile_optimized',
-          datasetSize: 'small'
-        }),
-        headers: { 'content-type': 'application/json' }
-      });
-
-      try {
-        const response = await retrainHandler(req);
-        expect([200, 400, 500].includes(response.status)).toBe(true);
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
-    });
-  });
-
-  describe('Feedback API - Mobile Interaction', () => {
-    it('POST /api/feedback validates analysisId format on mobile', async () => {
-      const req = createMobileRequest('http://localhost:3000/api/feedback', {
-        method: 'POST',
-        body: JSON.stringify({
-          analysisId: 'invalid-id',
-          upvote: true,
-        }),
-        headers: { 'content-type': 'application/json' }
-      });
-      
-      const response = await feedbackHandler(req);
-      expect([200, 400, 500].includes(response.status)).toBe(true);
-    });
-
-    it('POST /api/feedback accepts valid feedback data from mobile devices', async () => {
-      const devices: (keyof typeof MOBILE_USER_AGENTS)[] = ['iPhone', 'Android', 'iPad'];
-      
-      for (const device of devices) {
-        const req = createMobileRequest('http://localhost:3000/api/feedback', {
-          method: 'POST',
-          body: JSON.stringify({
-            analysisId: '507f1f77bcf86cd799439011',
-            upvote: true,
-            rewardScore: 1.0,
-            comment: `Great answer from ${device}`,
-          }),
-          headers: { 'content-type': 'application/json' }
-        }, device);
-        
-        try {
-          const response = await feedbackHandler(req);
-          expect([200, 500].includes(response.status)).toBe(true);
-        } catch (error) {
-          expect(error).toBeDefined();
-        }
-      }
-    });
-
-    it('POST /api/feedback handles touch-based interactions efficiently', async () => {
-      const req = createMobileRequest('http://localhost:3000/api/feedback', {
-        method: 'POST',
-        body: JSON.stringify({
-          analysisId: '507f1f77bcf86cd799439012',
-          upvote: false,
-          rewardScore: 0.5,
-          comment: 'Touch feedback test',
-          interactionType: 'touch',
-          sessionDuration: 1500 // ms - typical mobile session
-        }),
-        headers: { 'content-type': 'application/json' }
-      });
-      
-      try {
-        const response = await feedbackHandler(req);
-        expect([200, 400, 500].includes(response.status)).toBe(true);
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
-    });
-  });
-
-  describe('Performance Tests - Mobile Network Conditions', () => {
-    it('handles slow network conditions gracefully', async () => {
-      const slowNetworkReq = createMobileRequest('http://localhost:3000/api/analyze', {
-        method: 'POST',
-        body: JSON.stringify({ 
-          image: 'data:image/png;base64,iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==', 
-          prompt: 'Quick analysis for slow network' 
-        }),
-        headers: { 
-          'content-type': 'application/json',
-          'connection': 'keep-alive',
-          'cache-control': 'no-cache'
-        }
-      });
-      
-      try {
-        const startTime = Date.now();
-        const response = await analyzeHandler(slowNetworkReq);
-        const endTime = Date.now();
-        
-        // Ensure reasonable response time for mobile
-        expect(endTime - startTime).toBeLessThan(30000); // 30 second timeout
-        expect([200, 400, 500].includes(response.status)).toBe(true);
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
-    });
-
-    it('handles concurrent mobile requests efficiently', async () => {
-      const concurrentRequests = Array.from({ length: 3 }, (_, i) => 
-        createMobileRequest('http://localhost:3000/api/status', {
-          method: 'GET',
-          headers: { 'content-type': 'application/json' }
-        })
-      );
-
-      try {
-        const responses = await Promise.all(
-          concurrentRequests.map(() => statusHandler())
-        );
-        
-        responses.forEach(response => {
-          expect(response.status).toBe(200);
-        });
-      } catch (error) {
-        expect(error).toBeDefined();
-      }
-    });
+      expect(await response.json()).toMatchObject({ status: 'degraded', dependenciesVerified: false });
+    }
   });
 });
