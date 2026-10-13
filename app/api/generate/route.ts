@@ -14,6 +14,9 @@ export async function POST(request: NextRequest) {
 
     const startTime = Date.now();
     
+    if (!process.env.MOONDREAM_KEY || process.env.MOONDREAM_KEY === 'your-real-moondream-api-key') {
+      return NextResponse.json({ success: false, error: 'Configure MOONDREAM_KEY to enable image inference.' }, { status: 503 });
+    }
     // Generate response using Moondream
     const response = await moondream.analyzeImage(image, prompt);
     

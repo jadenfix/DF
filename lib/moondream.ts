@@ -202,4 +202,14 @@ export class MoondreamClient {
   }
 }
 
-export const moondream = new MoondreamClient(process.env.MOONDREAM_KEY || ''); 
+// Resolve provider credentials at request time, so builds and static pages do not
+// require inference credentials. Never substitute generated answers on failure.
+export function getMoondreamClient(): MoondreamClient {
+  return new MoondreamClient(process.env.MOONDREAM_KEY || '');
+}
+
+export const moondream = {
+  analyzeImage: (image: string, prompt: string) => getMoondreamClient().analyzeImage(image, prompt),
+  caption: (image: string, length: 'short' | 'normal' = 'normal') => getMoondreamClient().caption(image, length),
+  query: (image: string, question: string) => getMoondreamClient().query(image, question),
+};
