@@ -6,7 +6,7 @@ test.describe('Mobile-Specific Tests', () => {
     
     if (isMobile) {
       // Check mobile-specific elements
-      await expect(page.getByRole('heading', { name: 'DreamForge' })).toBeVisible();
+      await expect(page.getByRole('heading', { name: /Moondream.*Vision AI That Just Works/ })).toBeVisible();
       
       // Verify mobile navigation (hamburger menu or collapsed nav)
       const navButton = page.locator('button[aria-label="Toggle navigation"]').or(
@@ -23,7 +23,8 @@ test.describe('Mobile-Specific Tests', () => {
       const viewportSize = page.viewportSize();
       if (viewportSize && viewportSize.width < 768) {
         // Mobile breakpoint tests
-        await expect(page.locator('main')).toHaveCSS('padding', /8px|16px|1rem/);
+        await expect(page.locator('main')).toBeVisible();
+        expect(await page.evaluate(() => document.documentElement.scrollWidth)).toBeLessThanOrEqual(viewportSize.width);
       }
     }
   });
@@ -31,7 +32,7 @@ test.describe('Mobile-Specific Tests', () => {
   test('playground page works on mobile', async ({ page, isMobile }) => {
     await page.goto('/playground');
     
-    await expect(page.getByText('AI Playground')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'DreamForge Playground', exact: true })).toBeVisible();
     
     if (isMobile) {
       // Check that form elements are touch-friendly
@@ -40,7 +41,7 @@ test.describe('Mobile-Specific Tests', () => {
       
       // Ensure minimum touch target size (44px recommended)
       const boundingBox = await textarea.boundingBox();
-      expect(boundingBox?.height).toBeGreaterThan(44);
+      expect(boundingBox?.height).toBeGreaterThanOrEqual(44);
       
       // Test file upload button on mobile
       const fileInput = page.locator('input[type="file"]');
@@ -53,7 +54,7 @@ test.describe('Mobile-Specific Tests', () => {
   test('advanced playground is mobile responsive', async ({ page, isMobile }) => {
     await page.goto('/playground-advanced');
     
-    await expect(page.getByText('Advanced Playground')).toBeVisible();
+    await expect(page.getByRole('heading', { name: 'Advanced AI Playground', exact: true })).toBeVisible();
     
     if (isMobile) {
       // Check tab navigation on mobile
@@ -107,7 +108,7 @@ test.describe('Mobile-Specific Tests', () => {
         if (await options.count() > 0) {
           const firstOption = options.first();
           const boundingBox = await firstOption.boundingBox();
-          expect(boundingBox?.height).toBeGreaterThan(32); // Minimum touch target
+          expect(boundingBox?.height).toBeGreaterThanOrEqual(44); // Minimum touch target
         }
       }
     }
@@ -207,10 +208,13 @@ test.describe('Mobile-Specific Tests', () => {
     if (await buttons.count() > 0) {
       const button = buttons.first();
       
+      // Upload real fixture bytes before submitting inference.
+      await page.locator('input[type="file"]').setInputFiles({ name: 'fixture.png', mimeType: 'image/png',
+        buffer: Buffer.from('iVBORw0KGgoAAAANSUhEUgAAAAEAAAABCAYAAAAfFcSJAAAADUlEQVR42mP8/5+hHgAHggJ/PchI7wAAAABJRU5ErkJggg==', 'base64') });
       // Ensure button is large enough for touch
       const boundingBox = await button.boundingBox();
-      expect(boundingBox?.height).toBeGreaterThan(44);
-      expect(boundingBox?.width).toBeGreaterThan(44);
+      expect(boundingBox?.height).toBeGreaterThanOrEqual(44);
+      expect(boundingBox?.width).toBeGreaterThanOrEqual(44);
       
       // Test touch interaction
       await button.click();
@@ -222,8 +226,10 @@ test.describe('Mobile-Specific Tests', () => {
     await page.goto('/');
     
     if (isMobile) {
-      // Test navigation menu
-      const navLinks = page.locator('nav a, [role="navigation"] a');
+      // Open the actual mobile navigation before testing its links.
+      const menu = page.getByRole('button', { name: 'Toggle navigation' });
+      if (await menu.isVisible()) await menu.click();
+      const navLinks = page.locator('nav a:visible');
       const linkCount = await navLinks.count();
       
       if (linkCount > 0) {
@@ -234,15 +240,16 @@ test.describe('Mobile-Specific Tests', () => {
           
           // Ensure links are touch-friendly
           const boundingBox = await link.boundingBox();
-          expect(boundingBox?.height).toBeGreaterThan(32);
+          expect(boundingBox?.height).toBeGreaterThanOrEqual(44);
         }
         
         // Test navigation to different pages
         const playgroundLink = navLinks.filter({ hasText: /playground/i });
         if (await playgroundLink.count() > 0) {
           await playgroundLink.first().click();
-          await page.waitForLoadState('networkidle');
-          expect(page.url()).toContain('playground');
+          await page.waitForLoadState('domcontentloaded');
+          await expect(page).toHaveURL(/\/playground$/);
+          await expect(page.getByRole('heading', { name: 'DreamForge Playground', exact: true })).toBeVisible();
         }
       }
     }

@@ -47,9 +47,7 @@ export default function InteractiveBenchmark() {
   };
 
   const currentBenchmark = benchmarks[selectedTask];
-  const maxScore = selectedTask === 'cost' 
-    ? Math.min(...currentBenchmark.models.map(m => m.score)) // For cost, use min as baseline
-    : Math.max(...currentBenchmark.models.map(m => m.score)); // For others, use max
+   // For others, use max
 
   return (
     <div className="bg-white dark:bg-slate-800 rounded-2xl p-6 shadow-xl border border-slate-200 dark:border-slate-700">

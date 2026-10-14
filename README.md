@@ -190,3 +190,17 @@ The project includes a comprehensive `vercel.json` configuration for:
 4. **Production**: Deploy to Vercel with environment variables
 
 This implementation showcases the complete "Vercel of VLMs" experience with enterprise-ready features for model development, testing, and deployment.
+
+## Build without inference credentials
+
+`npm ci && npm run build` can build the frontend without `MOONDREAM_KEY`.
+Provider clients initialize when inference is requested. `/api/analyze` and
+`/api/generate` return HTTP 503 with setup guidance when that key is missing;
+no synthetic inference answer replaces a missing provider.
+
+Run `npm test -- tests/moondream-config.test.ts` for the request-time credential
+regression. A compiled frontend is not proof of live inference: configure a real
+Moondream key and verify upload → inference → displayed response before recording
+that workflow. Existing reward scores use heuristics and are not measured model
+accuracy. ESLint is pinned to the major supported by Next14's lint command. Lint now runs and
+reports existing source violations; passing compilation does not mean lint is clean.

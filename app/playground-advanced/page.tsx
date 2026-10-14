@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import Navigation from '../../components/Navigation';
 import ModelSelector from '../components/features/ModelSelector';
@@ -10,8 +10,7 @@ import LogsConsole, { LogEntry } from '../components/features/LogsConsole';
 import { 
   PhotoIcon, 
   SparklesIcon,
-  ArrowPathIcon,
-  CogIcon
+  ArrowPathIcon
 } from '@heroicons/react/24/outline';
 
 const SAMPLE_IMAGES = [
@@ -37,7 +36,7 @@ export default function AdvancedPlayground() {
   const [selectedModel, setSelectedModel] = useState('moondream2');
   const [prompt, setPrompt] = useState('Describe this image in detail');
   const [selectedImage, setSelectedImage] = useState<string | null>(null);
-  const [uploadedImage, setUploadedImage] = useState<string | null>(null);
+  const [, setUploadedImage] = useState<string | null>(null);
   const [rewardWeights, setRewardWeights] = useState<RewardWeights>({
     accuracy: 1.0,
     creativity: 0.8,
@@ -126,7 +125,7 @@ export default function AdvancedPlayground() {
       // Simulate saving to database
       await new Promise(resolve => setTimeout(resolve, 1000));
       addLog('success', 'Reward function saved successfully', 'Rewards');
-    } catch (error) {
+    } catch {
       addLog('error', 'Failed to save reward function', 'Rewards');
     } finally {
       setIsSavingRewards(false);

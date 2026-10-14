@@ -2,19 +2,14 @@
 
 import { useState } from 'react';
 import { motion } from 'framer-motion';
-import { PlayIcon, CodeBracketIcon, DocumentTextIcon, BeakerIcon } from '@heroicons/react/24/outline';
+import { PlayIcon, CodeBracketIcon, DocumentTextIcon } from '@heroicons/react/24/outline';
 import InteractiveBenchmark from './InteractiveBenchmark';
 import EmbeddedPlayground from './EmbeddedPlayground';
 
 export default function Hero() {
   const [isPlaygroundOpen, setIsPlaygroundOpen] = useState(false);
 
-  const realTimeMetrics = [
-    { label: 'Models Deployed', value: '8.2k+', icon: '' },
-    { label: 'Avg Latency', value: '15ms', icon: '' },
-    { label: 'Uptime', value: '99.9%', icon: '' },
-    { label: 'GitHub Stars', value: '8.2k', icon: '' }
-  ];
+  
 
   return (
     <>

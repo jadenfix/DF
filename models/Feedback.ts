@@ -11,4 +11,5 @@ const FeedbackSchema = new mongoose.Schema(
   { timestamps: true }
 );
 
-export default mongoose.models.Feedback || mongoose.model('Feedback', FeedbackSchema); 
+export type FeedbackRecord = mongoose.InferSchemaType<typeof FeedbackSchema>;
+export default (mongoose.models.Feedback as mongoose.Model<FeedbackRecord> | undefined) || mongoose.model<FeedbackRecord>('Feedback', FeedbackSchema); 

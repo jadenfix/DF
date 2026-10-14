@@ -1,6 +1,6 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion, AnimatePresence } from 'framer-motion';
 import Navigation from '../../components/Navigation';
 import ModelSelector from '../components/features/ModelSelector';
@@ -14,11 +14,9 @@ import {
   PhotoIcon, 
   SparklesIcon,
   ArrowPathIcon,
-  CogIcon,
   ChartBarIcon,
   RocketLaunchIcon,
-  BeakerIcon,
-  Cog6ToothIcon
+  BeakerIcon
 } from '@heroicons/react/24/outline';
 
 const SAMPLE_IMAGES = [
@@ -281,7 +279,7 @@ export default function Playground() {
     <div className="min-h-screen bg-gray-50 dark:bg-gray-900">
       <Navigation />
       
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">          {/* Hero Section */}
+      <main className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8">          {/* Hero Section */}
           <div className="text-center mb-6 md:mb-8">
             <motion.h1 
               initial={{ opacity: 0, y: -20 }}
@@ -568,7 +566,7 @@ export default function Playground() {
             </motion.div>
           )}
         </AnimatePresence>
-      </div>
+      </main>
     </div>
   );
 } 

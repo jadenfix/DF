@@ -55,12 +55,12 @@ export class AnthropicClient {
       });
       // Claude 3/4 returns content as array of blocks
       if (Array.isArray(msg.content)) {
-        return msg.content.map((c: any) => c.text).join(' ');
+        return msg.content.filter(c => c.type === 'text').map(c => c.text).join(' ');
       }
       return msg.content || '';
-    } catch (err: any) {
+    } catch (err) {
       console.error('[Anthropic] API error:', err);
-      throw new Error('Anthropic API error: ' + err.message);
+      throw new Error('Anthropic API error: ' + (err instanceof Error ? err.message : String(err)));
     }
   }
 }

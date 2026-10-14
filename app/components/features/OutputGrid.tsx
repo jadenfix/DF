@@ -1,6 +1,7 @@
 'use client';
 
 import { useState } from 'react';
+import type { RewardWeights } from './RewardBuilder';
 import { motion } from 'framer-motion';
 import { 
   HandThumbUpIcon, 
@@ -25,7 +26,7 @@ export interface GenerationResult {
 interface OutputCardProps {
   result: GenerationResult;
   onFeedback: (id: string, feedback: 'positive' | 'negative') => void;
-  rewardWeights?: any;
+  rewardWeights?: RewardWeights;
 }
 
 function OutputCard({ result, onFeedback, rewardWeights }: OutputCardProps) {
@@ -66,7 +67,7 @@ function OutputCard({ result, onFeedback, rewardWeights }: OutputCardProps) {
     if (!rewardWeights) return 0.75; // Default score
     
     // Simulate reward calculation based on response characteristics
-    const responseLength = result.response.length;
+    
     const hasDetails = result.response.split(' ').length > 20;
     const isCreative = result.response.includes('unique') || result.response.includes('interesting');
     
@@ -172,7 +173,7 @@ function OutputCard({ result, onFeedback, rewardWeights }: OutputCardProps) {
 interface OutputGridProps {
   results: GenerationResult[];
   onFeedback: (id: string, feedback: 'positive' | 'negative') => void;
-  rewardWeights?: any;
+  rewardWeights?: RewardWeights;
   isLoading?: boolean;
 }
 
@@ -209,7 +210,7 @@ export default function OutputGrid({ results, onFeedback, rewardWeights, isLoadi
             <div>
               <h3 className="font-medium text-blue-900 dark:text-blue-100 mb-1">Research-Grade Analysis</h3>
               <p className="text-sm text-blue-700 dark:text-blue-300">
-                Generate responses using Moondream's 1.6B parameter VLM. Compare baseline vs RLHF-optimized outputs, 
+                Generate responses using Moondream&apos;s 1.6B parameter VLM. Compare baseline vs RLHF-optimized outputs, 
                 analyze reward scores, and contribute to our community benchmarks.
               </p>
               <div className="flex flex-wrap gap-2 mt-2">

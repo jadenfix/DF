@@ -39,6 +39,9 @@ export async function POST(request: NextRequest) {
       }
     }
 
+    if (!process.env.MOONDREAM_KEY || process.env.MOONDREAM_KEY === 'your-real-moondream-api-key') {
+      return NextResponse.json({ success: false, error: 'Configure MOONDREAM_KEY to enable image inference.' }, { status: 503 });
+    }
     // Analyze the image
     const result = await moondream.analyzeImage(image, prompt);
 

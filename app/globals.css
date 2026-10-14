@@ -158,3 +158,6 @@
 * {
   transition: background-color 0.2s ease, border-color 0.2s ease, color 0.2s ease;
 } 
+.grid > *, .flex > * { min-width: 0; }
+main { overflow-wrap: anywhere; }
+pre { max-width: 100%; overflow-x: auto; }

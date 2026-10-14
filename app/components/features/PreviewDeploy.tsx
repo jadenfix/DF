@@ -1,13 +1,12 @@
 'use client';
 
-import { useState, useEffect } from 'react';
+import { useState } from 'react';
 import { motion } from 'framer-motion';
 import { 
   ArrowPathIcon,
   CheckCircleIcon,
   ExclamationCircleIcon,
   PlayIcon,
-  PauseIcon,
   EyeIcon
 } from '@heroicons/react/24/outline';
 

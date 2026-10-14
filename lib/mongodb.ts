@@ -1,6 +1,6 @@
 import mongoose from 'mongoose';
-import Feedback from '../models/Feedback';
-import Analysis from '../models/Analysis';
+import Feedback, { type FeedbackRecord } from '../models/Feedback';
+import Analysis, { type AnalysisRecord } from '../models/Analysis';
 import RewardConfig from '../models/RewardConfig';
 
 let MONGODB_URI = process.env.MONGODB_URI as string | undefined;
@@ -19,11 +19,9 @@ interface MongooseGlobal {
   promise: Promise<typeof mongoose> | null;
 }
 
-let cached: MongooseGlobal = (global as any).mongoose;
-
-if (!cached) {
-  cached = (global as any).mongoose = { conn: null, promise: null };
-}
+const mongooseGlobal = globalThis as typeof globalThis & { mongoose?: MongooseGlobal };
+const cached: MongooseGlobal = mongooseGlobal.mongoose ?? { conn: null, promise: null };
+mongooseGlobal.mongoose = cached;
 
 export default async function db() {
   if (cached.conn) return cached.conn;
@@ -69,29 +67,28 @@ export default async function db() {
 /**
  * Fetches recent feedback and associated analysis for RLHF training.
  * @param {number} limit - Max number of feedback entries to fetch.
- * @returns {Promise<Array<{feedback: any, analysis: any}>>}
+ * @returns {Promise<Array<{ feedback: Pick<FeedbackRecord, "upvote" | "comment"> & { _id: mongoose.Types.ObjectId }; analysis: AnalysisRecord | null }>>}
  */
-export async function getFeedbackForRLHF(limit = 100): Promise<Array<{feedback: any, analysis: any}>> {
+export async function getFeedbackForRLHF(limit = 100): Promise<Array<{ feedback: Pick<FeedbackRecord, "upvote" | "comment"> & { _id: mongoose.Types.ObjectId }; analysis: AnalysisRecord | null }>> {
   await db();
   // Get latest feedback with populated analysis
-  const FeedbackModel = Feedback as mongoose.Model<any>;
+  const FeedbackModel = Feedback;
   const feedbacks = await FeedbackModel.find({})
     .sort({ createdAt: -1 })
     .limit(limit)
-    .populate('analysisId');
-  return feedbacks.map((fb: any) => ({
+    .populate<{ analysisId: mongoose.HydratedDocument<AnalysisRecord> | null }>('analysisId');
+  return feedbacks.map((fb) => ({
     feedback: fb.toObject(),
     analysis: fb.analysisId ? fb.analysisId.toObject() : null,
   }));
 }
 
 /**
- * Calculates RLHF reward for a feedback/analysis pair using env weights.
+ * Calculates the feedback reward using configured weights.
  * @param feedback - Feedback document
- * @param analysis - Analysis document
  * @returns {number} Reward value
  */
-export async function calculateRLHFReward(feedback: any, analysis: any): Promise<number> {
+export async function calculateRLHFReward(feedback: Pick<FeedbackRecord, "upvote" | "comment">): Promise<number> {
   const weights = await getRewardWeights();
   const accuracy = feedback.upvote ? 1 : 0;
   const helpfulness = feedback.comment ? 1 : 0;
@@ -105,9 +102,9 @@ export async function calculateRLHFReward(feedback: any, analysis: any): Promise
  */
 export async function updateFeedbackRewards(limit = 100) {
   const items = await getFeedbackForRLHF(limit);
-  for (const { feedback, analysis } of items) {
-    const reward = await calculateRLHFReward(feedback, analysis);
-    const FeedbackModel = Feedback as mongoose.Model<any>;
+  for (const { feedback } of items) {
+    const reward = await calculateRLHFReward(feedback);
+    const FeedbackModel = Feedback;
     await FeedbackModel.updateOne({ _id: feedback._id }, { $set: { rewardScore: reward } });
   }
 }
@@ -117,7 +114,7 @@ export async function updateFeedbackRewards(limit = 100) {
  * @param userId - Guest user ID
  */
 export async function incrementGuestUsage(userId: string) {
-  const AnalysisModel = Analysis as mongoose.Model<any>;
+  const AnalysisModel = Analysis;
   await AnalysisModel.create({ userId, prompt: '__usage__', image: '__usage__' });
 }
 
@@ -132,7 +129,7 @@ export async function getGuestUsageCount(userId: string): Promise<number> {
 
 export async function getRewardWeights() {
   await db();
-  const RewardModel = RewardConfig as mongoose.Model<any>;
+  const RewardModel = RewardConfig;
   const doc = await RewardModel.findOne({}).sort({ updatedAt: -1 });
   if (doc) {
     return { accuracy: doc.accuracy, helpfulness: doc.helpfulness, latency: doc.latency };

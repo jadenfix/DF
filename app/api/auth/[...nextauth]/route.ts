@@ -20,7 +20,7 @@ const authOptions: NextAuthOptions = {
         return {
           id: `guest-${crypto.randomUUID()}`,
           name: 'Guest',
-        } as any;
+        };
       },
     }),
   ],

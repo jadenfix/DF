@@ -13,7 +13,7 @@ interface PipelineStep {
   id: string;
   title: string;
   description: string;
-  icon: React.ComponentType<any>;
+  icon: React.ComponentType<React.SVGProps<SVGSVGElement>>;
   metrics: {
     label: string;
     value: string;
